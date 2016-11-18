@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,7 +20,9 @@ import java.util.List;
 public class HelloWorldController {
 
     @Autowired
-    PlayerService playerService;
+    private PlayerService playerService;
+
+    //-------------------Retrieve All Player--------------------------------------------------------
 
     @RequestMapping(value = "/players/", method = RequestMethod.GET)
     public ResponseEntity<List<Player>> listAllUsers() {
@@ -30,12 +31,14 @@ public class HelloWorldController {
         List<Player> players = playerService.findAllPlayers();
 
         if (players.isEmpty()) {
-            return new ResponseEntity<List<Player>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
         }
-        return new ResponseEntity<List<Player>>(players, HttpStatus.OK);
+        return new ResponseEntity<>(players, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/plauers/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    //-------------------Retrieve Single Player--------------------------------------------------------
+
+    @RequestMapping(value = "/player/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Player> getUser(@PathVariable("id") long id) {
 
         System.out.println("Find user by id");
@@ -51,20 +54,57 @@ public class HelloWorldController {
         return new ResponseEntity<>(player, HttpStatus.OK);
     }
 
+    //-------------------Create a Player--------------------------------------------------------
     @RequestMapping(value = "/player/", method = RequestMethod.POST)
-    public ResponseEntity<Void> createUser(@RequestBody Player player, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<Player> createUser(@RequestBody Player player, UriComponentsBuilder ucBuilder) {
         System.out.println("Creating User " + player.getName());
 
         if (playerService.isPlayerExist(player)) {
             System.out.println("A User with name " + player.getName() + " already exist");
-            return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
 
         playerService.savePlayer(player);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/player/{id}").buildAndExpand(player.getId()).toUri());
-        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+        return new ResponseEntity<>(player, HttpStatus.CREATED);
+    }
+
+    //------------------- Update a Player --------------------------------------------------------
+
+    @RequestMapping(value = "/player/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<Player> updateUser(@PathVariable("id") long id, @RequestBody Player player) {
+        System.out.println("Updating User " + id);
+
+        Player currentPlayer = playerService.findById(id);
+
+        if (currentPlayer == null) {
+            System.out.println("User with id " + id + " not found");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        currentPlayer.setName(player.getName());
+        currentPlayer.setSurname(player.getSurname());
+        currentPlayer.setRating(player.getRating());
+
+        playerService.updatePlayer(currentPlayer);
+        return new ResponseEntity<>(currentPlayer, HttpStatus.OK);
+    }
+
+    //------------------- Delete a Player --------------------------------------------------------
+    @RequestMapping(value = "/player/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Player> deleteUser(@PathVariable("id") long id) {
+        System.out.println("Fetching & Deleting User with id " + id);
+
+        Player user = playerService.findById(id);
+        if (user == null) {
+            System.out.println("Unable to delete. User with id " + id + " not found");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        playerService.deleteUserById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }
