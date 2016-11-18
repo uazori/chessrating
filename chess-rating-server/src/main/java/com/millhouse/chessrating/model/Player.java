@@ -9,6 +9,9 @@ public class Player {
     private String surname;
     private int rating;
 
+    public Player() {
+    }
+
     public Player(long id, String name, String surname, int rating) {
         this.id = id;
         this.name = name;
@@ -24,6 +27,27 @@ public class Player {
                 ", surname='" + surname + '\'' +
                 ", rating=" + rating +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Player player = (Player) o;
+
+        if (rating != player.rating) return false;
+        if (!name.equals(player.name)) return false;
+        return surname.equals(player.surname);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + surname.hashCode();
+        result = 31 * result + rating;
+        return result;
     }
 
     public long getId() {
