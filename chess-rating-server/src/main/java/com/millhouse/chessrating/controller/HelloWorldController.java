@@ -38,7 +38,7 @@ public class HelloWorldController {
     @RequestMapping(value = "/plauers/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Player> getUser(@PathVariable("id") long id) {
 
-
+        System.out.println("Find user by id");
 
     Player player = playerService.findById(id);
 
