@@ -2,6 +2,7 @@ package com.millhouse.chessrating.dao;
 
 import com.millhouse.chessrating.model.Player;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,33 +18,52 @@ public class PlayerDaoImp implements PlayerDao {
     private SessionFactory sessionFactory;
 
     @Override
-    public Player getById(long id) {
-        return null;
+    public Player getById(Long id) {
+
+
+        Query query = sessionFactory.getCurrentSession().createQuery("from Player where id =:playerId");
+        query.setParameter("playerId", id);
+        List<?> playerList = query.list();
+        if (playerList.size() == 0){throw new RuntimeException("Player with id "+id+" not found");}
+        return (Player) playerList.get(0);
+
     }
 
     @Override
     public Player getByName(String name) {
-        return null;
+
+        Query query = sessionFactory.getCurrentSession().createQuery("from Player where name =:playerName");
+        query.setParameter("playerName", name);
+        List<?> playerList = query.list();
+        if (playerList.size() == 0) {
+            return null;
+        }
+        return (Player) playerList.get(0);
     }
 
     @Override
     public void savePlayer(Player player) {
-    sessionFactory.getCurrentSession().persist(player);
+        sessionFactory.getCurrentSession().persist(player);
     }
 
     @Override
     public void updatePlayer(Player player) {
-
+        sessionFactory.getCurrentSession().saveOrUpdate(player);
     }
 
     @Override
-    public void deletePlayerById(long id) {
-
+    public void deletePlayerById(Long id) {
+    Query query = sessionFactory.getCurrentSession().createQuery("delete Player where id =:playerId");
+        query.setParameter("playerId", id);
+        int result = query.executeUpdate();
     }
 
     @Override
     public List<Player> getAllPlayers() {
-        return null;
+
+        Query query = sessionFactory.getCurrentSession().createQuery("from Player ");
+
+        return query.list();
     }
 
     @Override

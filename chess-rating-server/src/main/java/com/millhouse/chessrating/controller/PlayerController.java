@@ -30,8 +30,6 @@ public class PlayerController {
         List<Player> players = playerService.findAllPlayers();
 
         System.out.println("Add player ");
-        Player player1 = new Player("Jonny","Walker",2);
-        playerService.savePlayer(player1);
 
         if (players.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
@@ -42,7 +40,7 @@ public class PlayerController {
     //-------------------Retrieve Single Player--------------------------------------------------------
 
     @RequestMapping(value = "/player/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Player> getUser(@PathVariable("id") long id) {
+    public ResponseEntity<Player> getUser(@PathVariable("id") Long id) {
 
         System.out.println("Find user by id");
 
@@ -66,8 +64,8 @@ public class PlayerController {
             System.out.println("A User with name " + player.getName() + " already exist");
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
-        Player player1 = new Player("Jonny","Walker",2);
-        playerService.savePlayer(player1);
+
+        playerService.savePlayer(player);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/player/{id}").buildAndExpand(player.getId()).toUri());
@@ -77,7 +75,7 @@ public class PlayerController {
     //------------------- Update a Player --------------------------------------------------------
 
     @RequestMapping(value = "/player/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Player> updateUser(@PathVariable("id") long id, @RequestBody Player player) {
+    public ResponseEntity<Player> updateUser(@PathVariable("id") Long id, @RequestBody Player player) {
         System.out.println("Updating User " + id);
 
         Player currentPlayer = playerService.findById(id);
@@ -97,7 +95,7 @@ public class PlayerController {
 
     //------------------- Delete a Player --------------------------------------------------------
     @RequestMapping(value = "/player/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Player> deleteUser(@PathVariable("id") long id) {
+    public ResponseEntity<Player> deleteUser(@PathVariable("id") Long id) {
         System.out.println("Fetching & Deleting User with id " + id);
 
         Player user = playerService.findById(id);

@@ -1,6 +1,7 @@
 package com.millhouse.chessrating.service;
 
 import com.millhouse.chessrating.dao.PlayerDao;
+import com.millhouse.chessrating.dao.PlayerDaoImp;
 import com.millhouse.chessrating.model.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,53 +30,38 @@ public class PlayerServiceImp implements PlayerService {
     private PlayerDao dao;
 
     @Override
-    public Player findById(long id) {
-        for (Player player : players) {
-            if (player.getId() == id) return player;
+    public Player findById(Long id) {
 
-        }
-        return null;
+        return dao.getById(id);
     }
 
     @Override
     public Player findByName(String name) {
-        for (Player player : players) {
-            if (player.getName().equalsIgnoreCase(name)) {
-                return player;
-            }
 
-        }
-        return null;
+        return dao.getByName(name);
     }
 
     @Override
     public void savePlayer(Player player) {
         System.out.println("player  " + player);
-        System.out.println("dao " + dao);
+
        dao.savePlayer(player);
     }
 
     @Override
     public void updatePlayer(Player player) {
-        int index = players.indexOf(player);
-        players.set(index, player);
+        dao.updatePlayer(player);
     }
 
     @Override
-    public void deletePlayerById(long id) {
+    public void deletePlayerById(Long id) {
 
-        for (Iterator<Player> iterator = players.iterator(); iterator.hasNext(); ) {
-            Player player = iterator.next();
-            if (player.getId() == id) {
-                iterator.remove();
-            }
-
-        }
+        dao.deletePlayerById(id);
     }
 
     @Override
     public List<Player> findAllPlayers() {
-        return players;
+        return dao.getAllPlayers();
     }
 
     @Override
@@ -89,12 +75,12 @@ public class PlayerServiceImp implements PlayerService {
     }
 
     private static List<Player> populateDummyUsers(){
-        List<Player> players = new ArrayList<Player>();
+        List<Player> players = new ArrayList<>();
         players.add(new Player(counter.incrementAndGet(),"Bill","Bobson",5));
         players.add(new Player(counter.incrementAndGet(),"Sam","Dilinger", 1));
         players.add(new Player(counter.incrementAndGet(),"Tom","Good",2));
         players.add(new Player(counter.incrementAndGet(),"Jerome","Peasant",3));
-        players.add(new Player(counter.incrementAndGet(),"Silvia","Big",4));
+        players.add(new Player(counter.incrementAndGet(),"Denis","Big",4));
         return players;
     }
 }

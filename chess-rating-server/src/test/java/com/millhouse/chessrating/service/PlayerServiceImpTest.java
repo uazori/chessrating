@@ -1,5 +1,6 @@
 package com.millhouse.chessrating.service;
 
+import com.millhouse.chessrating.dao.PlayerDaoImp;
 import com.millhouse.chessrating.model.Player;
 import junit.framework.TestCase;
 import org.junit.Test;
@@ -14,8 +15,11 @@ import static org.mockito.Mockito.when;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class PlayerServiceImpTest extends TestCase {
+
     @Mock
-    private PlayerServiceImp playerService;
+    private PlayerDaoImp playerDao;
+
+    private PlayerService playerService = new PlayerServiceImp();
 
     public void setUp() throws Exception {
         super.setUp();
@@ -35,8 +39,8 @@ public class PlayerServiceImpTest extends TestCase {
     public void testFindByName() throws Exception {
         //Expected Player
 
-    Player expecedPlayer = new Player(1,"Bill","Bobson",5);
-        when(playerService.findByName("Steve")).thenReturn(expecedPlayer);
+    Player expectedPlayer = new Player(1,"Bill","Bobson",5);
+        when(playerDao.getByName("Steve")).thenReturn(expectedPlayer);
         assertEquals(new Player(1,"Bill","Bobson",5),playerService.findByName("Steve"));
     }
 
