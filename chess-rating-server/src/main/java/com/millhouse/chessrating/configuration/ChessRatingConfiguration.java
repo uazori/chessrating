@@ -11,5 +11,5 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = "com.millhouse.chessrating")
-public class HelloWorldConfiguration  {
+public class ChessRatingConfiguration {
 }

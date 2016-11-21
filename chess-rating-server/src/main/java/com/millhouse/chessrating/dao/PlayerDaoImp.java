@@ -1,13 +1,20 @@
 package com.millhouse.chessrating.dao;
 
 import com.millhouse.chessrating.model.Player;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * Created by Millhouse on 11/18/2016.
  */
+@Service("playerDao")
 public class PlayerDaoImp implements PlayerDao {
+
+    @Autowired
+    private SessionFactory sessionFactory;
 
     @Override
     public Player getById(long id) {
@@ -21,7 +28,7 @@ public class PlayerDaoImp implements PlayerDao {
 
     @Override
     public void savePlayer(Player player) {
-
+    sessionFactory.getCurrentSession().persist(player);
     }
 
     @Override

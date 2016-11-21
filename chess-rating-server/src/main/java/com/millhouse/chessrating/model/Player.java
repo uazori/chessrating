@@ -1,12 +1,23 @@
 package com.millhouse.chessrating.model;
 
+import javax.persistence.*;
+
 /**
  * Created by Millhouse on 11/17/2016.
  */
+@Entity
+@Table(name = "player")
 public class Player {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
+    @Column(name = "name")
     private String name;
+    @Column(name = "surname")
     private String surname;
+    @Column(name = "rating")
     private int rating;
 
     public Player() {
@@ -14,6 +25,12 @@ public class Player {
 
     public Player(long id, String name, String surname, int rating) {
         this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.rating = rating;
+    }
+
+    public Player(String name, String surname, int rating) {
         this.name = name;
         this.surname = surname;
         this.rating = rating;

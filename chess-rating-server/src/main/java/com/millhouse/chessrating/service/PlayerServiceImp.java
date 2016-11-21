@@ -1,7 +1,10 @@
 package com.millhouse.chessrating.service;
 
+import com.millhouse.chessrating.dao.PlayerDao;
 import com.millhouse.chessrating.model.Player;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -14,13 +17,16 @@ import static sun.audio.AudioPlayer.player;
  * Created by Millhouse on 11/17/2016.
  */
 
-@Service("userService")
-
+@Service("playerService")
+@Transactional
 public class PlayerServiceImp implements PlayerService {
 
     private static final AtomicLong counter = new AtomicLong();
 
     private static List<Player> players = populateDummyUsers();
+
+    @Autowired
+    private PlayerDao dao;
 
     @Override
     public Player findById(long id) {
@@ -44,8 +50,9 @@ public class PlayerServiceImp implements PlayerService {
 
     @Override
     public void savePlayer(Player player) {
-        player.setId(counter.incrementAndGet());
-        players.add(player);
+        System.out.println("player  " + player);
+        System.out.println("dao " + dao);
+       dao.savePlayer(player);
     }
 
     @Override
@@ -55,7 +62,7 @@ public class PlayerServiceImp implements PlayerService {
     }
 
     @Override
-    public void deleteUserById(long id) {
+    public void deletePlayerById(long id) {
 
         for (Iterator<Player> iterator = players.iterator(); iterator.hasNext(); ) {
             Player player = iterator.next();

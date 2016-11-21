@@ -3,7 +3,6 @@ package com.millhouse.chessrating.controller;
 import com.millhouse.chessrating.model.Player;
 import com.millhouse.chessrating.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,7 +16,7 @@ import java.util.List;
  * Created by Millhouse on 11/17/2016.
  */
 @RestController
-public class HelloWorldController {
+public class PlayerController {
 
     @Autowired
     private PlayerService playerService;
@@ -29,6 +28,10 @@ public class HelloWorldController {
 
         System.out.println("Inside List all users");
         List<Player> players = playerService.findAllPlayers();
+
+        System.out.println("Add player ");
+        Player player1 = new Player("Jonny","Walker",2);
+        playerService.savePlayer(player1);
 
         if (players.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
@@ -63,8 +66,8 @@ public class HelloWorldController {
             System.out.println("A User with name " + player.getName() + " already exist");
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
-
-        playerService.savePlayer(player);
+        Player player1 = new Player("Jonny","Walker",2);
+        playerService.savePlayer(player1);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/player/{id}").buildAndExpand(player.getId()).toUri());
@@ -103,7 +106,7 @@ public class HelloWorldController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        playerService.deleteUserById(id);
+        playerService.deletePlayerById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

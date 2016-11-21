@@ -12,7 +12,7 @@ public interface PlayerService {
     Player findByName(String name);
     void savePlayer(Player player);
     void updatePlayer(Player player);
-    void  deleteUserById(long id);
+    void deletePlayerById(long id);
     List<Player> findAllPlayers();
     void deleteAllPlayers();
     boolean isPlayerExist(Player player);
