@@ -6,6 +6,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 
 /**
@@ -36,7 +37,14 @@ public class PlayerDaoImp implements PlayerDao {
 
         Query query = sessionFactory.getCurrentSession().createQuery("from Player where name = :playerName");
         query.setParameter("playerName", name);
-        return (Player) query.getSingleResult();
+        Player player;
+        try {
+           player =  (Player) query.getSingleResult();
+        }
+        catch (NoResultException ex){
+            return new Player();
+        }
+        return player;
 
     }
 

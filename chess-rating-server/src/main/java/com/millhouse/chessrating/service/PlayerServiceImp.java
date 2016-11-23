@@ -22,10 +22,6 @@ import static sun.audio.AudioPlayer.player;
 @Transactional
 public class PlayerServiceImp implements PlayerService {
 
-    private static final AtomicLong counter = new AtomicLong();
-
-    private static List<Player> players = populateDummyUsers();
-
     @Autowired
     private PlayerDao dao;
 
@@ -73,16 +69,8 @@ public class PlayerServiceImp implements PlayerService {
 
     @Override
     public boolean isPlayerExist(Player player) {
-        return findByName(player.getName())!=null ;
+        return findByName(player.getName()).getName()!=null ;
     }
 
-    private static List<Player> populateDummyUsers(){
-        List<Player> players = new ArrayList<>();
-        players.add(new Player(counter.incrementAndGet(),"Bill","Bobson",5));
-        players.add(new Player(counter.incrementAndGet(),"Sam","Dilinger", 1));
-        players.add(new Player(counter.incrementAndGet(),"Tom","Good",2));
-        players.add(new Player(counter.incrementAndGet(),"Jerome","Peasant",3));
-        players.add(new Player(counter.incrementAndGet(),"Denis","Big",4));
-        return players;
-    }
+
 }

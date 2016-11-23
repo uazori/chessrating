@@ -69,6 +69,8 @@ public class PlayerDaoImpTest {
 
         assertEquals(player, fetchedPlayer);
 
+        assertNull(playerDao.getByName("asdasd").getName());
+
     }
 
     @Test
