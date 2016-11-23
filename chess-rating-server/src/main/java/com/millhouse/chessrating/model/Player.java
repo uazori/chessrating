@@ -12,8 +12,8 @@ public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
-    @Column(name = "name")
+    private Long id;
+    @Column(name = "player_name")
     private String name;
     @Column(name = "surname")
     private String surname;
@@ -36,7 +36,7 @@ public class Player {
         this.rating = rating;
     }
 
-    @Override
+    /*@Override
     public String toString() {
         return "Player{" +
                 "id=" + id +
@@ -44,9 +44,9 @@ public class Player {
                 ", surname='" + surname + '\'' +
                 ", rating=" + rating +
                 '}';
-    }
+    }*/
 
-    @Override
+   /* @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -57,17 +57,17 @@ public class Player {
         if (!name.equals(player.name)) return false;
         return surname.equals(player.surname);
 
-    }
+    }*/
 
-    @Override
+  /*  @Override
     public int hashCode() {
         int result = name.hashCode();
         result = 31 * result + surname.hashCode();
         result = 31 * result + rating;
         return result;
     }
-
-    public long getId() {
+*/
+    public Long getId() {
         return id;
     }
 
