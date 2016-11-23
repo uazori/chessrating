@@ -11,11 +11,9 @@ import java.util.List;
 public interface PlayerDao {
     Player getById(Long id);
     Player getByName(String name);
-    void savePlayer(Player player);
-    void updatePlayer(Player player);
+    void saveOrUpdate(Player player);
     void deletePlayerById(Long id);
     List<Player>  getAllPlayers();
-    void deleteAllPlayers();
-    boolean isPlayerExist(Player player);
+
 
 }

@@ -32,7 +32,13 @@ public class PlayerServiceImp implements PlayerService {
     @Override
     public Player findById(Long id) {
 
-        return dao.getById(id);
+        Player player = dao.getById(id);
+
+        if (player == null) {
+            throw new RuntimeException("Player with id " + id + " not found");
+        }
+
+        return player;
     }
 
     @Override
@@ -45,28 +51,24 @@ public class PlayerServiceImp implements PlayerService {
     public void savePlayer(Player player) {
         System.out.println("player  " + player);
 
-       dao.savePlayer(player);
+       dao.saveOrUpdate(player);
     }
 
     @Override
     public void updatePlayer(Player player) {
-        dao.updatePlayer(player);
+        dao.saveOrUpdate(player);
     }
 
     @Override
     public void deletePlayerById(Long id) {
 
         dao.deletePlayerById(id);
+
     }
 
     @Override
     public List<Player> findAllPlayers() {
         return dao.getAllPlayers();
-    }
-
-    @Override
-    public void deleteAllPlayers() {
-    players.clear();
     }
 
     @Override

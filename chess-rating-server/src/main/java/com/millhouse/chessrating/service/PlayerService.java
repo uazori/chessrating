@@ -14,6 +14,5 @@ public interface PlayerService {
     void updatePlayer(Player player);
     void deletePlayerById(Long id);
     List<Player> findAllPlayers();
-    void deleteAllPlayers();
     boolean isPlayerExist(Player player);
 }
