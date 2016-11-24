@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 /**
  * Created by Millhouse on 11/17/2016.
+ * Player entity for ChessProject
  */
 @Entity
 @Table(name = "player")
@@ -36,7 +37,7 @@ public class Player {
         this.rating = rating;
     }
 
-    /*@Override
+    @Override
     public String toString() {
         return "Player{" +
                 "id=" + id +
@@ -44,9 +45,9 @@ public class Player {
                 ", surname='" + surname + '\'' +
                 ", rating=" + rating +
                 '}';
-    }*/
+    }
 
-   /* @Override
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -57,16 +58,15 @@ public class Player {
         if (!name.equals(player.name)) return false;
         return surname.equals(player.surname);
 
-    }*/
+    }
 
-  /*  @Override
+    @Override
     public int hashCode() {
         int result = name.hashCode();
         result = 31 * result + surname.hashCode();
         result = 31 * result + rating;
         return result;
     }
-*/
     public Long getId() {
         return id;
     }
