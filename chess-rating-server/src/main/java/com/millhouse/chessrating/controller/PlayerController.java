@@ -14,6 +14,7 @@ import java.util.List;
 
 /**
  * Created by Millhouse on 11/17/2016.
+ * Rest PlayerController  for Chess rating project
  */
 @RestController
 public class PlayerController {
@@ -26,10 +27,9 @@ public class PlayerController {
     @RequestMapping(value = "/players/", method = RequestMethod.GET)
     public ResponseEntity<List<Player>> listAllUsers() {
 
-        System.out.println("Inside List all users");
+        System.out.println("Retrieve All Player");
         List<Player> players = playerService.findAllPlayers();
 
-        System.out.println("Add player ");
 
         if (players.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
@@ -47,7 +47,7 @@ public class PlayerController {
     Player player = playerService.findById(id);
 
         if (player== null){
-            System.out.println("User with id " + id + "not found");
+            System.out.println("User with id " + id + " not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
@@ -59,6 +59,7 @@ public class PlayerController {
     @RequestMapping(value = "/player/", method = RequestMethod.POST)
     public ResponseEntity<Player> createUser(@RequestBody Player player, UriComponentsBuilder ucBuilder) {
         System.out.println("Creating User " + player.getName());
+
 
         if (playerService.isPlayerExist(player)) {
             System.out.println("A User with name " + player.getName() + " already exist");
