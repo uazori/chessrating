@@ -52,9 +52,6 @@ public class GameDaoImp implements GameDao {
 
         whitePlayerResult.addAll(blackPlayerResult);
 
-        if (whitePlayerResult.isEmpty()) {
-            return null;
-        }
         return whitePlayerResult;
     }
 
@@ -74,6 +71,8 @@ public class GameDaoImp implements GameDao {
 
     @Override
     public void saveOrUpdate(Game game) {
+
+        if (game.getId() == null){sessionFactory.getCurrentSession().save(game);}
         sessionFactory.getCurrentSession().saveOrUpdate(game);
     }
 
@@ -92,11 +91,7 @@ public class GameDaoImp implements GameDao {
 
         Query query = sessionFactory.getCurrentSession().createQuery("from Game ");
 
-        List<Game> result = query.getResultList();
-
-        if (result.isEmpty()) return null;
-
-        return result;
+        return query.getResultList();
 
     }
 }

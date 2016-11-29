@@ -1,5 +1,6 @@
 package com.millhouse.chessrating.service;
 
+import com.millhouse.chessrating.dto.GameDto;
 import com.millhouse.chessrating.model.Game;
 
 import java.util.List;
@@ -9,12 +10,18 @@ import java.util.List;
  * Interface for Game Service
  */
 public interface GameService {
-    Game findById(Long id);
-    Game findByPlayerName(String name);
-    Game findByResult(Enum result);
-    void saveGame(Game game);
-    void updateGame(Game game);
+    GameDto
+    findById(Long id);
+
+    List<GameDto> findByPlayerName(String name);
+
+    List<GameDto> findByResult(String result);
+
+    void saveOrUpdateGame(GameDto gameDto);
+
     void deleteGameById(Long id);
-    List<Game> findAllGamess();
+
+    List<GameDto> findAllGames();
+
     boolean isGameExist(Game game);
 }

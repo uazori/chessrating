@@ -33,7 +33,7 @@ import java.util.Set;
 @ContextConfiguration(classes = {HibernateConfiguration.class})
 
 @Transactional
-//@Rollback
+@Rollback
 public class GameDaoImpTest extends TestCase {
 
     @Autowired
@@ -42,12 +42,15 @@ public class GameDaoImpTest extends TestCase {
     PlayerDao playerDao;
 
     @Test
-    public void testGetById_Game_Exist_Retutn_Game() throws Exception {
+    public void testGetById_Game_Exist_Return_Game() throws Exception {
         Player white = new Player("one", "oneSurname", 3);
         Player black = new Player("two", "twoSurname", 2);
 
-        Game game = new Game(white, black, Result.MATE, LocalDateTime.now(), LocalDateTime.now());
-        Game game1 = new Game(black, white, Result.STALEMATE, LocalDateTime.of(2016, 11, 28, 12, 30), LocalDateTime.now());
+        Game game = new Game(white, black,white, Result.MATE, LocalDateTime.now(), LocalDateTime.now());
+        Game game1 = new Game(black, white,white, Result.STALEMATE, LocalDateTime.of(2016, 11, 28, 12, 30), LocalDateTime.now());
+
+        playerDao.saveOrUpdate(white);
+        playerDao.saveOrUpdate(black);
 
         gameDao.saveOrUpdate(game);
         gameDao.saveOrUpdate(game1);
@@ -65,8 +68,11 @@ public class GameDaoImpTest extends TestCase {
         Player white = new Player("Not_one", "oneSurname", 3);
         Player black = new Player("Not_two", "twoSurname", 2);
 
-        Game game = new Game(white, black, Result.MATE, LocalDateTime.now(), LocalDateTime.now());
-        Game game1 = new Game(black, white, Result.STALEMATE, LocalDateTime.of(2016, 11, 28, 12, 30), LocalDateTime.now());
+        Game game = new Game(white, black,white, Result.MATE, LocalDateTime.now(), LocalDateTime.now());
+        Game game1 = new Game(black, white,white, Result.STALEMATE, LocalDateTime.of(2016, 11, 28, 12, 30), LocalDateTime.now());
+
+        playerDao.saveOrUpdate(white);
+        playerDao.saveOrUpdate(black);
 
         gameDao.saveOrUpdate(game);
 
@@ -83,8 +89,11 @@ public class GameDaoImpTest extends TestCase {
         Player white = new Player("one", "oneSurname", 3);
         Player black = new Player("two", "twoSurname", 2);
 
-        Game game = new Game(white, black, Result.MATE, LocalDateTime.now(), LocalDateTime.now());
-        Game game1 = new Game(black, white, Result.STALEMATE, LocalDateTime.of(2016, 11, 28, 12, 30), LocalDateTime.now());
+        Game game = new Game(white, black,white, Result.MATE, LocalDateTime.now(), LocalDateTime.now());
+        Game game1 = new Game(black, white,white, Result.STALEMATE, LocalDateTime.of(2016, 11, 28, 12, 30), LocalDateTime.now());
+
+        playerDao.saveOrUpdate(white);
+        playerDao.saveOrUpdate(black);
 
         gameDao.saveOrUpdate(game);
         gameDao.saveOrUpdate(game1);
@@ -103,8 +112,11 @@ public class GameDaoImpTest extends TestCase {
         Player white = new Player("one", "oneSurname", 3);
         Player black = new Player("two", "twoSurname", 2);
 
-        Game game = new Game(white, black, Result.MATE, LocalDateTime.now(), LocalDateTime.now());
-        Game game1 = new Game(black, white, Result.STALEMATE, LocalDateTime.of(2016, 11, 28, 12, 30), LocalDateTime.now());
+        Game game = new Game(white, black,white, Result.MATE, LocalDateTime.now(), LocalDateTime.now());
+        Game game1 = new Game(black, white,white, Result.STALEMATE, LocalDateTime.of(2016, 11, 28, 12, 30), LocalDateTime.now());
+
+        playerDao.saveOrUpdate(white);
+        playerDao.saveOrUpdate(black);
 
         gameDao.saveOrUpdate(game);
         gameDao.saveOrUpdate(game1);
@@ -113,7 +125,7 @@ public class GameDaoImpTest extends TestCase {
 
         System.out.println("fetched game " + fetchedGame);
 
-        assertNull(fetchedGame);
+        assertTrue(fetchedGame.isEmpty());
 
     }
 
@@ -122,8 +134,11 @@ public class GameDaoImpTest extends TestCase {
         Player white = new Player("one", "oneSurname", 3);
         Player black = new Player("two", "twoSurname", 2);
 
-        Game game = new Game(white, black, Result.MATE, LocalDateTime.now(), LocalDateTime.now());
-        Game game1 = new Game(black, white, Result.STALEMATE, LocalDateTime.of(2016, 11, 28, 12, 30), LocalDateTime.now());
+        Game game = new Game(white, black,white, Result.MATE, LocalDateTime.now(), LocalDateTime.now());
+        Game game1 = new Game(black, white,white, Result.STALEMATE, LocalDateTime.of(2016, 11, 28, 12, 30), LocalDateTime.now());
+
+        playerDao.saveOrUpdate(white);
+        playerDao.saveOrUpdate(black);
 
         gameDao.saveOrUpdate(game);
         gameDao.saveOrUpdate(game1);
@@ -142,8 +157,12 @@ public class GameDaoImpTest extends TestCase {
         Player white = new Player("NoOne", "NoOneSurname", 3);
         Player black = new Player("MoTwo", "NoTwoSurname", 2);
 
-        Game game = new Game(white, black, Result.MATE, LocalDateTime.now(), LocalDateTime.now());
-        Game game1 = new Game(black, white, Result.STALEMATE, LocalDateTime.of(2016, 11, 28, 12, 30), LocalDateTime.now());
+        Game game = new Game(white, black,white, Result.MATE, LocalDateTime.now(), LocalDateTime.now());
+        Game game1 = new Game(black, white,white, Result.STALEMATE, LocalDateTime.of(2016, 11, 28, 12, 30), LocalDateTime.now());
+
+
+        playerDao.saveOrUpdate(white);
+        playerDao.saveOrUpdate(black);
 
         gameDao.saveOrUpdate(game);
         gameDao.saveOrUpdate(game1);
@@ -168,26 +187,8 @@ public class GameDaoImpTest extends TestCase {
         playerSet.add(black);
 
 
-        Game game = new Game(white, black, Result.MATE, LocalDateTime.now(), LocalDateTime.now());
-        Game game1 = new Game(white2, black, Result.STALEMATE, LocalDateTime.now(), LocalDateTime.now());
-
-    /*    Set<Game> gamesWhite = new HashSet<>();
-
-        gamesWhite.add(game);
-        white.setGames(gamesWhite);
-
-        Set<Game> gamesBlack = new HashSet<>();
-
-        gamesBlack.add(game);
-        gamesBlack.add(game1);
-
-        black.setGames(gamesBlack);
-
-        Set<Game> gamesWhite2 = new HashSet<>();
-
-        gamesWhite2.add(game1);
-        white2.setGames(gamesWhite2);
-*/
+        Game game = new Game(white, black,white, Result.MATE, LocalDateTime.now(), LocalDateTime.now());
+        Game game1 = new Game(white2, black,white, Result.STALEMATE, LocalDateTime.now(), LocalDateTime.now());
 
         playerDao.saveOrUpdate(white);
         playerDao.saveOrUpdate(black);
@@ -201,8 +202,10 @@ public class GameDaoImpTest extends TestCase {
 
         List<Player> playerList = playerDao.getAllPlayers();
         System.out.println("players = " + playerList);
-        assertEquals(playerList.size(), 3);
-        assertEquals(games.size(), 2);
+
+
+        assertEquals(3, playerList.size());
+        assertEquals(2, games.size());
     }
 
     @Test
@@ -211,9 +214,11 @@ public class GameDaoImpTest extends TestCase {
         Player white = new Player("oneID", "oneSurnameID", 3);
         Player black = new Player("twoID", "twoSurnameID", 2);
 
-        Game game = new Game(white, black, Result.MATE, LocalDateTime.now(), LocalDateTime.now());
-        Game game1 = new Game(black, white, Result.STALEMATE, LocalDateTime.now(), LocalDateTime.now());
+        Game game = new Game(white, black,white, Result.MATE, LocalDateTime.now(), LocalDateTime.now());
+        Game game1 = new Game(black, white,white, Result.STALEMATE, LocalDateTime.now(), LocalDateTime.now());
 
+        playerDao.saveOrUpdate(white);
+        playerDao.saveOrUpdate(black);
 
         gameDao.saveOrUpdate(game);
         gameDao.saveOrUpdate(game1);
@@ -228,9 +233,11 @@ public class GameDaoImpTest extends TestCase {
         Player white = new Player("NoOneID", "oneSurnameID", 3);
         Player black = new Player("NoTwoID", "twoSurnameID", 2);
 
-        Game game = new Game(white, black, Result.MATE, LocalDateTime.now(), LocalDateTime.now());
-        Game game1 = new Game(black, white, Result.STALEMATE, LocalDateTime.now(), LocalDateTime.now());
+        Game game = new Game(white, black,white, Result.MATE, LocalDateTime.now(), LocalDateTime.now());
+        Game game1 = new Game(black, white,white, Result.STALEMATE, LocalDateTime.now(), LocalDateTime.now());
 
+        playerDao.saveOrUpdate(white);
+        playerDao.saveOrUpdate(black);
 
         gameDao.saveOrUpdate(game);
         gameDao.saveOrUpdate(game1);
@@ -246,12 +253,15 @@ public class GameDaoImpTest extends TestCase {
         Player white = new Player("one", "oneSurname", 3);
         Player black = new Player("two", "twoSurname", 2);
 
-        Game game = new Game(white, black, Result.MATE, LocalDateTime.now(), LocalDateTime.now());
-        Game game1 = new Game(black, white, Result.STALEMATE, LocalDateTime.now(), LocalDateTime.now());
+        Game game = new Game(white, black, white,Result.MATE, LocalDateTime.now(), LocalDateTime.now());
+        Game game1 = new Game(black, white, black,Result.STALEMATE, LocalDateTime.now(), LocalDateTime.now());
 
+        playerDao.saveOrUpdate(white);
+        playerDao.saveOrUpdate(black);
 
         gameDao.saveOrUpdate(game);
         gameDao.saveOrUpdate(game1);
+
 
         List<Game> fetchedGames = gameDao.getAllGames();
 
@@ -264,7 +274,7 @@ public class GameDaoImpTest extends TestCase {
 
         List<Game> fetchedGames = gameDao.getAllGames();
 
-        assertNull(fetchedGames);
+        assertTrue(fetchedGames.isEmpty());
 
     }
 

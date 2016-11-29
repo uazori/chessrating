@@ -1,8 +1,10 @@
 package com.millhouse.chessrating.model;
 
-import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 /**
@@ -17,12 +19,15 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "game_id")
     private Long id;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "white_player_id")
     private Player white;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "black_player_id")
     private Player black;
+    @ManyToOne
+    @JoinColumn(name = "winner_id")
+    private Player winner;
     @Enumerated(EnumType.STRING)
     @Column(name = "game_result")//* enum type string
     private Result result;
@@ -56,6 +61,7 @@ public class Game {
         return result1;
     }
 
+
     @Override
     public String toString() {
         return "Game{" +
@@ -71,11 +77,22 @@ public class Game {
     public Game() {
     }
 
-    public Game(Player white, Player black, Result
-            result, LocalDateTime start, LocalDateTime end) {
+    public Game(Player white, Player black, Player winner, Result result, LocalDateTime start, LocalDateTime end) {
 
         this.white = white;
         this.black = black;
+        this.winner = winner;
+        this.result = result;
+        this.start = start;
+        this.end = end;
+    }
+
+    public Game(Long id,Player white, Player black, Player winner, Result result, LocalDateTime start, LocalDateTime end) {
+
+        this.id= id;
+        this.white = white;
+        this.black = black;
+        this.winner = winner;
         this.result = result;
         this.start = start;
         this.end = end;
@@ -105,6 +122,15 @@ public class Game {
     public void setBlack(Player black) {
         this.black = black;
     }
+
+    public Player getWinner() {
+        return winner;
+    }
+
+    public void setWinner(Player winner) {
+        this.winner = winner;
+    }
+
     public Result getResult() {
         return result;
     }

@@ -2,6 +2,8 @@ package com.millhouse.chessrating.service;
 
 import com.millhouse.chessrating.dao.GameDao;
 import com.millhouse.chessrating.dao.PlayerDao;
+import com.millhouse.chessrating.dto.GameDto;
+import com.millhouse.chessrating.dto.transformer.GameTransformer;
 import com.millhouse.chessrating.model.Game;
 import com.millhouse.chessrating.model.Player;
 import com.millhouse.chessrating.model.Result;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -20,7 +23,7 @@ import java.util.Set;
  */
 @Service
 @Transactional
-public class GameServiceImp implements GameService{
+public class GameServiceImp implements GameService {
 
     @Autowired
     GameDao gameDao;
@@ -29,86 +32,109 @@ public class GameServiceImp implements GameService{
     PlayerDao playerDao;
 
     @Override
-    public Game findById(Long id) {
-        return null;
+    public GameDto findById(Long id) {
+
+        GameTransformer transformer = new GameTransformer();
+        Game game = gameDao.getById(id);
+        if (game == null)return null;
+        return transformer.transform(game);
     }
 
     @Override
-    public Game findByPlayerName(String name) {
-        return null;
+    public List<GameDto> findByPlayerName(String name) {
+
+        GameTransformer transformer = new GameTransformer();
+
+        List<Game> games = gameDao.getByPlayerName(name);
+        List<GameDto> gameDtoList = new ArrayList<>();
+
+
+        for (Game game : games) {
+
+            gameDtoList.add(transformer.transform(game));
+
+        }
+
+
+        return gameDtoList;
     }
 
     @Override
-    public Game findByResult(Enum result) {
-        return null;
+    public List<GameDto> findByResult(String result) {
+
+        GameTransformer transformer = new GameTransformer();
+
+        Result resultEnum = Result.valueOf(result);
+
+        List<Game> games = gameDao.getByResult(resultEnum);
+
+        List<GameDto> gameDtoList = new ArrayList<>();
+
+
+        for (Game game : games) {
+
+            gameDtoList.add(transformer.transform(game));
+
+        }
+
+
+        return gameDtoList;
+
     }
 
     @Override
-    public void saveGame(Game game1111) {
+    public void saveOrUpdateGame(GameDto gameDto) {
 
-        System.out.println("Game service");
+        Player white = playerDao.getById(gameDto.getWhiteId());
+        Player black = playerDao.getById(gameDto.getBlackId());
 
-        Player white = new Player("one","oneSurname",3);
-        Player black = new Player("two","twoSurname",2);
-        Player white2 = new Player("three","3Surname",1);
+        GameTransformer transformer = new GameTransformer();
 
-        Set<Player> playerSet = new HashSet<>();
-        playerSet.add(white);
-        playerSet.add(black);
+        Game game = transformer.transform(white, black, gameDto);
 
+        System.out.println("Game service save Game");
 
-
-        Game game = new Game(white,black, Result.MATE, LocalDateTime.now(),LocalDateTime.now());
-        Game game1 = new Game(white2,black,Result.STALEMATE,LocalDateTime.now(),LocalDateTime.now());
-
-        Set<Game> gamesWhite = new HashSet<>();
-
-        gamesWhite.add(game);
-       /* white.setGames(gamesWhite);*/
-
-        Set<Game> gamesBlack = new HashSet<>();
-
-        gamesBlack.add(game);
-        gamesBlack.add(game1);
-
-       /* black.setGames(gamesBlack);*/
-
-        Set<Game> gamesWhite2 = new HashSet<>();
-
-        gamesWhite2.add(game1);
-
-        /*white2.setGames(gamesWhite2);*/
-
-
-
-        playerDao.saveOrUpdate(white);
-     // playerDao.saveOrUpdate(black);
-      //
-        // playerDao.saveOrUpdate(white2);
-
-       // gameDao.saveOrUpdate(game1);
         gameDao.saveOrUpdate(game);
 
-        /*List<Game> games = gameDao.getAllGames();
-        System.out.println("games = "+games);
-
-        List<Player> playerList = playerDao.getAllPlayers();
-        System.out.println("players = "+ playerList);*/
     }
 
-    @Override
-    public void updateGame(Game game) {
-
-    }
 
     @Override
     public void deleteGameById(Long id) {
-
+    gameDao.deleteGameById(id);
     }
 
+
     @Override
-    public List<Game> findAllGamess() {
-        return gameDao.getAllGames();
+    public List<GameDto> findAllGames() {
+
+      /*  Player white = new Player("one", "oneSurname", 3);
+        Player black = new Player("two", "twoSurname", 2);
+
+        Game game11 = new Game(white, black,white, Result.MATE, LocalDateTime.now(), LocalDateTime.now());
+        Game game22 = new Game(black, white,white, Result.STALEMATE, LocalDateTime.of(2016, 11, 28, 12, 30), LocalDateTime.now());
+
+        playerDao.saveOrUpdate(white);
+        playerDao.saveOrUpdate(black);
+
+        gameDao.saveOrUpdate(game11);
+        gameDao.saveOrUpdate(game22);*/
+
+
+        GameTransformer transformer = new GameTransformer();
+
+        List<Game> games = gameDao.getAllGames();
+
+        List<GameDto> gameDtoList = new ArrayList<>();
+
+
+        for (Game game : games) {
+
+            gameDtoList.add(transformer.transform(game));
+
+        }
+
+        return gameDtoList;
     }
 
     @Override
