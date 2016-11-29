@@ -48,6 +48,7 @@ public class HibernateConfiguration {
         properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         properties.put("hibernate.show_sql","true");
         properties.put("hibernate.format_sql", "false");
+        properties.put("hibernate.hbm2ddl.auto", "none");
         return properties;
     }
 

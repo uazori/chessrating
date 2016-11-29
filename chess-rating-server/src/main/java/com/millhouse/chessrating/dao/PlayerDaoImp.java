@@ -2,6 +2,7 @@ package com.millhouse.chessrating.dao;
 
 import com.millhouse.chessrating.model.Player;
 import org.hibernate.SessionFactory;
+import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import java.util.List;
 
 /**
  * Created by Millhouse on 11/18/2016.
+ * Player Dao implementation
  */
 @Service("playerDao")
 public class PlayerDaoImp implements PlayerDao {
@@ -49,9 +51,12 @@ public class PlayerDaoImp implements PlayerDao {
     }
 
     @Override
-    public void saveOrUpdate(Player player) {
+    public void saveOrUpdate(Player player) throws ConstraintViolationException {
         if (player.getId() == null) {
+
             sessionFactory.getCurrentSession().save(player);
+
+
         } else {
             sessionFactory.getCurrentSession().saveOrUpdate(player);
         }
@@ -62,7 +67,7 @@ public class PlayerDaoImp implements PlayerDao {
         Query query = sessionFactory.getCurrentSession().createQuery("delete Player where id =:playerId");
         query.setParameter("playerId", id);
         query.executeUpdate();
-        sessionFactory.getCurrentSession().clear();
+       /* sessionFactory.getCurrentSession().clear();*/
     }
 
     @Override

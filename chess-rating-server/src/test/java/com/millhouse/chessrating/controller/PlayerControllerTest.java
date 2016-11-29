@@ -25,6 +25,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
 @WebAppConfiguration
+@EnableWebMvc
 @ContextConfiguration(classes = {ChessRatingConfiguration.class})
 public class PlayerControllerTest extends TestCase {
 
@@ -203,6 +205,7 @@ public class PlayerControllerTest extends TestCase {
                 .contentType(APPLICATION_JSON_MEDIA_TYPE)
                 .content(jsonTestPlayer))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON_MEDIA_TYPE))
 
                 .andExpect(jsonPath("$.name", is("TestName")))
                 .andExpect(jsonPath("$.surname", is("TestSurname")))
@@ -227,8 +230,8 @@ public class PlayerControllerTest extends TestCase {
         byte[] jsonTestPlayer = mapper.writeValueAsBytes(testPlayer);
 
 
-        mockMvc.perform(put("/player/1")
-                .contentType(APPLICATION_JSON_MEDIA_TYPE)
+        mockMvc.perform(put("/player/1").accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonTestPlayer))
                 .andExpect(status().isNotFound());
 

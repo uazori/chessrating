@@ -1,6 +1,7 @@
 package com.millhouse.chessrating.dao;
 
 import com.millhouse.chessrating.model.Game;
+import com.millhouse.chessrating.model.Result;
 
 import java.util.List;
 
@@ -10,9 +11,9 @@ import java.util.List;
  */
 public interface GameDao {
     Game getById(Long id);
-    Game getByPlayerName(String name);
-    Game getByResult(Enum result);
+    List<Game> getByPlayerName(String name);
+    List<Game> getByResult(Result result);
     void saveOrUpdate(Game game);
-    void deleteGameById(Long id);
+    int deleteGameById(Long id);
     List<Game> getAllGames();
 }
