@@ -108,7 +108,7 @@ public class GameServiceImp implements GameService {
     @Override
     public List<GameDto> findAllGames() {
 
-      /*  Player white = new Player("one", "oneSurname", 3);
+       /* Player white = new Player("one", "oneSurname", 3);
         Player black = new Player("two", "twoSurname", 2);
 
         Game game11 = new Game(white, black,white, Result.MATE, LocalDateTime.now(), LocalDateTime.now());
@@ -118,8 +118,9 @@ public class GameServiceImp implements GameService {
         playerDao.saveOrUpdate(black);
 
         gameDao.saveOrUpdate(game11);
-        gameDao.saveOrUpdate(game22);*/
+        gameDao.saveOrUpdate(game22);
 
+*/
 
         GameTransformer transformer = new GameTransformer();
 

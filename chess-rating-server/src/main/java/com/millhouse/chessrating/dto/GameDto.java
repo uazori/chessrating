@@ -1,5 +1,10 @@
 package com.millhouse.chessrating.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.millhouse.chessrating.dto.utils.LocalDateTimeDeserializer;
+import com.millhouse.chessrating.dto.utils.LocalDateTimeSerializer;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -17,7 +22,13 @@ public class GameDto  {
     private Long winnerId;
 
     private String result;
+
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime start;
+
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime end;
 
 

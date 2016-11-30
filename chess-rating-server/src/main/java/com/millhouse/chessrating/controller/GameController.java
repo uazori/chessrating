@@ -1,10 +1,8 @@
 package com.millhouse.chessrating.controller;
 
 import com.millhouse.chessrating.dto.GameDto;
-import com.millhouse.chessrating.dto.transformer.SampleDto;
 import com.millhouse.chessrating.model.Game;
 import com.millhouse.chessrating.model.Player;
-import com.millhouse.chessrating.model.Result;
 import com.millhouse.chessrating.service.GameService;
 import com.millhouse.chessrating.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -53,11 +49,11 @@ public class GameController {
     //-------------------Create a Game--------------------------------------------------------
 
     @RequestMapping(value = "/game/", method = RequestMethod.POST)
-    public ResponseEntity<SampleDto> createGame(@RequestBody SampleDto sampleDto, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<GameDto> createGame(@RequestBody GameDto gameDto, UriComponentsBuilder ucBuilder) {
 
-        System.out.println("sampleDto = " + sampleDto.getId());
+        System.out.println( "sampleDto = " + gameDto );
 
-        GameDto gameDto = new GameDto();
+        /*GameDto gameDto = new GameDto();*/
 
         System.out.println("Creating Game with white player id = " + gameDto.getBlackId() + " black player id = " + gameDto.getWhiteId());
 
@@ -71,12 +67,39 @@ public class GameController {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }*/
 
-     /*   gameService.saveOrUpdateGame(gameDto);*/
+        gameService.saveOrUpdateGame(gameDto);
 
 
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/game/{id}").buildAndExpand(gameDto.getId()).toUri());
-        return new ResponseEntity<>(sampleDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(gameDto, HttpStatus.CREATED);
+    }
+
+    //------------------- Update a Game --------------------------------------------------------
+
+    @RequestMapping(value = "/game/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<GameDto> updateUser(@PathVariable("id") Long id, @RequestBody GameDto gameDto) {
+        System.out.println("Updating Game " + id);
+
+        GameDto currentGame = gameService.findById(id);
+
+       /* if (currentPlayer == null) {
+            System.out.println("User with id " + id + " not found");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }*/
+
+
+
+        currentGame.setWhiteId(gameDto.getWhiteId());
+        currentGame.setBlackId(gameDto.getBlackId());
+        currentGame.setWinnerId(gameDto.getWinnerId());
+        currentGame.setResult(gameDto.getResult());
+        currentGame.setStart(gameDto.getStart());
+        currentGame.setEnd(gameDto.getEnd());
+
+        gameService.saveOrUpdateGame(currentGame);
+
+        return new ResponseEntity<>(currentGame, HttpStatus.OK);
     }
 
 //------------------- Retrieve Game by Player name --------------------------------------------------------

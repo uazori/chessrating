@@ -71,7 +71,6 @@ public class GameDaoImp implements GameDao {
 
     @Override
     public void saveOrUpdate(Game game) {
-
         if (game.getId() == null){sessionFactory.getCurrentSession().save(game);}
         sessionFactory.getCurrentSession().saveOrUpdate(game);
     }
