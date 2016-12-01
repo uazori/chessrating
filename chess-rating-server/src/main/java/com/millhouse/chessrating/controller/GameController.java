@@ -36,7 +36,7 @@ public class GameController {
 
         GameDto gameDto = gameService.findById(id);
 
-        if (gameDto== null){
+        if (gameDto.getId() == null) {
             System.out.println("User with id " + id + " not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -50,21 +50,13 @@ public class GameController {
     @RequestMapping(value = "/game/", method = RequestMethod.POST)
     public ResponseEntity<GameDto> createGame(@RequestBody GameDto gameDto, UriComponentsBuilder ucBuilder) {
 
-        System.out.println( "sampleDto = " + gameDto );
-
-        /*GameDto gameDto = new GameDto();*/
-
         System.out.println("Creating Game with white player id = " + gameDto.getBlackId() + " black player id = " + gameDto.getWhiteId());
 
 
-        System.out.println("white id =" + gameDto.getWhiteId() + "black id " + gameDto.getBlackId());
-
-
-
-        /*if (playerService.isPlayerExist(player)) {
-            System.out.println("A Game with name " + player.getName() + " already exist");
+        if (gameService.isGameExist(gameDto)) {
+            System.out.println("A Game with name " + gameDto.getId() + " already exist");
             return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }*/
+        }
 
         gameService.saveOrUpdateGame(gameDto);
 
@@ -77,16 +69,15 @@ public class GameController {
     //------------------- Update a Game --------------------------------------------------------
 
     @RequestMapping(value = "/game/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<GameDto> updateUser(@PathVariable("id") Long id, @RequestBody GameDto gameDto) {
+    public ResponseEntity<GameDto> updateGame(@PathVariable("id") Long id, @RequestBody GameDto gameDto) {
         System.out.println("Updating Game " + id);
 
         GameDto currentGame = gameService.findById(id);
 
-       /* if (currentPlayer == null) {
+        if (currentGame.getId() == null) {
             System.out.println("User with id " + id + " not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }*/
-
+        }
 
 
         currentGame.setWhiteId(gameDto.getWhiteId());
@@ -101,12 +92,29 @@ public class GameController {
         return new ResponseEntity<>(currentGame, HttpStatus.OK);
     }
 
+    //-------------------Retrieve Game by PlayerId--------------------------------------------------------
+
+    @RequestMapping(value = "/gamesByPlayerId/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<GameDto>> getGamesByPlayerId(@PathVariable("id") Long id) {
+
+        System.out.println("Find game by Player id");
+
+        List<GameDto> gamesDto = gameService.findByPlayerId(id);
+
+        if (gamesDto.isEmpty()) {
+            System.out.println("Game with player id " + id + " not found");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+
+        return new ResponseEntity<>(gamesDto, HttpStatus.OK);
+    }
 //------------------- Retrieve Game by Player name --------------------------------------------------------
 
-    @RequestMapping(value = "/gamesName/{name}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/gamesByPlayerName/{name}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<GameDto>> getGameByName(@PathVariable("name") String name) {
 
-        System.out.println("Find Game by Player name");
+        System.out.println("Find Games by Player name");
 
         List<GameDto> gamesDto = gameService.findByPlayerName(name);
 
@@ -121,7 +129,7 @@ public class GameController {
 
 //------------------- Retrieve Game by Result --------------------------------------------------------
 
-    @RequestMapping(value = "/gamesResult/{result}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/gamesByResult/{result}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<GameDto>> getGameByResult(@PathVariable("result") String result) {
 
         System.out.println("Find Game by Player name");
@@ -140,7 +148,7 @@ public class GameController {
 
     //------------------------ Retrieve All Games --------------------
     @RequestMapping(value = "/games/", method = RequestMethod.GET)
-    public ResponseEntity<List<GameDto>> listAllUsers() {
+    public ResponseEntity<List<GameDto>> listAllGames() {
 
 
         System.out.println("Retrieve All Games");
@@ -148,19 +156,19 @@ public class GameController {
         List<GameDto> gamesDto = gameService.findAllGames();
 
         if (gamesDto.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);//You many decide to return HttpStatus.NOT_FOUND
         }
         return new ResponseEntity<>(gamesDto, HttpStatus.OK);
     }
 
-    //------------------- Delete a Player --------------------------------------------------------
+    //------------------- Delete a Game --------------------------------------------------------
     @RequestMapping(value = "/game/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Player> deleteGame(@PathVariable("id") Long id) {
         System.out.println("Fetching & Deleting Game with id " + id);
 
         GameDto gameDto = gameService.findById(id);
-        if (gameDto == null) {
-            System.out.println("Unable to delete. User with id " + id + " not found");
+        if (gameDto.getId() == null) {
+            System.out.println("Unable to delete. Game with id " + id + " not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 

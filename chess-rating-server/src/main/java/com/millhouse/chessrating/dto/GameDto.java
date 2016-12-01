@@ -44,6 +44,34 @@ public class GameDto  {
         this.end = end;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        GameDto gameDto = (GameDto) o;
+
+        if (id != null ? !id.equals(gameDto.id) : gameDto.id != null) return false;
+        if (whiteId != null ? !whiteId.equals(gameDto.whiteId) : gameDto.whiteId != null) return false;
+        if (blackId != null ? !blackId.equals(gameDto.blackId) : gameDto.blackId != null) return false;
+        if (winnerId != null ? !winnerId.equals(gameDto.winnerId) : gameDto.winnerId != null) return false;
+        if (result != null ? !result.equals(gameDto.result) : gameDto.result != null) return false;
+        return start != null ? start.equals(gameDto.start) : gameDto.start == null && (end != null ? end.equals(gameDto.end) : gameDto.end == null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result1 = id != null ? id.hashCode() : 0;
+        result1 = 31 * result1 + (whiteId != null ? whiteId.hashCode() : 0);
+        result1 = 31 * result1 + (blackId != null ? blackId.hashCode() : 0);
+        result1 = 31 * result1 + (winnerId != null ? winnerId.hashCode() : 0);
+        result1 = 31 * result1 + (result != null ? result.hashCode() : 0);
+        result1 = 31 * result1 + (start != null ? start.hashCode() : 0);
+        result1 = 31 * result1 + (end != null ? end.hashCode() : 0);
+        return result1;
+    }
+
     public Long getId() {
         return id;
     }

@@ -18,6 +18,8 @@ public interface GameService {
 
     List<GameDto> findByPlayerId(Long id);
 
+    boolean isGameExist(GameDto gameDto);
+
     void saveOrUpdateGame(GameDto gameDto);
 
     void deleteGameById(Long id);
