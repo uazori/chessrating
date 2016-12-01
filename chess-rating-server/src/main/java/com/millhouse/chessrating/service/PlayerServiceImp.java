@@ -1,21 +1,16 @@
 package com.millhouse.chessrating.service;
 
 import com.millhouse.chessrating.dao.PlayerDao;
-import com.millhouse.chessrating.dao.PlayerDaoImp;
 import com.millhouse.chessrating.model.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
-
-import static sun.audio.AudioPlayer.player;
 
 /**
  * Created by Millhouse on 11/17/2016.
+ * Service for chess player
  */
 
 @Service("playerService")

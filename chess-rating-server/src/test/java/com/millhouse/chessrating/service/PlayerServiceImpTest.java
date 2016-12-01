@@ -21,6 +21,8 @@ import static org.mockito.Mockito.*;
 
 /**
  * Created by Millhouse on 11/18/2016.
+ *
+ * test  PlayerService  for ChessRating  project
  */
 @RunWith(MockitoJUnitRunner.class)
 public class PlayerServiceImpTest extends TestCase {
@@ -83,7 +85,7 @@ public class PlayerServiceImpTest extends TestCase {
         players = getTestPlayersList();
         Player testPlayer = players.get(2);
         doNothing().when(playerDao).saveOrUpdate(any(Player.class));
-        playerDao.saveOrUpdate(testPlayer);
+        playerService.savePlayer(testPlayer);
         verify(playerDao, atLeastOnce()).saveOrUpdate(any(Player.class));
 
     }

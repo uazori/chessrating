@@ -1,7 +1,6 @@
 package com.millhouse.chessrating.model;
 
 import javax.persistence.*;
-import java.util.Set;
 
 /**
  * Created by Millhouse on 11/17/2016.
@@ -21,9 +20,6 @@ public class Player {
     private String surname;
     @Column(name = "rating")
     private int rating;
-  /* @OneToMany(cascade = CascadeType.ALL)
-    private Set<Game> games;
-*/
 
     public Player() {
     }
@@ -76,14 +72,6 @@ public class Player {
 
         this.id = id;
     }
-
-   /* public Set<Game> getGames() {
-        return games;
-    }
-
-    public void setGames(Set<Game> games) {
-        this.games = games;
-    }*/
 
     public Long getId() {
         return id;

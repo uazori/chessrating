@@ -11,11 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Millhouse on 11/24/2016.
@@ -36,7 +33,7 @@ public class GameServiceImp implements GameService {
 
         GameTransformer transformer = new GameTransformer();
         Game game = gameDao.getById(id);
-        if (game == null)return null;
+        if (game==null)return new GameDto();
         return transformer.transform(game);
     }
 
@@ -57,6 +54,26 @@ public class GameServiceImp implements GameService {
 
 
         return gameDtoList;
+    }
+
+    @Override
+    public List<GameDto> findByPlayerId(Long id){
+
+        GameTransformer transformer = new GameTransformer();
+
+        List<Game> games = gameDao.getByPlayerId(id);
+        List<GameDto> gameDtoList = new ArrayList<>();
+
+
+        for (Game game : games) {
+
+            gameDtoList.add(transformer.transform(game));
+
+        }
+
+
+        return gameDtoList;
+
     }
 
     @Override
@@ -138,8 +155,5 @@ public class GameServiceImp implements GameService {
         return gameDtoList;
     }
 
-    @Override
-    public boolean isGameExist(Game game) {
-        return false;
-    }
+
 }

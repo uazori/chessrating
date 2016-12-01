@@ -1,7 +1,6 @@
 package com.millhouse.chessrating.controller;
 
 import com.millhouse.chessrating.dto.GameDto;
-import com.millhouse.chessrating.model.Game;
 import com.millhouse.chessrating.model.Player;
 import com.millhouse.chessrating.service.GameService;
 import com.millhouse.chessrating.service.PlayerService;

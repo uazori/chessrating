@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.millhouse.chessrating.dto.utils.LocalDateTimeDeserializer;
 import com.millhouse.chessrating.dto.utils.LocalDateTimeSerializer;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**

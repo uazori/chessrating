@@ -13,6 +13,7 @@ public interface GameDao {
     Game getById(Long id);
     List<Game> getByPlayerName(String name);
     List<Game> getByResult(Result result);
+    List<Game> getByPlayerId(Long id);
     void saveOrUpdate(Game game);
     int deleteGameById(Long id);
     List<Game> getAllGames();

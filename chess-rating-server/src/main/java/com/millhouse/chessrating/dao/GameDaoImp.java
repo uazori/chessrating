@@ -40,6 +40,7 @@ public class GameDaoImp implements GameDao {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Game> getByPlayerName(String name) {
 
         Query whitePlayerQuery = sessionFactory.getCurrentSession().createQuery("from Game game where game.white.name =:name");
@@ -56,6 +57,7 @@ public class GameDaoImp implements GameDao {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Game> getByResult(Result result) {
 
         Query whitePlayerQuery = sessionFactory.getCurrentSession().createQuery("from Game game where game.result =:result");
@@ -70,12 +72,28 @@ public class GameDaoImp implements GameDao {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
+    public List<Game> getByPlayerId(Long id) {
+
+        Query queryQuery = sessionFactory.getCurrentSession().createQuery("from Game game where game.white.id =:id or game.black.id =:id");
+
+        queryQuery.setParameter("id", id);
+
+        return queryQuery.getResultList();
+    }
+
+    @Override
+
+    @SuppressWarnings("unchecked")
     public void saveOrUpdate(Game game) {
-        if (game.getId() == null){sessionFactory.getCurrentSession().save(game);}
+        if (game.getId() == null) {
+            sessionFactory.getCurrentSession().save(game);
+        }
         sessionFactory.getCurrentSession().saveOrUpdate(game);
     }
 
     @Override
+
     public int deleteGameById(Long id) {
 
         Query Query = sessionFactory.getCurrentSession().createQuery("delete from Game game where game.id =:gameId");
@@ -86,6 +104,7 @@ public class GameDaoImp implements GameDao {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Game> getAllGames() {
 
         Query query = sessionFactory.getCurrentSession().createQuery("from Game ");

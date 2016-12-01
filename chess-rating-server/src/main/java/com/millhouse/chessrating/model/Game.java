@@ -1,10 +1,6 @@
 package com.millhouse.chessrating.model;
 
-import org.hibernate.annotations.*;
-
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 /**
