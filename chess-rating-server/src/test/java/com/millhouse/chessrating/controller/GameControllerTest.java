@@ -39,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 /**
- * Created by Millhouse on 12/1/2016.
+ * Created by Vadim Ovcharuk uazori@gmail.com on 12/1/2016.
  *
  * tests for Game Controller
  */

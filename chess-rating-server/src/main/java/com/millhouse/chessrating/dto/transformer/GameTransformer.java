@@ -6,7 +6,7 @@ import com.millhouse.chessrating.model.Player;
 import com.millhouse.chessrating.model.Result;
 
 /**
- * Created by Millhouse on 11/29/2016.
+ * Created by Vadim Ovcharuk uazori@gmail.com on 11/29/2016.
  * transformer for Game to Game DTO
  */
 public class GameTransformer {

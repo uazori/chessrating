@@ -5,7 +5,7 @@ import com.millhouse.chessrating.dto.GameDto;
 import java.util.List;
 
 /**
- * Created by Millhouse on 11/24/2016.
+ * Created by Vadim Ovcharuk uazori@gmail.com on 11/24/2016.
  * Interface for Game Service
  */
 public interface GameService {

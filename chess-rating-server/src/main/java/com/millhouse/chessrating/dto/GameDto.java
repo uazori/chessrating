@@ -8,7 +8,7 @@ import com.millhouse.chessrating.dto.utils.LocalDateTimeSerializer;
 import java.time.LocalDateTime;
 
 /**
- * Created by Millhouse on 11/29/2016.
+ * Created by Vadim Ovcharuk uazori@gmail.com on 11/29/2016.
  * Dto for Game ghhghdghfg
  */
 public class GameDto  {

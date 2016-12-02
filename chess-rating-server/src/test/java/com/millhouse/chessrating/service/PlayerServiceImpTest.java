@@ -7,7 +7,6 @@ import com.millhouse.chessrating.model.Game;
 import com.millhouse.chessrating.model.Player;
 import junit.framework.TestCase;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -18,17 +17,15 @@ import org.mockito.runners.MockitoJUnitRunner;
 import uk.co.jemos.podam.api.DataProviderStrategy;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
-import uk.co.jemos.podam.api.RandomDataProviderStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 /**
- * Created by Millhouse on 11/18/2016.
+ * Created by Vadim Ovcharuk uazori@gmail.com on 11/18/2016.
  *
  * test  PlayerService  for ChessRating  project
  */

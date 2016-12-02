@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Created by Millhouse on 11/24/2016.
+ * Created by Vadim Ovcharuk uazori@gmail.com on 11/24/2016.
  * Game service implementation
  */
 @Service
@@ -35,7 +35,7 @@ public class GameServiceImp implements GameService {
 
         GameTransformer transformer = new GameTransformer();
         Game game = gameDao.getById(id);
-        if (game==null)return new GameDto();
+        if (game == null) return new GameDto();
         return transformer.transform(game);
     }
 
@@ -51,7 +51,7 @@ public class GameServiceImp implements GameService {
     }
 
     @Override
-    public List<GameDto> findByPlayerId(Long id){
+    public List<GameDto> findByPlayerId(Long id) {
 
         GameTransformer transformer = new GameTransformer();
 
@@ -76,7 +76,7 @@ public class GameServiceImp implements GameService {
     }
 
     @Override
-    public boolean isGameExist(GameDto gameDto){
+    public boolean isGameExist(GameDto gameDto) {
 
         Game game = gameDao.getById(gameDto.getId());
         return game != null;
@@ -102,7 +102,7 @@ public class GameServiceImp implements GameService {
 
     @Override
     public void deleteGameById(Long id) {
-    gameDao.deleteGameById(id);
+        gameDao.deleteGameById(id);
     }
 
 
@@ -113,10 +113,6 @@ public class GameServiceImp implements GameService {
         GameTransformer transformer = new GameTransformer();
 
         List<Game> games = gameDao.getAllGames();
-
-
-
-
         return games.stream().map(transformer::transform).collect(Collectors.toList());
     }
 

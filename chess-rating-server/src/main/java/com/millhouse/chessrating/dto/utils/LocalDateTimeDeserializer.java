@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 
 /**
- * Created by Millhouse on 11/30/2016.
+ * Created by Vadim Ovcharuk uazori@gmail.com on 11/30/2016.
  * Deserializer for Game  start , end time
  */
 public class LocalDateTimeDeserializer extends JsonDeserializer<LocalDateTime> {

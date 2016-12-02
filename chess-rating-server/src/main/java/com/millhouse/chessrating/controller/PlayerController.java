@@ -13,7 +13,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.List;
 
 /**
- * Created by Millhouse on 11/17/2016.
+ * Created by Vadim Ovcharuk uazori@gmail.com on 11/17/2016.
  * Rest PlayerController  for Chess rating project
  */
 

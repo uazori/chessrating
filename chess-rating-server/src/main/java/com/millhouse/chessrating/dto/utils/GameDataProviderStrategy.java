@@ -8,7 +8,7 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Created by Millhouse on 12/2/2016.
+ * Created by Vadim Ovcharuk uazori@gmail.com on 12/2/2016.
  */
 public class GameDataProviderStrategy extends AbstractRandomDataProviderStrategy {
 

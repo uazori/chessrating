@@ -28,7 +28,7 @@ import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 
 /**
- * Created by Millhouse on 11/21/2016.
+ * Created by Vadim Ovcharuk uazori@gmail.com on 11/21/2016.
  * test project ChessRating
  */
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -117,34 +117,7 @@ public class PlayerDaoImpTest {
         assertEquals(1,fetchedPlayers.size());
     }
 
-   /* @Test
-    public void testDeletePlayerById() throws Exception {
-        //List<Player> playerList = getTestPlayers();
 
-        Player white = new Player("one", "oneSurname", 3);
-        Player black = new Player("two", "twoSurname", 2);
-
-        Game game = new Game(white, black, Result.MATE, LocalDateTime.now(), LocalDateTime.now());
-        Game game1 = new Game(black, white, Result.STALEMATE, LocalDateTime.of(2016, 11, 28, 12, 30), LocalDateTime.now());
-
-        Set<Game> gameSet = new HashSet<>();
-        gameSet.add(game);
-        gameSet.add(game1);
-
-
-        gameDao.saveOrUpdate(game);
-        gameDao.saveOrUpdate(game1);
-
-        playerDao.saveOrUpdate(white);
-
-        System.out.println(gameDao.getAllGames());
-
-        System.out.println(playerDao.getAllPlayers());
-
-      //  playerDao.deletePlayerById(white.getId());
-
-        assertNull(null);
-    }*/
 
     @Test
     public void testGetAllPlayers() throws Exception {

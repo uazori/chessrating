@@ -15,7 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.List;
 
 /**
- * Created by Millhouse on 11/24/2016.
+ * Created by Vadim Ovcharuk uazori@gmail.com on 11/24/2016.
  * GameController for Chess project
  */
 

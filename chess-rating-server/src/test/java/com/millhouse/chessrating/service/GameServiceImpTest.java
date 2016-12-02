@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 /**
- * Created by Millhouse on 11/30/2016.
+ * Created by Vadim Ovcharuk uazori@gmail.com on 11/30/2016.
  * tests for GameService
  */
 

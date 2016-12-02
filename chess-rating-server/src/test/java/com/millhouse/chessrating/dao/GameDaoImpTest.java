@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Created by Millhouse on 11/24/2016.
+ * Created by Vadim Ovcharuk uazori@gmail.com on 11/24/2016.
  * Tests for Game Dao implementation
  */
 @RunWith(SpringJUnit4ClassRunner.class)

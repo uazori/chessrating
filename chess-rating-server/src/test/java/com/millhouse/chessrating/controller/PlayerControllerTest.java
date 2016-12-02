@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Millhouse on 11/18/2016.
+ * Created by Vadim Ovcharuk uazori@gmail.com on 11/18/2016.
  * Tests for PlayerController
  */
 

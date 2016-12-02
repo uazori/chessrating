@@ -11,7 +11,7 @@ import javax.persistence.NoResultException;
 import java.util.List;
 
 /**
- * Created by Millhouse on 11/18/2016.
+ * Created by Vadim Ovcharuk uazori@gmail.com on 11/18/2016.
  * Player Dao implementation
  */
 @Service("playerDao")
@@ -21,6 +21,8 @@ public class PlayerDaoImp implements PlayerDao {
     private SessionFactory sessionFactory;
 
     @Override
+
+    @SuppressWarnings("unchecked")
     public Player getById(Long id) {
 
 
@@ -71,6 +73,7 @@ public class PlayerDaoImp implements PlayerDao {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Player> getAllPlayers() {
 
         Query query = sessionFactory.getCurrentSession().createQuery("from Player ");

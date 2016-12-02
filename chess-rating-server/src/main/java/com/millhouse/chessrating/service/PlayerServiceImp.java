@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Created by Millhouse on 11/17/2016.
+ * Created by Vadim Ovcharuk uazori@gmail.com on 11/17/2016.
  * Service for chess player
  */
 

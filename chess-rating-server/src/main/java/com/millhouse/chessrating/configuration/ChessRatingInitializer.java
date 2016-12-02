@@ -3,7 +3,7 @@ package com.millhouse.chessrating.configuration;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 /**
- * Created by Millhouse on 11/17/2016.
+ * Created by Vadim Ovcharuk uazori@gmail.com on 11/17/2016.
  */
 public class ChessRatingInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override

@@ -11,7 +11,7 @@ import javax.persistence.NoResultException;
 import java.util.List;
 
 /**
- * Created by Millhouse on 11/24/2016.
+ * Created by Vadim Ovcharuk uazori@gmail.com on 11/24/2016.
  * implementation GameDao interface
  */
 
@@ -105,11 +105,5 @@ public class GameDaoImp implements GameDao {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Game> getAllGames() {
-
-        Query query = sessionFactory.getCurrentSession().createQuery("from Game ");
-
-        return query.getResultList();
-
-    }
+    public List<Game> getAllGames() {return sessionFactory.getCurrentSession().createQuery("from Game ").getResultList();}
 }
