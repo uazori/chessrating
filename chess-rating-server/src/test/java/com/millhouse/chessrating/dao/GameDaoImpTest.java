@@ -32,9 +32,9 @@ import java.util.Set;
 public class GameDaoImpTest extends TestCase {
 
     @Autowired
-    GameDao gameDao;
+    private GameDao gameDao;
     @Autowired
-    PlayerDao playerDao;
+    private PlayerDao playerDao;
 
     @Test
     public void testGetById_Game_Exist_Return_Game() throws Exception {
@@ -52,8 +52,6 @@ public class GameDaoImpTest extends TestCase {
 
 
         Game fetchedGame = gameDao.getById(game1.getId());
-
-        System.out.println("fetched game " + fetchedGame);
 
         assertEquals(game1, fetchedGame);
     }
@@ -74,8 +72,6 @@ public class GameDaoImpTest extends TestCase {
 
         Game fetchedGame = gameDao.getById(game1.getId());
 
-        System.out.println("fetched game " + fetchedGame);
-
         assertNull(fetchedGame);
     }
 
@@ -94,8 +90,6 @@ public class GameDaoImpTest extends TestCase {
         gameDao.saveOrUpdate(game1);
 
         List<Game> fetchedGame = gameDao.getByPlayerName(white.getName());
-
-        System.out.println("fetched game " + fetchedGame);
 
         assertEquals(white.getName(), fetchedGame.get(0).getWhite().getName());
 
@@ -118,9 +112,7 @@ public class GameDaoImpTest extends TestCase {
 
         List<Game> fetchedGame = gameDao.getByPlayerName("Three");
 
-        System.out.println("fetched game " + fetchedGame);
-
-        assertTrue(fetchedGame.isEmpty());
+       assertTrue(fetchedGame.isEmpty());
 
     }
 
@@ -141,9 +133,7 @@ public class GameDaoImpTest extends TestCase {
 
         List<Game> fetchedGame = gameDao.getByPlayerId(white.getId());
 
-        System.out.println("fetched game " + fetchedGame);
-
-        assertEquals(fetchedGame.size(),2 );
+        assertEquals(fetchedGame.size(), 2);
 
     }
 
@@ -164,8 +154,6 @@ public class GameDaoImpTest extends TestCase {
 
 
         List<Game> fetchedGame = gameDao.getByResult(Result.STALEMATE);
-
-        System.out.println("fetched game " + fetchedGame);
 
         assertEquals(white.getName(), fetchedGame.get(0).getBlack().getName());
     }
@@ -188,8 +176,6 @@ public class GameDaoImpTest extends TestCase {
 
 
         List<Game> fetchedGame = gameDao.getByResult(Result.DRAW);
-
-        System.out.println("fetched game " + fetchedGame);
 
         assertNull(fetchedGame);
     }
@@ -217,11 +203,8 @@ public class GameDaoImpTest extends TestCase {
         gameDao.saveOrUpdate(game);
 
         List<Game> games = gameDao.getAllGames();
-        System.out.println("games = " + games);
 
         List<Player> playerList = playerDao.getAllPlayers();
-        System.out.println("players = " + playerList);
-
 
         assertEquals(3, playerList.size());
         assertEquals(2, games.size());

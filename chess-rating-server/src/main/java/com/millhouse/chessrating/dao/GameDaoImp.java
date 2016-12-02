@@ -20,7 +20,7 @@ public class GameDaoImp implements GameDao {
 
 
     @Autowired
-    SessionFactory sessionFactory;
+    private SessionFactory sessionFactory;
 
 
     @Override

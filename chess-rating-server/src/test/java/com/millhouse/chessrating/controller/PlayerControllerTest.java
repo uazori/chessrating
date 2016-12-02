@@ -47,10 +47,10 @@ public class PlayerControllerTest extends TestCase {
     private MockMvc mockMvc;
 
     @Mock
-    PlayerServiceImp playerServiceMock;
+    private PlayerServiceImp playerServiceMock;
 
     @InjectMocks
-    PlayerController playerController = new PlayerController();
+    private PlayerController playerController = new PlayerController();
 
     @Before
     public void setUp() {

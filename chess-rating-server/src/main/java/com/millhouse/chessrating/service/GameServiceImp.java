@@ -25,10 +25,10 @@ import java.util.stream.Collectors;
 public class GameServiceImp implements GameService {
 
     @Autowired
-    GameDao gameDao;
+    private GameDao gameDao;
 
     @Autowired
-    PlayerDao playerDao;
+    private PlayerDao playerDao;
 
     @Override
     public GameDto findById(Long id) {

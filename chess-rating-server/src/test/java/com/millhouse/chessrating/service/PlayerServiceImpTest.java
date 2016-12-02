@@ -26,7 +26,7 @@ import static org.mockito.Mockito.*;
 
 /**
  * Created by Vadim Ovcharuk uazori@gmail.com on 11/18/2016.
- *
+ * <p>
  * test  PlayerService  for ChessRating  project
  */
 @RunWith(MockitoJUnitRunner.class)
@@ -72,7 +72,7 @@ public class PlayerServiceImpTest extends TestCase {
         Player testPlayer = players.get(3);
         when(playerDao.getById(anyLong())).thenReturn(testPlayer);
 
-        assertEquals(testPlayer,playerService.findById(anyLong()));
+        assertEquals(testPlayer, playerService.findById(anyLong()));
     }
 
 
@@ -114,7 +114,7 @@ public class PlayerServiceImpTest extends TestCase {
     }
 
     @Test
-    public void testIsPlayerExist(){
+    public void testIsPlayerExist() {
         Player player = new Player();
         when(playerDao.getByName(anyString())).thenReturn(player);
         assertFalse(playerService.isPlayerExist(players.get(2)));
@@ -123,8 +123,9 @@ public class PlayerServiceImpTest extends TestCase {
         assertTrue(playerService.isPlayerExist(players.get(3)));
 
     }
+
     @Test
-    public void testPodom(){
+    public void testPodom() {
         DataProviderStrategy playerStrategy = new PlayerDataProviderStrategy();
 
         PodamFactory playerFactory = new PodamFactoryImpl(playerStrategy);
@@ -133,26 +134,11 @@ public class PlayerServiceImpTest extends TestCase {
         DataProviderStrategy gameStrategy = new GameDataProviderStrategy();
 
 
-
         PodamFactory gameFactory = new PodamFactoryImpl(gameStrategy);
 
+        Game game = gameFactory.manufacturePojo(Game.class);
 
-
-        for (int i = 0; i < 10 ; i++) {
-            Game game  = gameFactory.manufacturePojo(Game.class);
-
-            System.out.println("PlayerServiceImpTest.testPodom" +game);
-
-        }
-
-
-        for (int i = 0; i < 10 ; i++) {
-            Player player = playerFactory.manufacturePojo(Player.class);
-
-            System.out.println("PlayerServiceImpTest.testPodom" +player);
-
-        }
-
+        Player player = playerFactory.manufacturePojo(Player.class);
 
     }
 }

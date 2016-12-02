@@ -40,7 +40,6 @@ public class PlayerServiceImp implements PlayerService {
 
     @Override
     public void savePlayer(Player player) {
-        System.out.println("player  " + player);
 
        dao.saveOrUpdate(player);
     }
