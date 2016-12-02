@@ -3,7 +3,7 @@ package com.millhouse.chessrating.model;
 import javax.persistence.*;
 
 /**
- * Created by Millhouse on 11/17/2016.
+ * Created by Vadim Ovcharuk uazori@gmail.com on 11/17/2016.
  * Player entity for ChessProject
  */
 @Entity
@@ -39,12 +39,12 @@ public class Player {
 
     @Override
     public String toString() {
-        return "Player{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", rating=" + rating +
-                '}';
+        return "Player{"
+                +"id=" + id
+                +", name='" + name + '\''
+                +", surname='" + surname + '\''
+                +", rating=" + rating
+                +'}';
     }
 
     @Override

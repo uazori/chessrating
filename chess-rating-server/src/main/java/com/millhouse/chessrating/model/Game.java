@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
- * Created by Millhouse on 11/24/2016.
+ * Created by Vadim Ovcharuk uazori@gmail.com on 11/24/2016.
  * Game entity for Chess Project
  */
 @Entity
@@ -60,14 +60,14 @@ public class Game {
 
     @Override
     public String toString() {
-        return "Game{" +
-                "id=" + id +
-                ", white=" + white +
-                ", black=" + black +
-                ", result='" + result + '\'' +
-                ", start=" + start +
-                ", end=" + end +
-                '}';
+        return "Game{"
+                + "id=" + id
+                + ", white=" + white
+                + ", black=" + black
+                + ", result='" + result + '\''
+                +", start=" + start
+                +", end=" + end
+                +'}';
     }
 
     public Game() {
