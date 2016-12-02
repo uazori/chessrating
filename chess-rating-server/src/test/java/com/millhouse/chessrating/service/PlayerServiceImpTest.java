@@ -1,6 +1,9 @@
 package com.millhouse.chessrating.service;
 
 import com.millhouse.chessrating.dao.PlayerDaoImp;
+import com.millhouse.chessrating.dto.utils.GameDataProviderStrategy;
+import com.millhouse.chessrating.dto.utils.PlayerDataProviderStrategy;
+import com.millhouse.chessrating.model.Game;
 import com.millhouse.chessrating.model.Player;
 import junit.framework.TestCase;
 import org.junit.Before;
@@ -12,9 +15,14 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
+import uk.co.jemos.podam.api.DataProviderStrategy;
+import uk.co.jemos.podam.api.PodamFactory;
+import uk.co.jemos.podam.api.PodamFactoryImpl;
+import uk.co.jemos.podam.api.RandomDataProviderStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
@@ -116,6 +124,38 @@ public class PlayerServiceImpTest extends TestCase {
 
         when(playerDao.getByName(anyString())).thenReturn(players.get(3));
         assertTrue(playerService.isPlayerExist(players.get(3)));
+
+    }
+    @Test
+    public void testPodom(){
+        DataProviderStrategy playerStrategy = new PlayerDataProviderStrategy();
+
+        PodamFactory playerFactory = new PodamFactoryImpl(playerStrategy);
+
+
+        DataProviderStrategy gameStrategy = new GameDataProviderStrategy();
+
+
+
+        PodamFactory gameFactory = new PodamFactoryImpl(gameStrategy);
+
+
+
+        for (int i = 0; i < 10 ; i++) {
+            Game game  = gameFactory.manufacturePojo(Game.class);
+
+            System.out.println("PlayerServiceImpTest.testPodom" +game);
+
+        }
+
+
+        for (int i = 0; i < 10 ; i++) {
+            Player player = playerFactory.manufacturePojo(Player.class);
+
+            System.out.println("PlayerServiceImpTest.testPodom" +player);
+
+        }
+
 
     }
 }

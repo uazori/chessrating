@@ -81,6 +81,14 @@
             <scope>test</scope>
         </dependency>
 
+
+        <dependency>
+            <groupId>uk.co.jemos.podam</groupId>
+            <artifactId>podam</artifactId>
+            <version>4.7.2.RELEASE</version>
+        </dependency>
+
+
         <!-- Hibernate-->
 
 
