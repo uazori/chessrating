@@ -1,0 +1,30 @@
+<div class="jumbotron text-center">
+
+    <div layout="row" layout-align="left">
+        <h2 class="md-title">{{playerId ? 'Editing a player' : 'Add new player'}}</h2>
+    </div>
+    <md-divider></md-divider>
+    <br>
+
+    <form name="playerForm">
+
+        <div layout-gt-xs="row" layout-align="space-between">
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>Player Name</label>
+                <input name="nameInput" ng-model="playerModel.name" md-maxlength="60" required>
+            </md-input-container>
+
+            <md-input-container class="md-block">
+                <legend>Rating</legend>
+                <mh-rating rating-value="playerModel.rating" max-rate="5"></mh-rating>
+            </md-input-container>
+
+        </div>
+
+    </form>
+    <section layout="row" layout-sm="column" layout-align="left center" layout-wrap>
+        <md-button ng-disabled="isSaveDisabled()" ng-click="saveConfirm()" class="md-raised md-primary">Save</md-button>
+        <md-button class="md-raised md-warn" ng-click="cancel()">Cancel</md-button>
+    </section>
+
+</div>
