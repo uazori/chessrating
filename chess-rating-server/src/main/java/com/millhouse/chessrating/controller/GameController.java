@@ -32,12 +32,12 @@ public class GameController {
     @RequestMapping(value = "/game/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GameDto> getGame(@PathVariable("id") Long id) {
 
-        System.out.println("Find game by id");
+
 
         GameDto gameDto = gameService.findById(id);
 
         if (gameDto.getId() == null) {
-            System.out.println("User with id " + id + " not found");
+
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
@@ -50,11 +50,11 @@ public class GameController {
     @RequestMapping(value = "/game/", method = RequestMethod.POST)
     public ResponseEntity<GameDto> createGame(@RequestBody GameDto gameDto, UriComponentsBuilder ucBuilder) {
 
-        System.out.println("Creating Game with white player id = " + gameDto.getBlackId() + " black player id = " + gameDto.getWhiteId());
 
 
-        if (gameService.isGameExist(gameDto)) {
-            System.out.println("A Game with name " + gameDto.getId() + " already exist");
+
+        if (gameDto.getId()==null) {
+
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
 
@@ -70,12 +70,12 @@ public class GameController {
 
     @RequestMapping(value = "/game/{id}", method = RequestMethod.PUT)
     public ResponseEntity<GameDto> updateGame(@PathVariable("id") Long id, @RequestBody GameDto gameDto) {
-        System.out.println("Updating Game " + id);
+
 
         GameDto currentGame = gameService.findById(id);
 
         if (currentGame.getId() == null) {
-            System.out.println("User with id " + id + " not found");
+
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
@@ -97,12 +97,12 @@ public class GameController {
     @RequestMapping(value = "/gamesByPlayerId/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<GameDto>> getGamesByPlayerId(@PathVariable("id") Long id) {
 
-        System.out.println("Find game by Player id");
+
 
         List<GameDto> gamesDto = gameService.findByPlayerId(id);
 
         if (gamesDto.isEmpty()) {
-            System.out.println("Game with player id " + id + " not found");
+
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
@@ -114,12 +114,12 @@ public class GameController {
     @RequestMapping(value = "/gamesByPlayerName/{name}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<GameDto>> getGameByName(@PathVariable("name") String name) {
 
-        System.out.println("Find Games by Player name");
+
 
         List<GameDto> gamesDto = gameService.findByPlayerName(name);
 
         if (gamesDto.isEmpty()) {
-            System.out.println("Game with player " + name + " not found");
+
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
@@ -132,13 +132,12 @@ public class GameController {
     @RequestMapping(value = "/gamesByResult/{result}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<GameDto>> getGameByResult(@PathVariable("result") String result) {
 
-        System.out.println("Find Game by Player name");
 
 
         List<GameDto> gamesDto = gameService.findByResult(result);
 
         if (gamesDto.isEmpty()) {
-            System.out.println("Game with player " + result + " not found");
+
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
@@ -151,8 +150,6 @@ public class GameController {
     public ResponseEntity<List<GameDto>> listAllGames() {
 
 
-        System.out.println("Retrieve All Games");
-
         List<GameDto> gamesDto = gameService.findAllGames();
 
         if (gamesDto.isEmpty()) {
@@ -164,11 +161,11 @@ public class GameController {
     //------------------- Delete a Game --------------------------------------------------------
     @RequestMapping(value = "/game/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Player> deleteGame(@PathVariable("id") Long id) {
-        System.out.println("Fetching & Deleting Game with id " + id);
+
 
         GameDto gameDto = gameService.findById(id);
         if (gameDto.getId() == null) {
-            System.out.println("Unable to delete. Game with id " + id + " not found");
+
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 

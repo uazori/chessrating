@@ -29,7 +29,7 @@ public class PlayerController {
     @RequestMapping(value = "/players/", method = RequestMethod.GET)
     public ResponseEntity<List<Player>> listAllUsers() {
 
-        System.out.println("Retrieve All Player");
+
         List<Player> players = playerService.findAllPlayers();
 
 
@@ -44,12 +44,12 @@ public class PlayerController {
     @RequestMapping(value = "/player/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Player> getUser(@PathVariable("id") Long id) {
 
-        System.out.println("Find user by id");
+
 
     Player player = playerService.findById(id);
 
         if (player== null){
-            System.out.println("User with id " + id + " not found");
+
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
@@ -60,11 +60,11 @@ public class PlayerController {
     //-------------------Create a Player--------------------------------------------------------
     @RequestMapping(value = "/player/", method = RequestMethod.POST)
     public ResponseEntity<Player> createUser(@RequestBody Player player, UriComponentsBuilder ucBuilder) {
-        System.out.println("Creating User " + player.getName());
 
 
-        if (playerService.isPlayerExist(player)) {
-            System.out.println("A User with name " + player.getName() + " already exist");
+
+        if ((player.getId())!=null) {
+
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
 
@@ -79,12 +79,12 @@ public class PlayerController {
 
     @RequestMapping(value = "/player/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Player> updateUser(@PathVariable("id") Long id, @RequestBody Player player) {
-        System.out.println("Updating User " + id);
+
 
         Player currentPlayer = playerService.findById(id);
 
         if (currentPlayer == null) {
-            System.out.println("User with id " + id + " not found");
+
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
@@ -99,11 +99,11 @@ public class PlayerController {
     //------------------- Delete a Player --------------------------------------------------------
     @RequestMapping(value = "/player/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Player> deleteUser(@PathVariable("id") Long id) {
-        System.out.println("Fetching & Deleting User with id " + id);
+
 
         Player user = playerService.findById(id);
         if (user == null) {
-            System.out.println("Unable to delete. User with id " + id + " not found");
+
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 

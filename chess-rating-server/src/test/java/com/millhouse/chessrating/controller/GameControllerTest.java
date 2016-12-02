@@ -118,7 +118,7 @@ public class GameControllerTest {
 
 
         doNothing().when(gameServiceMock).saveOrUpdateGame(gameDto);
-        when(gameServiceMock.isGameExist(gameDto)).thenReturn(false);
+
 
         mockMvc.perform(post("/game/")
                 .contentType(APPLICATION_JSON_MEDIA_TYPE)
@@ -134,7 +134,7 @@ public class GameControllerTest {
                 .andExpect(jsonPath("$.end", is("2016-11-30T02:32")));
 
         verify(gameServiceMock, times(1)).saveOrUpdateGame(gameDto);
-        verify(gameServiceMock, times(1)).isGameExist(gameDto);
+
         verifyNoMoreInteractions(gameServiceMock);
     }
 
@@ -142,20 +142,20 @@ public class GameControllerTest {
     public void createGame_gameExist_returnStatusConflict() throws Exception {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
-        GameDto gameDto = new GameDto(1L, 1L, 2L, 1L, "MATE", LocalDateTime.parse("02:02 30-11-2016", formatter), LocalDateTime.parse("02:32 30-11-2016", formatter));
+        GameDto gameDto = new GameDto(null, 1L, 2L, 1L, "MATE", LocalDateTime.parse("02:02 30-11-2016", formatter), LocalDateTime.parse("02:32 30-11-2016", formatter));
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         byte[] jsonTestGame = mapper.writeValueAsBytes(gameDto);
 
-        when(gameServiceMock.isGameExist(gameDto)).thenReturn(true);
+
 
         mockMvc.perform(post("/game/")
                 .contentType(APPLICATION_JSON_MEDIA_TYPE)
                 .content(jsonTestGame))
                 .andExpect(status().isConflict());
 
-        verify(gameServiceMock, times(1)).isGameExist(gameDto);
+
         verifyNoMoreInteractions(gameServiceMock);
     }
 

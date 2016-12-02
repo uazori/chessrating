@@ -168,9 +168,9 @@ public class PlayerControllerTest extends TestCase {
     @Test
     public void testCreateUser_PlayerAlreadyExist_ShouldReturnStatusConflict() throws Exception {
 
-        Player testPlayer = new Player("TestName", "TestSurname", 3);
+        Player testPlayer = new Player(1,"TestName", "TestSurname", 3);
 
-        when(playerServiceMock.isPlayerExist(testPlayer)).thenReturn(true);
+       /* when(playerServiceMock.isPlayerExist(testPlayer)).thenReturn(true);*/
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
@@ -183,7 +183,7 @@ public class PlayerControllerTest extends TestCase {
                 .andExpect(status().isConflict());
 
 
-        verify(playerServiceMock, times(1)).isPlayerExist(testPlayer);
+       /* verify(playerServiceMock, times(1)).isPlayerExist(testPlayer);*/
         verifyNoMoreInteractions(playerServiceMock);
 
     }
