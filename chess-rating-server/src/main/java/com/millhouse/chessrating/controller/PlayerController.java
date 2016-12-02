@@ -45,10 +45,9 @@ public class PlayerController {
     public ResponseEntity<Player> getUser(@PathVariable("id") Long id) {
 
 
+        Player player = playerService.findById(id);
 
-    Player player = playerService.findById(id);
-
-        if (player== null){
+        if (player == null) {
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -62,13 +61,12 @@ public class PlayerController {
     public ResponseEntity<Player> createUser(@RequestBody Player player, UriComponentsBuilder ucBuilder) {
 
 
-
-        if ((player.getId())!=null) {
+        if ((player.getId()) != null) {
 
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
 
-        playerService.savePlayer(player);
+        playerService.saveOrUpdatePlayer(player);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/player/{id}").buildAndExpand(player.getId()).toUri());
@@ -77,23 +75,18 @@ public class PlayerController {
 
     //------------------- Update a Player --------------------------------------------------------
 
-    @RequestMapping(value = "/player/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/player/{id}", method = RequestMethod.POST)
     public ResponseEntity<Player> updateUser(@PathVariable("id") Long id, @RequestBody Player player) {
 
 
-        Player currentPlayer = playerService.findById(id);
-
-        if (currentPlayer == null) {
+        if (player.getId() == null) {
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        currentPlayer.setName(player.getName());
-        currentPlayer.setSurname(player.getSurname());
-        currentPlayer.setRating(player.getRating());
+        playerService.saveOrUpdatePlayer(player);
 
-        playerService.updatePlayer(currentPlayer);
-        return new ResponseEntity<>(currentPlayer, HttpStatus.OK);
+        return new ResponseEntity<>(player, HttpStatus.OK);
     }
 
     //------------------- Delete a Player --------------------------------------------------------

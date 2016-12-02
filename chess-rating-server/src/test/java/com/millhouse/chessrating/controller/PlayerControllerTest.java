@@ -150,7 +150,7 @@ public class PlayerControllerTest extends TestCase {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         byte[] jsonTestPlayer = mapper.writeValueAsBytes(testPlayer);
-        doNothing().when(playerServiceMock).savePlayer(testPlayer);
+        doNothing().when(playerServiceMock).saveOrUpdatePlayer(testPlayer);
 
         mockMvc.perform(post("/player/")
                 .contentType(APPLICATION_JSON_MEDIA_TYPE)
@@ -161,7 +161,7 @@ public class PlayerControllerTest extends TestCase {
                 .andExpect(jsonPath("$.surname", is("TestSurname")))
                 .andExpect(jsonPath("$.rating", is(4)));
 
-        verify(playerServiceMock, times(1)).savePlayer(testPlayer);
+        verify(playerServiceMock, times(1)).saveOrUpdatePlayer(testPlayer);
 
     }
 
@@ -190,18 +190,18 @@ public class PlayerControllerTest extends TestCase {
 
     @Test
     public void testUpdateUser_PlayerUpdated_ShouldReturnUpdatedPlayer() throws Exception {
-        Player testPlayer = new Player("TestName", "TestSurname", 3);
+        Player testPlayer = new Player(1,"TestName", "TestSurname", 3);
 
-        when(playerServiceMock.findById(anyLong())).thenReturn(testPlayer);
+/*        when(playerServiceMock.findById(anyLong())).thenReturn(testPlayer);*/
 
-        doNothing().when(playerServiceMock).updatePlayer(any());
+        doNothing().when(playerServiceMock).saveOrUpdatePlayer(any());
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         byte[] jsonTestPlayer = mapper.writeValueAsBytes(testPlayer);
 
 
-        mockMvc.perform(put("/player/1")
+        mockMvc.perform(post("/player/1")
                 .contentType(APPLICATION_JSON_MEDIA_TYPE)
                 .content(jsonTestPlayer))
                 .andExpect(status().isOk())
@@ -211,8 +211,8 @@ public class PlayerControllerTest extends TestCase {
                 .andExpect(jsonPath("$.surname", is("TestSurname")))
                 .andExpect(jsonPath("$.rating", is(3)));
 
-        verify(playerServiceMock, times(1)).findById(anyLong());
-        verify(playerServiceMock, times(1)).updatePlayer(any());
+/*        verify(playerServiceMock, times(1)).findById(anyLong());*/
+        verify(playerServiceMock, times(1)).saveOrUpdatePlayer(any());
 
     }
 
@@ -221,7 +221,7 @@ public class PlayerControllerTest extends TestCase {
     public void testUpdateUser_PlayerNotFound_ShouldReturnStatusNotFound() throws Exception {
         Player testPlayer = new Player("TestName", "TestSurname", 3);
 
-        when(playerServiceMock.findById(anyLong())).thenReturn(null);
+       /* when(playerServiceMock.findById(anyLong())).thenReturn(null);*/
 
 
 
@@ -230,13 +230,13 @@ public class PlayerControllerTest extends TestCase {
         byte[] jsonTestPlayer = mapper.writeValueAsBytes(testPlayer);
 
 
-        mockMvc.perform(put("/player/1").accept(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/player/1").accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonTestPlayer))
                 .andExpect(status().isNotFound());
 
 
-        verify(playerServiceMock, times(1)).findById(anyLong());
+        /*verify(playerServiceMock, times(1)).findById(anyLong());*/
         verifyNoMoreInteractions(playerServiceMock);
 
     }

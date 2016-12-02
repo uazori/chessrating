@@ -39,14 +39,9 @@ public class PlayerServiceImp implements PlayerService {
     }
 
     @Override
-    public void savePlayer(Player player) {
+    public void saveOrUpdatePlayer(Player player) {
 
        dao.saveOrUpdate(player);
-    }
-
-    @Override
-    public void updatePlayer(Player player) {
-        dao.saveOrUpdate(player);
     }
 
     @Override

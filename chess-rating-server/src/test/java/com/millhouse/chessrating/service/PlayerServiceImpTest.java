@@ -90,7 +90,7 @@ public class PlayerServiceImpTest extends TestCase {
         players = getTestPlayersList();
         Player testPlayer = players.get(2);
         doNothing().when(playerDao).saveOrUpdate(any(Player.class));
-        playerService.savePlayer(testPlayer);
+        playerService.saveOrUpdatePlayer(testPlayer);
         verify(playerDao, atLeastOnce()).saveOrUpdate(any(Player.class));
 
     }
