@@ -55,10 +55,10 @@ public class GameControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    GameServiceImp gameServiceMock;
+    private GameServiceImp gameServiceMock;
 
     @InjectMocks
-    GameController gameController = new GameController();
+    private GameController gameController = new GameController();
 
     @Before
     public void setUp() {
@@ -172,9 +172,9 @@ public class GameControllerTest {
 
 
         doNothing().when(gameServiceMock).saveOrUpdateGame(gameDto);
-        when(gameServiceMock.findById(1L)).thenReturn(gameDto);
+       /* when(gameServiceMock.findById(1L)).thenReturn(gameDto);*/
 
-        mockMvc.perform(put("/game/1")
+        mockMvc.perform(post("/game/1")
                 .contentType(APPLICATION_JSON_MEDIA_TYPE)
                 .content(jsonTestGame))
                 .andExpect(content().contentType(APPLICATION_JSON_MEDIA_TYPE))
@@ -188,7 +188,7 @@ public class GameControllerTest {
                 .andExpect(jsonPath("$.end", is("2016-11-30T02:32")));
 
         verify(gameServiceMock, times(1)).saveOrUpdateGame(gameDto);
-        verify(gameServiceMock, times(1)).findById(1L);
+       /* verify(gameServiceMock, times(1)).findById(1L);*/
         verifyNoMoreInteractions(gameServiceMock);
 
     }
@@ -204,16 +204,16 @@ public class GameControllerTest {
 
 
         /*doNothing().when(gameServiceMock).saveOrUpdateGame(gameDto);*/
-        when(gameServiceMock.findById(1L)).thenReturn(gameDto);
+      /*  when(gameServiceMock.findById(1L)).thenReturn(gameDto);*/
 
-        mockMvc.perform(put("/game/1")
+        mockMvc.perform(post("/game/1")
                 .contentType(APPLICATION_JSON_MEDIA_TYPE)
                 .content(jsonTestGame))
 
                 .andExpect(status().isNotFound());
 
 
-        verify(gameServiceMock, times(1)).findById(1L);
+      /*  verify(gameServiceMock, times(1)).findById(1L);*/
         verifyNoMoreInteractions(gameServiceMock);
 
     }

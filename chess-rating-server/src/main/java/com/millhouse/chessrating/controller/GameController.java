@@ -22,10 +22,10 @@ import java.util.List;
 @RestController
 public class GameController {
 
+   /* @Autowired
+    private PlayerService playerService;*/
     @Autowired
-    PlayerService playerService;
-    @Autowired
-    GameService gameService;
+    private GameService gameService;
 
     //-------------------Retrieve Game by Id--------------------------------------------------------
 
@@ -68,28 +68,16 @@ public class GameController {
 
     //------------------- Update a Game --------------------------------------------------------
 
-    @RequestMapping(value = "/game/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/game/{id}", method = RequestMethod.POST)
     public ResponseEntity<GameDto> updateGame(@PathVariable("id") Long id, @RequestBody GameDto gameDto) {
 
-
-        GameDto currentGame = gameService.findById(id);
-
-        if (currentGame.getId() == null) {
+        if (gameDto.getId() == null) {
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        gameService.saveOrUpdateGame(gameDto);
 
-
-        currentGame.setWhiteId(gameDto.getWhiteId());
-        currentGame.setBlackId(gameDto.getBlackId());
-        currentGame.setWinnerId(gameDto.getWinnerId());
-        currentGame.setResult(gameDto.getResult());
-        currentGame.setStart(gameDto.getStart());
-        currentGame.setEnd(gameDto.getEnd());
-
-        gameService.saveOrUpdateGame(currentGame);
-
-        return new ResponseEntity<>(currentGame, HttpStatus.OK);
+        return new ResponseEntity<>(gameDto, HttpStatus.OK);
     }
 
     //-------------------Retrieve Game by PlayerId--------------------------------------------------------
