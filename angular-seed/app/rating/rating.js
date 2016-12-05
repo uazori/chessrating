@@ -31,11 +31,12 @@ angular.module('chessApp')
             columnDefs: [
                 {field: 'playerId', displayName: 'Id'},
                 {field: 'name', displayName: 'Name'},
+                {field: 'surname', displayName: 'Surname'},
                 {
                     field: 'rating',
                     displayName: 'Rating',
                     cellTemplate: '<mh-rating rating-value="row.entity.rating" view-only="true" max-rate="5" >' +
-                    '</mh-rating>',
+                    '</mh-rating>'
                 }
             ]
         };

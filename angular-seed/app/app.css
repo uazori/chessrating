@@ -36,6 +36,6 @@ section.rating > .md-button {
     width: 25px;
 }
 
-section.rating .md-button md-icon {
+section.rating .md-button .md-icon {
     color: cornflowerblue;
 }
