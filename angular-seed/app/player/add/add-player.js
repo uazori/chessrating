@@ -8,28 +8,51 @@ angular.module('chessApp')
 
             if ($stateParams.playerId) {
                 $scope.playerId = $stateParams.playerId;
-                console.log("Editing " + $scope.playerId)
+                console.log("Editing player =  " + $scope.playerId);
+                $scope.playerIndex = findPlayerIndexById($rootScope.players, $scope.playerId);
+                $scope.playerModel = $rootScope.players[$scope.playerIndex];
+                // $scope.playerModel = $rootScope.players[$scope.playerId];
+
+            } else {
+
+                $scope.playerModel = {
+                    playerId: '',
+                    name: '',
+                    surname: '',
+                    rating: ''
+                };
+
             }
 
-            $scope.playerModel = {
-                playerId: '',
-                name: '',
-                rating: ''
-            };
+            function findPlayerIndexById(players,id)  {
+                for(var i=0; i<players.length; i++) {
+                    if (players[i].playerId == id) return i;
+                }
+            }
 
             function preparePlayer() {
                 return {
                     playerId: $rootScope.players.length,
                     name: $scope.playerModel.name,
+                    surname: $scope.playerModel.surname,
                     rating: $scope.playerModel.rating
                 }
             }
 
             function yes() {
                 console.log("yes");
-                var player = preparePlayer();
-                $rootScope.players.push(player);
-                $state.go('rating');
+                var player={};
+                if($stateParams.playerId){
+                    $rootScope.players[$scope.playerIndex]  = $scope.playerModel;
+
+                } else {
+
+                    player = preparePlayer();
+                    $rootScope.players.push(player);
+                }
+
+
+                $state.go('player');
             };
 
             function no() {
@@ -41,7 +64,7 @@ angular.module('chessApp')
                 var confirm = $mdDialog.confirm()
                     .title('Save Changes?')
                     .targetEvent(ev)
-                    .ok('Yes')
+                    .ok('Yes Save')
                     .cancel('No');
 
                 if ($scope.playerForm.$valid) {
@@ -73,7 +96,7 @@ angular.module('chessApp')
             };
 
             $scope.cancel = function (ev) {
-                $scope.playerForm.$dirty ? showConfirm(ev) : $state.go('rating');
+                $scope.playerForm.$dirty ? showConfirm(ev) : $state.go('player');
             };
 
             function showConfirm(ev) {
@@ -85,7 +108,7 @@ angular.module('chessApp')
                     .ok('Accept')
                     .cancel('Cancel');
                 $mdDialog.show(confirm).then(function () {
-                    $state.go('rating');
+                    $state.go('player');
                 });
             };
 

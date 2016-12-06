@@ -14,6 +14,11 @@
                 <input name="nameInput" ng-model="playerModel.name" md-maxlength="60" required>
             </md-input-container>
 
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>Player Surname</label>
+                <input name="surNameInput" ng-model="playerModel.surname" md-maxlength="60" required>
+            </md-input-container>
+
             <md-input-container class="md-block">
                 <legend>Rating</legend>
                 <mh-rating rating-value="playerModel.rating" max-rate="5"></mh-rating>

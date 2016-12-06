@@ -5,6 +5,9 @@ var chessApp = angular.module('chessApp', [
     'ui.grid',
     'ui.grid.selection',
     'ngMaterial'
+    /*'ui.grid.edit',
+     'ui.grid.rowEdit',
+     'ui.grid.cellNav'*/
 ]);
 
 chessApp.config(function ($stateProvider, $urlRouterProvider) {
@@ -19,21 +22,21 @@ chessApp.config(function ($stateProvider, $urlRouterProvider) {
             controller: 'HomeCtrl'
         })
 
-        .state('rating', {
-            url: '/rating',
-            templateUrl: 'rating/rating.html',
-            controller: 'RatingCtrl'
+        .state('player', {
+            url: '/player',
+            templateUrl: 'player/player.html',
+            controller: 'PlayerCtrl'
         })
 
         .state('addplayer', {
             url: '/players/add',
-            templateUrl: 'rating/add/add-player.html',
+            templateUrl: 'player/add/add-player.html',
             controller: 'AddEditPlayerCtrl'
         })
 
         .state('editplayer', {
-            url: '/players/edit',
-            templateUrl: 'rating/add/add-player.html',
+            url: '/players/{playerId:int}',
+            templateUrl: 'player/add/add-player.html',
             controller: 'AddEditPlayerCtrl'
         })
         .state('games', {
@@ -43,6 +46,11 @@ chessApp.config(function ($stateProvider, $urlRouterProvider) {
         })
         .state('addgame', {
             url: '/games/add',
+            templateUrl: 'game/add/add-game.html',
+            controller: 'AddEditGameCtrl'
+        })
+        .state('editgame', {
+            url: '/games/{gameId:int}',
             templateUrl: 'game/add/add-game.html',
             controller: 'AddEditGameCtrl'
         });
