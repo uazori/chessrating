@@ -1,0 +1,24 @@
+<div class="jumbotron text-center">
+    <div layout="row" layout-align="space-between">
+        <h2 class="md-title">Games List</h2>
+        <div flex-offset-gt-sm="5" layout="row" layout-align="end center" flex-gt-sm="25">
+            <md-button class="md-block md-raised md-primary" ng-click="edit()"
+                       ng-disabled="gridApi.selection.getSelectedRows().length <= 0">Edit Game
+            </md-button>
+            <md-button class="md-block md-raised md-primary" ng-click="$state.go('addgame')">Add Game</md-button>
+        </div>
+    </div>
+    <md-divider></md-divider>
+    <br>
+    <div ng-controller="GameCtrl">
+        <div ui-grid="gridOptions"flex ui-grid-selection ui-grid-auto-resize class="md-whiteframe-2dp grid-height-65 no-filter-input"  ></div>
+    </div>
+
+</div>
+
+<!--
+flex ui-grid-selection ui-grid-auto-resize
+
+class="md-whiteframe-2dp grid-height-65 no-filter-input"
+
+-->
