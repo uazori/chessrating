@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <!--[if lt IE 7]>
-<html lang="en" ng-app="chessApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<html lang="en" data-ng-app="chessApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>
-<html lang="en" ng-app="chessApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<html lang="en" data-ng-app="chessApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>
-<html lang="en" ng-app="chessApp" class="no-js lt-ie9"> <![endif]-->
+<html lang="en" data-ng-app="chessApp" class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
-<html lang="en" ng-app="chessApp" class="no-js"> <!--<![endif]-->
+<html lang="en" data-ng-app="chessApp" class="no-js"> <!--<![endif]-->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -30,16 +30,16 @@
 
 
 </head>
-<body ng-app="chessApp">
+<body data-ng-app="chessApp">
 <!-- NAVIGATION -->
 <nav class="navbar navbar-inverse" role="navigation">
     <div class="navbar-header">
-        <a class="navbar-brand" ui-sref="#">Chess Players Rating</a>
+        <a class="navbar-brand" data-ui-sref="#">Chess Players Rating</a>
     </div>
     <ul class="nav navbar-nav">
-        <li><a ui-sref="home">Home</a></li>
-        <li><a ui-sref="player">Players</a></li>
-        <li><a ui-sref="games">Games</a></li>
+        <li><a data-ui-sref="home">Home</a></li>
+        <li><a data-ui-sref="player">Players</a></li>
+        <li><a data-ui-sref="games">Games</a></li>
     </ul>
 </nav>
 
@@ -47,7 +47,7 @@
 <div class="container">
 
     <!-- THIS IS WHERE WE WILL INJECT OUR CONTENT ============================== -->
-    <div ui-view></div>
+    <div data-ui-view></div>
 
 </div>
 
@@ -64,7 +64,7 @@
 
 <!--<div ng-view></div>-->
 
-<div>Angular seed app: v<span app-version></span></div>
+<!--<div>Angular seed app:<span app-version></span></div>-->
 
 <!-- In production use:
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
@@ -87,6 +87,8 @@
 <script src="directives/mh-rating.js"></script>
 <script src="game/game.js"></script>
 <script src="game/add/add-game.js"></script>
+
+<script src="tournament/tournament.js"></script>
 
 <script src="components/version/version.js"></script>
 <script src="components/version/version-directive.js"></script>
