@@ -2,21 +2,22 @@
 
 angular.module('chessApp')
 
-    .controller('AddEditPlayerCtrl', ['$scope', '$mdDialog', '$mdToast', '$state', '$rootScope', '$stateParams',
-        function ($scope, $mdDialog, $mdToast, $state, $rootScope, $stateParams) {
+    .controller('AddEditPlayerCtrl', ['$scope', '$mdDialog', '$mdToast', '$state', '$rootScope', '$stateParams', 'playerService',
+        function ($scope, $mdDialog, $mdToast, $state, $rootScope, $stateParams, playerService) {
             console.log("AddEditPlayerCtrl is loaded");
 
             if ($stateParams.playerId) {
-                $scope.playerId = $stateParams.playerId;
-                console.log("Editing player =  " + $scope.playerId);
-                $scope.playerIndex = findPlayerIndexById($rootScope.players, $scope.playerId);
-                $scope.playerModel = $rootScope.players[$scope.playerIndex];
-                // $scope.playerModel = $rootScope.players[$scope.playerId];
+
+                console.log("Editing player =  " + $stateParams.playerId);
+
+                playerService.getPlayer($stateParams.playerId).then(function (player) {
+                    $scope.playerModel = player;
+                });
 
             } else {
 
                 $scope.playerModel = {
-                    playerId: '',
+                    id: '',
                     name: '',
                     surname: '',
                     rating: ''
@@ -24,15 +25,15 @@ angular.module('chessApp')
 
             }
 
-            function findPlayerIndexById(players,id)  {
-                for(var i=0; i<players.length; i++) {
-                    if (players[i].playerId == id) return i;
-                }
-            }
+            /* function findPlayerIndexById(players,id)  {
+             for(var i=0; i<players.length; i++) {
+             if (players[i].playerId == id) return i;
+             }
+             }*/
 
             function preparePlayer() {
                 return {
-                    playerId: $rootScope.players.length,
+                    /*playerId: $rootScope.players.length,*/
                     name: $scope.playerModel.name,
                     surname: $scope.playerModel.surname,
                     rating: $scope.playerModel.rating
@@ -40,24 +41,27 @@ angular.module('chessApp')
             }
 
             function yes() {
-                console.log("yes");
-                var player={};
-                if($stateParams.playerId){
-                    $rootScope.players[$scope.playerIndex]  = $scope.playerModel;
+                console.log("yes yes yes");
+                var player = {};
+                if ($stateParams.playerId) {
+
+                    $scope.playerModel.put();
+
+                   /* $rootScope.players[$scope.playerIndex] = $scope.playerModel;*/
 
                 } else {
 
                     player = preparePlayer();
-                    $rootScope.players.push(player);
+                    playerService.savePlayer(player);
                 }
 
 
                 $state.go('player');
-            };
+            }
 
             function no() {
                 console.log("no");
-            };
+            }
 
             $scope.saveConfirm = function (ev) {
 
@@ -93,7 +97,7 @@ angular.module('chessApp')
                         .position(last)
                         .hideDelay(3000)
                 );
-            };
+            }
 
             $scope.cancel = function (ev) {
                 $scope.playerForm.$dirty ? showConfirm(ev) : $state.go('player');
@@ -110,6 +114,6 @@ angular.module('chessApp')
                 $mdDialog.show(confirm).then(function () {
                     $state.go('player');
                 });
-            };
+            }
 
         }]);

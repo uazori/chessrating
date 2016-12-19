@@ -39,3 +39,7 @@ section.rating > .md-button {
 section.rating .md-button .md-icon {
     color: cornflowerblue;
 }
+
+.sm-calender-pane {
+    z-index: 100;
+}

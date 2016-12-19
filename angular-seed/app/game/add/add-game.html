@@ -8,42 +8,84 @@
 
     <form name="GameForm">
 
+        <pre>{{gameModel}}</pre>
+
         <div layout-gt-xs="row" layout-align="space-between">
-            <md-input-container class="md-block" flex-gt-xs>
-                <label>White Player Id</label>
-                <input name="WhiteIdInput" ng-model="gameModel.whiteId" md-maxlength="60" required>
-            </md-input-container>
 
             <md-input-container class="md-block" flex-gt-xs>
-                <label>Black Player Id</label>
-                <input name="BlackIdInput" ng-model="gameModel.blackId" md-maxlength="60" required>
-            </md-input-container>
-
-            <md-input-container class="md-block" flex-gt-xs>
-                <label>Winner Id</label>
-                <input name="WinnerIdInput" ng-model="gameModel.winnerId" md-maxlength="60" required>
+                <label>White Player</label>
+                <md-select ng-model="gameModel.whiteId">
+                    <md-option ng-value="player.id" ng-repeat="player in players">{{ player.name }}</md-option>
+                </md-select>
             </md-input-container>
 
             <md-input-container class="md-block" flex-gt-xs>
                 <label>Result</label>
-                <input name="ResultInput" ng-model="gameModel.result" md-maxlength="60" required>
+                <md-select ng-model="gameModel.result">
+                    <md-option ng-value="res" ng-repeat="res in result">{{ res }}</md-option>
+                </md-select>
             </md-input-container>
 
             <md-input-container class="md-block" flex-gt-xs>
-                <label>Start time</label>
-                <input name="StartInput" ng-model="gameModel.start" md-maxlength="60" required>
-            </md-input-container>
-
-            <md-input-container class="md-block" flex-gt-xs>
-                <label>End time</label>
-                <input name="endInput" ng-model="gameModel.end" md-maxlength="60" required>
+                <label>Black Player</label>
+                <md-select ng-model="gameModel.blackId" >
+                    <md-option ng-value="player.id" ng-repeat="player in players">{{ player.name }}</md-option>
+                </md-select>
             </md-input-container>
 
 
+            <md-input-container class="md-block" flex-gt-xs  >
+                <label>Winner</label>
+                <md-select ng-model="gameModel.winner"  ng-disabled ="enableWinnerSelect()">
+                    <md-option ng-value="player" ng-repeat="player in playersInGame">{{ player }}</md-option>
+                </md-select>
+            </md-input-container>
 
+
+
+
+            <div  layout="row">
+            <sm-date-time-picker
+
+                    label="game start"
+                        ng-model="gameModel.start"
+                        flex="50"
+                        flex-sm="100"
+                        flex-xs="100"
+
+                        format="YYYY-MM-DDTHH:mm"
+                        mode="date-time"
+                        week-start-day="Monday">
+
+
+                </sm-date-time-picker>
+
+            </div>
+
+
+            <div  layout="row">
+            <sm-date-time-picker
+                    fname="field"
+                    label="game end"
+                    ng-model="gameModel.end"
+                    flex="50"
+                    flex-sm="100"
+                    flex-xs="100"
+                    is-required="{{true}}"
+                    format="YYYY-MM-DDTHH:mm"
+                    mode="date-time"
+                    week-start-day="Monday">
+
+
+            </sm-date-time-picker>
+
+
+            </div>
         </div>
-
     </form>
+
+
+
     <section layout="row" layout-sm="column" layout-align="left center" layout-wrap>
         <md-button ng-disabled="isSaveDisabled()" ng-click="saveConfirm()" class="md-raised md-primary">Save</md-button>
         <md-button class="md-raised md-warn" ng-click="cancel()">Cancel</md-button>

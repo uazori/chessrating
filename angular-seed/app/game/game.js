@@ -5,44 +5,138 @@
 
 angular.module('chessApp')
 
-    .controller('GameCtrl', ['$scope', '$rootScope','$http', '$q', '$interval', function ($scope, $rootScope, $http, $q, $interval) {
+    .factory('gameService', ['Restangular', function (Restangular) {
+
+
+        var service = Restangular.service('gameService');
+
+        service.getGames = function () {
+            return Restangular.all('game').getList();
+        };
+
+        service.getGame = function (gameId) {
+            return Restangular.one('game', gameId).get();
+        };
+
+        service.saveGame = function (game) {
+
+            var games = Restangular.all('game');
+
+            games.post(game);
+
+
+            console.log("Game Service save Game ");
+
+
+        };
+        service.updateGame = function (game) {
+
+            console.log("sgame service update");
+
+
+
+
+
+
+
+
+           var updatedGame =  Restangular.one('game', game.id);
+
+
+             updatedGame.whiteId = game.whiteId;
+             updatedGame.blackId = game.blackId;
+             updatedGame.winner = game.winner;
+             updatedGame.result = game.result;
+             updatedGame.start = game.start;
+             updatedGame.end = game.end;
+
+            updatedGame.post();
+
+
+
+
+        };
+
+        console.log("gameService");
+        return service;
+    }])
+
+
+    .controller('GameCtrl', ['$scope', '$rootScope', '$http', '$q', '$interval', 'gameService', 'playerService', function ($scope, $rootScope, $http, $q, $interval, gameService, playerService) {
         console.log("GameCtrl is loaded");
 
-        /*$http.get('/data/500_complex.json')
-         .success(function (data) {
-         $scope.gridOptions.data = data;
 
-         // $interval whilst we wait for the grid to digest the data we just gave it
-         $interval(function () {
-         $scope.gridApi.selection.selectRow($scope.gridOptions.data[0]);
-         }, 0, 1);
-         });*/
+        playerService.getPlayers().then(
+            function (response) {
+                $scope.players = response.plain();
+
+                gameService.getGames().then(function (response) {
+                    var games = [];
+                    response.map(function (game) {
+
+                        games.push(
+                            {
+                                id: game.id,
+                                white: getPlayerName(game.whiteId),
+                                black: getPlayerName(game.blackId),
+                                winner: game.winner,
+
+                                result: game.result,
+                                start: game.start,
+                                end: game.end
+
+                            });
+
+
+                        $scope.gridOptions.data = games;
+                    });
+                });
+
+            }
+        );
+
+
+        function getPlayerName(id) {
+
+            var name = {};
+            $scope.players.forEach(function (player) {
+
+                    if (player.id == id) {
+                        name = player.name;
+                    }
+                }
+            );
+            return name;
+
+        }
 
 
         $scope.gridOptions = {
-            data: $rootScope.games,
+            /* data:$rootScope.games2 , gameService.getGames()*/
             enableRowSelection: true,
-            enableSelectAll: true,
+            enableSelectAll: false,
             enableRowHeaderSelection: false,
             multiSelect: false,
             modifierKeysToMultiSelect: false,
             enableHorizontalScrollbar: 0,
+            enableSorting: false,
 
             columnDefs: [
-                {field: 'gameId', displayName: 'Id',enableCellEdit: false},
-                {field: 'whiteId', displayName: 'whiteId (editable)'},
-                {field: 'blackId', displayName: 'blackId'},
-                {field: 'winnerId', displayName: 'winnerId'},
-                {field: 'result', displayName: 'result'},
-                {field: 'start', displayName: 'start'},
+                /*{field: 'id', displayName: 'Id', enableCellEdit: false},*/
+                {field: 'white', displayName: 'White'},
+                {field: 'result', displayName: 'Result'},
+                {field: 'black', displayName: 'Black'},
+                {field: 'winner', displayName: 'Winner'},
+                {field: 'start', displayName: 'Start'},
                 {field: 'end', displayName: 'end'}
+
             ],
 
-            onRegisterApi: function(gridApi) {
+            onRegisterApi: function (gridApi) {
                 $scope.gridApi = gridApi;
                 $scope.mySelectedRows = $scope.gridApi.selection.getSelectedRows();
-                $scope.gridApi.selection.on.rowSelectionChanged($scope, function(row) {
-                    var msg = row.entity.gameId;
+                $scope.gridApi.selection.on.rowSelectionChanged($scope, function (row) {
+                    var msg = row.entity.id;
                     console.log("Row Selected! " + msg);
                     $rootScope.selectedGameId = msg;
 
@@ -52,53 +146,12 @@ angular.module('chessApp')
         };
 
         $scope.edit = function () {
-            console.log("edit Game " + $scope.gridApi);
-
-            console.log("selected Player " + $scope.selectedPlayerId);
 
             $rootScope.$state.go('editgame', {gameId: $scope.selectedGameId});
-            console.log("grid API " + $scope.gridApi);
+
         };
 
-      /*  $scope.saveRow = function( rowEntity ) {
-            // create a fake promise - normally you'd use the promise returned by $http or $resource
-            console.log("save Row")
-            var promise = $q.defer();
-            $scope.gridApi.rowEdit.setSavePromise( rowEntity, promise.promise );
 
-            // fake a delay of 3 seconds whilst the save occurs, return error if gender is "male"
-            $interval( function() {
-                if (rowEntity.gender === 'male' ){
-                    promise.reject();
-                } else {
-                    promise.resolve();
-                }
-            }, 3000, 1);
-        };
-
-        $scope.gridOptions.onRegisterApi = function(gridApi){
-            //set gridApi on scope
-            $scope.gridApi = gridApi;
-            gridApi.rowEdit.on.saveRow($scope, $scope.saveRow);
-        };*/
-
-        /*
-        $http.get('/data/500_complex.json')
-            .success(function(data) {
-                for(i = 0; i < data.length; i++){
-                    data[i].registered = new Date(data[i].registered);
-                }
-                $scope.gridOptions.data = data;
-            });*/
-        /*более 2700 – элитный гроссмейстер (неофициальная, условная категория);
-         2500-2699 – гроссмейстер;
-         2400-2499 – международный мастер;
-         2300-2399 – национальный мастер;
-         2100-2299 – кандидат в мастера;
-         1900-2099 – первый разряд;
-         1600-1899 – второй разряд;
-         1400-1599 – третий разряд;
-         1200-1399 – средний любитель;
-         1000-1199 – слабый любитель;
-         менее 1000 – новичок.*/
-    }]);
+    }
+    ])
+;
