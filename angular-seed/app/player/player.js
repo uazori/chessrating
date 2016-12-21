@@ -3,28 +3,24 @@
 angular.module('chessApp')
     .factory('playerService', ['Restangular', function (Restangular) {
 
+        var service = Restangular.service('gameService');
 
-        var service = {
-            getPlayers: getPlayers,
-            getPlayer: getPlayer,
-            savePlayer: savePlayer
+
+        service.getPlayers = function() {
+            return Restangular.all('player').getList();
         };
 
-        function getPlayers() {
-            return Restangular.all('player').getList();
-        }
-
-        function getPlayer(playerId) {
+         service.getPlayer = function(playerId) {
             return Restangular.one('player', playerId).get();
-        }
+        };
 
-        function savePlayer(player) {
+        service.savePlayer = function(player) {
 
            var players =  Restangular.all('player');
 
             players.post(player);
 
-        }
+        };
 
         console.log("playerService");
         return service;
@@ -36,7 +32,10 @@ angular.module('chessApp')
 
 
         playerService.getPlayers().then(function (players) {
-            $scope.gridOptions.data = players;
+            $scope.gridOptions.data =_.sortBy(players,'activity').reverse();
+          /*  = players;*/
+
+
         });
 
 
@@ -55,10 +54,9 @@ angular.module('chessApp')
                 {field: 'id', displayName: 'Id'},
                 {field: 'name', displayName: 'Name'},
                 {field: 'surname', displayName: 'Surname'},
-                /* {field: 'status', displayName: 'Status'},*/
-                {field: 'rating', displayName: 'Rating'}
-                /*{field: 'games', displayName: 'Games'},*/
-                /*{field: 'gamesTime', displayName: 'Games Time'},*/
+                {field: 'rating', displayName: 'Rating'},
+                {field: 'activity', displayName: 'In tournament'}
+
 
 
             ],

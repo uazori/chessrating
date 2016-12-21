@@ -20,20 +20,15 @@ angular.module('chessApp')
                     id: '',
                     name: '',
                     surname: '',
-                    rating: ''
+                    rating: '',
+                    activity:''
                 };
 
             }
 
-            /* function findPlayerIndexById(players,id)  {
-             for(var i=0; i<players.length; i++) {
-             if (players[i].playerId == id) return i;
-             }
-             }*/
-
             function preparePlayer() {
                 return {
-                    /*playerId: $rootScope.players.length,*/
+
                     name: $scope.playerModel.name,
                     surname: $scope.playerModel.surname,
                     rating: $scope.playerModel.rating
@@ -43,11 +38,12 @@ angular.module('chessApp')
             function yes() {
                 console.log("yes yes yes");
                 var player = {};
+
                 if ($stateParams.playerId) {
 
                     $scope.playerModel.put();
 
-                   /* $rootScope.players[$scope.playerIndex] = $scope.playerModel;*/
+
 
                 } else {
 
@@ -64,13 +60,14 @@ angular.module('chessApp')
             }
 
             $scope.saveConfirm = function (ev) {
+                console.log("save confirm");
 
                 var confirm = $mdDialog.confirm()
                     .title('Save Changes?')
                     .targetEvent(ev)
                     .ok('Yes Save')
                     .cancel('No');
-
+                console.log($scope.playerForm.$valid);
                 if ($scope.playerForm.$valid) {
                     $mdDialog.show(confirm).then(function () {
                         yes();

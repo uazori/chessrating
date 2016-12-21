@@ -2,7 +2,7 @@
 
 angular.module('chessApp')
 
-    .controller('TournamentCtrl', ['$scope', '$rootScope', 'playerService', 'gameService',  function ($scope, $rootScope, playerService, gameService) {
+    .controller('TournamentCtrl', ['$scope', '$rootScope', 'playerService', 'gameService', function ($scope, $rootScope, playerService, gameService) {
         console.log("TournamentCtrl is loaded");
 
 
@@ -12,16 +12,14 @@ angular.module('chessApp')
             gameService.getGames().then(function (response) {
 
                 $scope.games = response.plain();
-
                 $scope.tourn = createTournament();
 
                 $scope.gridOptions.data = $scope.tourn;
 
 
                 $scope.gridOptions.columnDefs = generateFields();
-
-                console.log(statistic(1100, 1101));
-
+                /*    console.log("stat");
+                 console.log(statistic(1099,1137));*/
 
             });
 
@@ -59,25 +57,20 @@ angular.module('chessApp')
 
             for (var key in playerInfo) {
 
-                if (key === "$$hashKey") {
+                if (key === "$$hashKey" || key === 'id' || key == 'resultCount') {
 
                 } else {
                     columnDefs.push({field: key, displayName: key})
                 }
-
-
             }
-
             return columnDefs
-
         }
-
 
         function statistic(playerId, opponentId) {
 
-            var gameStatistic = [];
-            gameStatistic['result'] = "";
-            gameStatistic['score'] = "";
+
+            var pointsCount = 0;
+
 
             var resultWhite = _.filter($scope.games, function (game) {
 
@@ -93,90 +86,84 @@ angular.module('chessApp')
 
             });
 
-            console.log(resultWhite[0].result);
-            var result = resultWhite[0].result;
+            /*    console.log("white lengrh");
+             console.log(resultWhite.length);*/
 
-            if (resultWhite[0].result == 'MATE') {
+            if (resultWhite.length != 0) {
 
 
-                if (resultWhite.winnerId == playerId) {
+                if (resultWhite[0].result == 'MATE') {
 
-                    gameStatistic['result'] = 1;
+                    if (resultWhite[0].winner == 'White') {
+
+
+                        pointsCount += 1;
+                        /*console.log("white winner");
+                         console.log(pointsCount);*/
+
+                    } else {
+                        pointsCount += 0;
+
+                    }
                 } else {
-                    gameStatistic['result'] = 0;
-                }
-            } else {
+                    pointsCount = pointsCount + 0.5;
 
-                gameStatistic['result'] = 0.5;
+                }
             }
 
+            /*   console.log("Black lengrh");
+             console.log(resultBlack.length);*/
 
-            if ( (resultBlack.result == 'MATE')) {
-                if (resultBlack.winnerId == playerId) {
-                    gameStatistic['result'] = 1;
+            if (resultBlack.length != 0) {
+
+                if ((resultBlack[0].result == 'MATE')) {
+                    if (resultBlack[0].winner == 'Black') {
+
+                        pointsCount += 1;
+
+                        /*  console.log("black winner");
+                         console.log(pointsCount);*/
+
+                    } else {
+                        pointsCount += 0;
+
+                    }
                 } else {
-                    gameStatistic['result'] = 0;
+                    pointsCount = pointsCount + 0.5;
+
                 }
-            } else {
-                console.log("here ");
-                gameStatistic['result'] = 0.5;
+
             }
-
-
-            console.log(resultWhite);
-            console.log(resultBlack);
-            return gameStatistic;
-
-        }
-
-        function gameStat(playerId, opponentId) {
+            /*         console.log("pointsCount");
+             console.log(pointsCount);
+             */
             var gameStatistic = [];
-            gameStatistic['result'] = "";
-            gameStatistic['score'] = "";
 
-
-            for (var k = 0; k < $scope.games.length; k++) {
-
-                var game = $scope.games[k];
-
-                if ((playerId == game.whiteId) &&
-                    (opponentId == game.blackId)
-                ) {
-
-
-                    if (game.result == "STALEMATE" || game.result == "DRAW") {
-                        gameStatistic['result'] = 0.5;
-                    } else {
-                        if (playerId == game.winnerId) {
-                            gameStatistic['result'] = 1;
-                        } else {
-                            gameStatistic['result'] = 0;
-                        }
-                    }
-
-                    gameStatistic['score'] = game.whiteScore;
-                }
-                else if ((opponentId == game.whiteId) &&
-                    (playerId == game.blackId)
-                ) {
-
-                    if (game.result == "STALEMATE" || game.result == "DRAW") {
-                        gameStatistic['result'] = 0.5;
-                    } else {
-                        if (playerId == game.winnerId) {
-                            gameStatistic['result'] = 1;
-                        } else {
-                            gameStatistic['result'] = 0;
-                        }
-                    }
-                    gameStatistic['score'] = game.blackScore;
-                }
-
+            if (resultBlack.length != 0 || resultWhite.length != 0) {
+                gameStatistic['result'] = pointsCount;
+            } else {
+                gameStatistic['result'] = '';
             }
+
+
+            var player = _.find($scope.players, function (player) {
+
+                return player.id === playerId;
+
+            });
+            var opponent = _.find($scope.players, function (player) {
+
+                return player.id === opponentId;
+
+            });
+
+
+            gameStatistic['ratingDifference'] = opponent.rating - player.rating;
+
             return gameStatistic;
 
-
         }
+
 
         function createTournament() {
 
@@ -185,12 +172,12 @@ angular.module('chessApp')
             _($scope.players).forEach(function (player) {
 
                 var playerScore = {};
-
+                playerScore['id'] = player.id;
                 playerScore['Name'] = player.name;
                 playerScore['Rating'] = player.rating;
 
                 var resultCount = 0;
-                var ratingCount = 0;
+                var ratingDifferenceCount = 0;
 
                 _($scope.players).forEach(function (opponentPlayer) {
                     if (player.name == opponentPlayer.name) {
@@ -198,33 +185,52 @@ angular.module('chessApp')
                     }
                     else {
 
-                        var gameStatistic = gameStat(player.id, opponentPlayer.id);
+                        var gameStatistic = statistic(player.id, opponentPlayer.id);
 
 
                         playerScore[opponentPlayer.name] = gameStatistic.result;
 
                         if (gameStatistic.result != '') {
                             resultCount += gameStatistic.result;
-                            ratingCount += gameStatistic.score;
+                            ratingDifferenceCount += gameStatistic.ratingDifference;
                         }
 
                     }
 
                 });
 
+                var maxScore = (($scope.players.length - 1) * 2);
 
-                playerScore['Score'] = "" + resultCount + " / " + $scope.players.length;
+                playerScore['resultCount'] = resultCount;
+                playerScore['Score'] = "" + resultCount + " / " + maxScore;
 
-                playerScore['Rate+'] = ratingCount;
+                // formula from https://en.wikipedia.org/wiki/Chess_rating_system#CITEREFElo1978
+                var K = 40;
+                if (player.rating > 2400) {
+                    K = 20;
+                }
 
-                playerScore['New rating'] = player.rating + ratingCount;
 
-                playerScore['Place'] = 1;
+                playerScore['RateUp'] = K / 2 * ( resultCount - (maxScore - resultCount) + ratingDifferenceCount / 400);
+
+                playerScore['New rating'] = player.rating + playerScore.RateUp;
+
 
                 tournament.push(playerScore);
 
 
             });
+
+
+            var i = 1;
+            _.forEach(_.sortBy(tournament, 'resultCount').reverse(), function (sortedPlayerScore) {
+                var currentPlayerScore = _.find(tournament, function (playerScore) {
+                    return playerScore.id == sortedPlayerScore.id;
+                });
+                currentPlayerScore['Place'] = i;
+                i++;
+            });
+
 
             return tournament;
         }

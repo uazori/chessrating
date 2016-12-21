@@ -8,12 +8,23 @@ angular.module('chessApp')
 
 
             playerService.getPlayers().then(function (response) {
+
                 $scope.players = response;
+
+                $scope.whiteChanged()
             });
 
 
-            $scope.result = ['MATE', 'DRAW', 'STALEMATE'];
 
+            $scope.whiteChanged = function (){
+
+             $scope.blackPlayers = _.filter($scope.players,function (player) {
+                            if (player.id!= $scope.gameModel.whiteId){return player;}
+                        });
+                };
+
+
+            $scope.result = ['MATE', 'DRAW', 'STALEMATE'];
 
             $scope.playersInGame = ['White', 'Black'];
 
@@ -33,11 +44,13 @@ angular.module('chessApp')
 
 
             if ($stateParams.gameId) {
+
                 $scope.gameId = $stateParams.gameId;
                 console.log("Editing game id = " + $scope.gameId);
 
                 gameService.getGame($stateParams.gameId).then(function (response) {
                 $scope.gameModel = response;
+
                 });
 
 
@@ -98,7 +111,8 @@ angular.module('chessApp')
                     .ok('Yes')
                     .cancel('No');
 
-                if ($scope.GameForm.$valid) {
+
+                if ($scope.gameForm.$valid) {
                     $mdDialog.show(confirm).then(function () {
                         yes();
                     }, function () {
@@ -127,7 +141,7 @@ angular.module('chessApp')
             }
 
             $scope.cancel = function (ev) {
-                $scope.GameForm.$dirty ? showConfirm(ev) : $state.go('games');
+                $scope.gameForm.$dirty ? showConfirm(ev) : $state.go('games');
             };
 
             function showConfirm(ev) {
@@ -139,7 +153,7 @@ angular.module('chessApp')
                     .ok('Accept')
                     .cancel('Cancel');
                 $mdDialog.show(confirm).then(function () {
-                    $state.go('games');
+                    $state.go('games', {updateData:true});
                 });
             }
 

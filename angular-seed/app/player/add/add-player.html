@@ -6,22 +6,40 @@
     <md-divider></md-divider>
     <br>
 
-    <form name="playerForm" >
+
+    <pre>{{playerModel}}</pre>
+
+    <form name="playerForm">
+
+        <pre>{{$scope.playerForm.$valid}}</pre>
 
         <div layout-gt-xs="row" layout-align="space-between">
             <md-input-container class="md-block" flex-gt-xs>
                 <label>Player Name</label>
-                <input name="nameInput" ng-model="playerModel.name" md-maxlength="60" required>
+                <input name="nameInput" ng-model="playerModel.name" required>
             </md-input-container>
 
             <md-input-container class="md-block" flex-gt-xs>
                 <label>Player Surname</label>
-                <input name="surNameInput" ng-model="playerModel.surname" md-maxlength="60" required>
+                <input name="surNameInput" ng-model="playerModel.surname" required>
             </md-input-container>
 
-            <md-input-container class="md-block"  flex-gt-xs>
+            <md-input-container class="md-block" flex-gt-xs>
                 <label>Rating</label>
-                <input name="ratingInput" ng-model="playerModel.rating" md-maxlength="5" required>
+                <input name="ratingInput" ng-model="playerModel.rating" required>
+            </md-input-container>
+
+
+            <md-input-container class="md-block" flex-gt-xs>
+
+            <md-checkbox
+                    ng-model="playerModel.activity"
+                    aria-label="Activity"
+
+                    class="md-warn md-align-top-left" flex>{{playerModel.activity}}
+
+            </md-checkbox>
+
             </md-input-container>
 
         </div>

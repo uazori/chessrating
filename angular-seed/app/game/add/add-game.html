@@ -6,53 +6,56 @@
     <md-divider></md-divider>
     <br>
 
-    <form name="GameForm">
+
+
+    <form name="gameForm">
 
         <pre>{{gameModel}}</pre>
 
+        <pre ng-show="gameForm.white.$dirty ">{{gameForm.white.$dirty}}</pre>
+
         <div layout-gt-xs="row" layout-align="space-between">
 
-            <md-input-container class="md-block" flex-gt-xs>
-                <label>White Player</label>
-                <md-select ng-model="gameModel.whiteId">
+            <md-input-container class="md-block"   flex-gt-xs >
+                <label >White Player</label>
+               <!-- <label ng-show="gameForm.white.$error.required" >required field</label>-->
+                <md-select ng-change=whiteChanged() ng-model="gameModel.whiteId" name = "white" required>
                     <md-option ng-value="player.id" ng-repeat="player in players">{{ player.name }}</md-option>
                 </md-select>
             </md-input-container>
 
             <md-input-container class="md-block" flex-gt-xs>
                 <label>Result</label>
-                <md-select ng-model="gameModel.result">
+                <md-select ng-model="gameModel.result" name = "result" required>
                     <md-option ng-value="res" ng-repeat="res in result">{{ res }}</md-option>
                 </md-select>
             </md-input-container>
 
             <md-input-container class="md-block" flex-gt-xs>
                 <label>Black Player</label>
-                <md-select ng-model="gameModel.blackId" >
-                    <md-option ng-value="player.id" ng-repeat="player in players">{{ player.name }}</md-option>
+                <md-select ng-model="gameModel.blackId" name = "black"    required>
+                    <md-option ng-value="player.id" ng-repeat="player in blackPlayers">{{ player.name }}</md-option>
                 </md-select>
             </md-input-container>
 
 
-            <md-input-container class="md-block" flex-gt-xs  >
+            <md-input-container class="md-block" flex-gt-xs>
                 <label>Winner</label>
-                <md-select ng-model="gameModel.winner"  ng-disabled ="enableWinnerSelect()">
+                <md-select ng-model="gameModel.winner" ng-disabled="enableWinnerSelect()">
                     <md-option ng-value="player" ng-repeat="player in playersInGame">{{ player }}</md-option>
                 </md-select>
             </md-input-container>
 
 
+            <div layout="row">
+                <sm-date-time-picker
 
-
-            <div  layout="row">
-            <sm-date-time-picker
-
-                    label="game start"
+                        label="game start"
                         ng-model="gameModel.start"
                         flex="50"
                         flex-sm="100"
                         flex-xs="100"
-
+                        is-required="{{true}}"
                         format="YYYY-MM-DDTHH:mm"
                         mode="date-time"
                         week-start-day="Monday">
@@ -63,21 +66,21 @@
             </div>
 
 
-            <div  layout="row">
-            <sm-date-time-picker
-                    fname="field"
-                    label="game end"
-                    ng-model="gameModel.end"
-                    flex="50"
-                    flex-sm="100"
-                    flex-xs="100"
-                    is-required="{{true}}"
-                    format="YYYY-MM-DDTHH:mm"
-                    mode="date-time"
-                    week-start-day="Monday">
+            <div layout="row">
+                <sm-date-time-picker
+                        fname="field"
+                        label="game end"
+                        ng-model="gameModel.end"
+                        flex="50"
+                        flex-sm="100"
+                        flex-xs="100"
+                        is-required="{{true}}"
+                        format="YYYY-MM-DDTHH:mm"
+                        mode="date-time"
+                        week-start-day="Monday">
 
 
-            </sm-date-time-picker>
+                </sm-date-time-picker>
 
 
             </div>

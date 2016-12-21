@@ -88,8 +88,11 @@ angular.module('chessApp')
                             });
 
 
-                        $scope.gridOptions.data = games;
+
+
                     });
+                    $scope.gridOptions.data =_.sortBy(games,'white');
+
                 });
 
             }
