@@ -184,17 +184,17 @@ public class GameServiceImpTest extends TestCase {
         List<Player> players = new ArrayList<>();
         List<Game> games = new ArrayList<>();
 
-        Player player1 = new Player(1, "FirstTestName", "FirstTestSurname", 1);
-        Player player2 = new Player(2, "SecondTestName", "SecondTestSurname", 2);
-        Player player3 = new Player(3, "ThirdTestName", "ThirdTestSurname", 3);
-        Player player4 = new Player(4, "FourthTestName", "FourthTestSurname", 4);
-        Player player5 = new Player(5, "FifthName", "FifthSurname", 5);
+        Player player1 = new Player(1, "FirstTestName", "FirstTestSurname", 1,true);
+        Player player2 = new Player(2, "SecondTestName", "SecondTestSurname", 2,true);
+        Player player3 = new Player(3, "ThirdTestName", "ThirdTestSurname", 3,true);
+        Player player4 = new Player(4, "FourthTestName", "FourthTestSurname", 4,true);
+        Player player5 = new Player(5, "FifthName", "FifthSurname", 5,true);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
-        games.add(new Game(1L, player1, player2, player1, Result.MATE, LocalDateTime.parse("02:02 30-11-2016", formatter), LocalDateTime.parse("02:32 30-11-2016", formatter)));
-        games.add(new Game(2L, player1, player3, player1, Result.DRAW, LocalDateTime.parse("12:25 29-11-2016", formatter), LocalDateTime.parse("13:25 29-11-2016", formatter)));
-        games.add(new Game(3L, player2, player3, player3, Result.STALEMATE, LocalDateTime.parse("09:43 15-11-2016", formatter), LocalDateTime.parse("11:00 15-11-2016", formatter)));
-        games.add(new Game(4L, player4, player5, player4, Result.DRAW, LocalDateTime.parse("17:07 25-10-2016", formatter), LocalDateTime.parse("17:37 25-10-2016", formatter)));
+        games.add(new Game(1L, player1, player2, "white", Result.MATE, LocalDateTime.parse("02:02 30-11-2016", formatter), LocalDateTime.parse("02:32 30-11-2016", formatter)));
+        games.add(new Game(2L, player1, player3, "white", Result.DRAW, LocalDateTime.parse("12:25 29-11-2016", formatter), LocalDateTime.parse("13:25 29-11-2016", formatter)));
+        games.add(new Game(3L, player2, player3, "black", Result.STALEMATE, LocalDateTime.parse("09:43 15-11-2016", formatter), LocalDateTime.parse("11:00 15-11-2016", formatter)));
+        games.add(new Game(4L, player4, player5, "white", Result.DRAW, LocalDateTime.parse("17:07 25-10-2016", formatter), LocalDateTime.parse("17:37 25-10-2016", formatter)));
 
         return games;
     }
@@ -204,10 +204,10 @@ public class GameServiceImpTest extends TestCase {
         List<GameDto> gameDtoList = new ArrayList<>();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
-        gameDtoList.add(new GameDto(1L, 1L, 2L, 1L, "MATE", LocalDateTime.parse("02:02 30-11-2016", formatter), LocalDateTime.parse("02:32 30-11-2016", formatter)));
-        gameDtoList.add(new GameDto(2L, 1L, 3L, 1L, "DRAW", LocalDateTime.parse("12:25 29-11-2016", formatter), LocalDateTime.parse("13:25 29-11-2016", formatter)));
-        gameDtoList.add(new GameDto(3L, 2L, 3L, 3L, "STALEMATE", LocalDateTime.parse("09:43 15-11-2016", formatter), LocalDateTime.parse("11:00 15-11-2016", formatter)));
-        gameDtoList.add(new GameDto(4L, 5L, 5L, 4L, "DRAW", LocalDateTime.parse("17:07 25-10-2016", formatter), LocalDateTime.parse("17:37 25-10-2016", formatter)));
+        gameDtoList.add(new GameDto(1L, 1L, 2L, "white", "MATE",20D,-20D, LocalDateTime.parse("02:02 30-11-2016", formatter), LocalDateTime.parse("02:32 30-11-2016", formatter)));
+        gameDtoList.add(new GameDto(2L, 1L, 3L, "white", "DRAW",20D,-20D, LocalDateTime.parse("12:25 29-11-2016", formatter), LocalDateTime.parse("13:25 29-11-2016", formatter)));
+        gameDtoList.add(new GameDto(3L, 2L, 3L, "black", "STALEMATE",20D,-20D, LocalDateTime.parse("09:43 15-11-2016", formatter), LocalDateTime.parse("11:00 15-11-2016", formatter)));
+        gameDtoList.add(new GameDto(4L, 5L, 5L, "white", "DRAW",20D,-20D, LocalDateTime.parse("17:07 25-10-2016", formatter), LocalDateTime.parse("17:37 25-10-2016", formatter)));
 
         return gameDtoList;
 

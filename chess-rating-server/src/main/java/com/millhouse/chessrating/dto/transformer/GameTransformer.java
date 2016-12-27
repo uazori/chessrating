@@ -16,8 +16,10 @@ public class GameTransformer {
         gameDto.setId(game.getId());
         gameDto.setWhiteId(game.getWhite().getId());
         gameDto.setBlackId(game.getBlack().getId());
-        gameDto.setWinnerId(game.getWinner().getId());
+        gameDto.setWinner(game.getWinner());
         gameDto.setResult(game.getResult().toString());
+        gameDto.setWhiteScore(game.getWhiteScore());
+        gameDto.setBlackScore(game.getBlackScore());
         gameDto.setStart(game.getStart());
         gameDto.setEnd(game.getEnd());
 
@@ -26,18 +28,14 @@ public class GameTransformer {
 
     public Game transform(Player white, Player black, GameDto gameDto) {
 
+
         Result result = Result.valueOf(gameDto.getResult());
 
-        Player winner ;
-        if (white.getId().equals(gameDto.getWhiteId())) {
-            winner = white;
-        } else {
-            winner = black;
-        }
+
+        return new Game(gameDto.getId(), white, black, gameDto.getWinner(), result, gameDto.getStart(), gameDto.getEnd());
 
 
 
-        return new Game(gameDto.getId(), white, black, winner, result, gameDto.getStart(), gameDto.getEnd());
     }
 
 }

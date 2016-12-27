@@ -47,16 +47,19 @@ public class GameController {
 
     //-------------------Create a Game--------------------------------------------------------
 
-    @RequestMapping(value = "/game/", method = RequestMethod.POST)
+    @RequestMapping(value = "/game", method = RequestMethod.POST)
     public ResponseEntity<GameDto> createGame(@RequestBody GameDto gameDto, UriComponentsBuilder ucBuilder) {
 
 
 
 
-        if (gameDto.getId()==null) {
+        if (gameDto.getId()!=null) {
 
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
+
+
+
 
         gameService.saveOrUpdateGame(gameDto);
 
@@ -68,7 +71,7 @@ public class GameController {
 
     //------------------- Update a Game --------------------------------------------------------
 
-    @RequestMapping(value = "/game/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/game/{id}", method = RequestMethod.PUT)
     public ResponseEntity<GameDto> updateGame(@PathVariable("id") Long id, @RequestBody GameDto gameDto) {
 
         if (gameDto.getId() == null) {
@@ -134,14 +137,14 @@ public class GameController {
     }
 
     //------------------------ Retrieve All Games --------------------
-    @RequestMapping(value = "/games/", method = RequestMethod.GET)
+    @RequestMapping(value = "/game", method = RequestMethod.GET)
     public ResponseEntity<List<GameDto>> listAllGames() {
 
 
         List<GameDto> gamesDto = gameService.findAllGames();
 
         if (gamesDto.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);//You many decide to return HttpStatus.NOT_FOUND
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
         }
         return new ResponseEntity<>(gamesDto, HttpStatus.OK);
     }

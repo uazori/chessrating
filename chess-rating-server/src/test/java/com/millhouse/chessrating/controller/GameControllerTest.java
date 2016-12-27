@@ -71,7 +71,7 @@ public class GameControllerTest {
     public void getGame_gameExist_() throws Exception {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
-        GameDto gameDto = new GameDto(1L, 1L, 2L, 1L, "MATE", LocalDateTime.parse("02:02 30-11-2016", formatter), LocalDateTime.parse("02:32 30-11-2016", formatter));
+        GameDto gameDto = new GameDto(1L, 1L, 2L, "white", "MATE",20D,-20D, LocalDateTime.parse("02:02 30-11-2016", formatter), LocalDateTime.parse("02:32 30-11-2016", formatter));
 
         when(gameServiceMock.findById(1L)).thenReturn(gameDto);
 
@@ -80,7 +80,7 @@ public class GameControllerTest {
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.whiteId", is(1)))
                 .andExpect(jsonPath("$.blackId", is(2)))
-                .andExpect(jsonPath("$.winnerId", is(1)))
+                .andExpect(jsonPath("$.winner", is("white")))
                 .andExpect(jsonPath("$.result", is("MATE")))
                 .andExpect(jsonPath("$.start", is("2016-11-30T02:02")))
                 .andExpect(jsonPath("$.end", is("2016-11-30T02:32")))
@@ -109,7 +109,7 @@ public class GameControllerTest {
     public void createGame_gameAdded_returnGame() throws Exception {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
-        GameDto gameDto = new GameDto(1L, 1L, 2L, 1L, "MATE", LocalDateTime.parse("02:02 30-11-2016", formatter), LocalDateTime.parse("02:32 30-11-2016", formatter));
+        GameDto gameDto = new GameDto(null,1L, 2L, "white", "MATE",20D,-20D, LocalDateTime.parse("02:02 30-11-2016", formatter), LocalDateTime.parse("02:32 30-11-2016", formatter));
 
 
         ObjectMapper mapper = new ObjectMapper();
@@ -120,15 +120,13 @@ public class GameControllerTest {
         doNothing().when(gameServiceMock).saveOrUpdateGame(gameDto);
 
 
-        mockMvc.perform(post("/game/")
+        mockMvc.perform(post("/game")
                 .contentType(APPLICATION_JSON_MEDIA_TYPE)
                 .content(jsonTestGame))
                 .andExpect(content().contentType(APPLICATION_JSON_MEDIA_TYPE))
-
-                .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.whiteId", is(1)))
                 .andExpect(jsonPath("$.blackId", is(2)))
-                .andExpect(jsonPath("$.winnerId", is(1)))
+                .andExpect(jsonPath("$.winner", is("white")))
                 .andExpect(jsonPath("$.result", is("MATE")))
                 .andExpect(jsonPath("$.start", is("2016-11-30T02:02")))
                 .andExpect(jsonPath("$.end", is("2016-11-30T02:32")));
@@ -142,7 +140,7 @@ public class GameControllerTest {
     public void createGame_gameExist_returnStatusConflict() throws Exception {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
-        GameDto gameDto = new GameDto(null, 1L, 2L, 1L, "MATE", LocalDateTime.parse("02:02 30-11-2016", formatter), LocalDateTime.parse("02:32 30-11-2016", formatter));
+        GameDto gameDto = new GameDto(1L, 1L, 2L, "white", "MATE",20D,-20D, LocalDateTime.parse("02:02 30-11-2016", formatter), LocalDateTime.parse("02:32 30-11-2016", formatter));
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
@@ -150,7 +148,7 @@ public class GameControllerTest {
 
 
 
-        mockMvc.perform(post("/game/")
+        mockMvc.perform(post("/game")
                 .contentType(APPLICATION_JSON_MEDIA_TYPE)
                 .content(jsonTestGame))
                 .andExpect(status().isConflict());
@@ -163,7 +161,7 @@ public class GameControllerTest {
     public void updateGame_GameUpdated_returnGame() throws Exception {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
-        GameDto gameDto = new GameDto(1L, 1L, 2L, 1L, "MATE", LocalDateTime.parse("02:02 30-11-2016", formatter), LocalDateTime.parse("02:32 30-11-2016", formatter));
+        GameDto gameDto = new GameDto(1L, 1L, 2L, "white", "MATE",20D,-20D, LocalDateTime.parse("02:02 30-11-2016", formatter), LocalDateTime.parse("02:32 30-11-2016", formatter));
 
 
         ObjectMapper mapper = new ObjectMapper();
@@ -182,7 +180,7 @@ public class GameControllerTest {
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.whiteId", is(1)))
                 .andExpect(jsonPath("$.blackId", is(2)))
-                .andExpect(jsonPath("$.winnerId", is(1)))
+                .andExpect(jsonPath("$.winner", is("white")))
                 .andExpect(jsonPath("$.result", is("MATE")))
                 .andExpect(jsonPath("$.start", is("2016-11-30T02:02")))
                 .andExpect(jsonPath("$.end", is("2016-11-30T02:32")));
@@ -224,9 +222,9 @@ public class GameControllerTest {
         List<GameDto> gameDtoList = new ArrayList<>();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
-        gameDtoList.add(new GameDto(1L, 1L, 2L, 1L, "MATE", LocalDateTime.parse("02:02 30-11-2016", formatter), LocalDateTime.parse("02:32 30-11-2016", formatter)));
-        gameDtoList.add(new GameDto(2L, 1L, 3L, 1L, "DRAW", LocalDateTime.parse("12:25 29-11-2016", formatter), LocalDateTime.parse("13:25 29-11-2016", formatter)));
-        gameDtoList.add(new GameDto(3L, 2L, 3L, 3L, "STALEMATE", LocalDateTime.parse("09:43 15-11-2016", formatter), LocalDateTime.parse("11:00 15-11-2016", formatter)));
+        gameDtoList.add(new GameDto(1L, 1L, 2L, "white", "MATE",20D,-20D, LocalDateTime.parse("02:02 30-11-2016", formatter), LocalDateTime.parse("02:32 30-11-2016", formatter)));
+        gameDtoList.add(new GameDto(2L, 1L, 3L, "white", "DRAW",20D,-20D, LocalDateTime.parse("12:25 29-11-2016", formatter), LocalDateTime.parse("13:25 29-11-2016", formatter)));
+        gameDtoList.add(new GameDto(3L, 2L, 3L, "white", "STALEMATE",20D,-20D, LocalDateTime.parse("09:43 15-11-2016", formatter), LocalDateTime.parse("11:00 15-11-2016", formatter)));
 
 
         when(gameServiceMock.findByPlayerId(1L)).thenReturn(gameDtoList);
@@ -239,7 +237,7 @@ public class GameControllerTest {
                 .andExpect(jsonPath("$[0].id", is(1)))
                 .andExpect(jsonPath("$[0].whiteId", is(1)))
                 .andExpect(jsonPath("$[0].blackId", is(2)))
-                .andExpect(jsonPath("$[0].winnerId", is(1)))
+                .andExpect(jsonPath("$[0].winner", is("white")))
                 .andExpect(jsonPath("$[0].result", is("MATE")))
                 .andExpect(jsonPath("$[0].start", is("2016-11-30T02:02")))
                 .andExpect(jsonPath("$[0].end", is("2016-11-30T02:32")))
@@ -247,7 +245,7 @@ public class GameControllerTest {
                 .andExpect(jsonPath("$[1].id", is(2)))
                 .andExpect(jsonPath("$[1].whiteId", is(1)))
                 .andExpect(jsonPath("$[1].blackId", is(3)))
-                .andExpect(jsonPath("$[1].winnerId", is(1)))
+                .andExpect(jsonPath("$[1].winner", is("white")))
                 .andExpect(jsonPath("$[1].result", is("DRAW")))
                 .andExpect(jsonPath("$[1].start", is("2016-11-29T12:25")))
                 .andExpect(jsonPath("$[1].end", is("2016-11-29T13:25")))
@@ -255,7 +253,7 @@ public class GameControllerTest {
                 .andExpect(jsonPath("$[2].id", is(3)))
                 .andExpect(jsonPath("$[2].whiteId", is(2)))
                 .andExpect(jsonPath("$[2].blackId", is(3)))
-                .andExpect(jsonPath("$[2].winnerId", is(3)))
+                .andExpect(jsonPath("$[2].winner", is("white")))
                 .andExpect(jsonPath("$[2].result", is("STALEMATE")))
                 .andExpect(jsonPath("$[2].start", is("2016-11-15T09:43")))
                 .andExpect(jsonPath("$[2].end", is("2016-11-15T11:00")));
@@ -287,9 +285,9 @@ public class GameControllerTest {
         List<GameDto> gameDtoList = new ArrayList<>();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
-        gameDtoList.add(new GameDto(1L, 1L, 2L, 1L, "MATE", LocalDateTime.parse("02:02 30-11-2016", formatter), LocalDateTime.parse("02:32 30-11-2016", formatter)));
-        gameDtoList.add(new GameDto(2L, 1L, 3L, 1L, "DRAW", LocalDateTime.parse("12:25 29-11-2016", formatter), LocalDateTime.parse("13:25 29-11-2016", formatter)));
-        gameDtoList.add(new GameDto(3L, 2L, 3L, 3L, "STALEMATE", LocalDateTime.parse("09:43 15-11-2016", formatter), LocalDateTime.parse("11:00 15-11-2016", formatter)));
+        gameDtoList.add(new GameDto(1L, 1L, 2L, "white", "MATE",20D,-20D, LocalDateTime.parse("02:02 30-11-2016", formatter), LocalDateTime.parse("02:32 30-11-2016", formatter)));
+        gameDtoList.add(new GameDto(2L, 1L, 3L, "white", "DRAW",20D,-20D, LocalDateTime.parse("12:25 29-11-2016", formatter), LocalDateTime.parse("13:25 29-11-2016", formatter)));
+        gameDtoList.add(new GameDto(3L, 2L, 3L, "white", "STALEMATE",20D,-20D, LocalDateTime.parse("09:43 15-11-2016", formatter), LocalDateTime.parse("11:00 15-11-2016", formatter)));
 
 
         when(gameServiceMock.findByPlayerName("GoodBoy")).thenReturn(gameDtoList);
@@ -302,7 +300,7 @@ public class GameControllerTest {
                 .andExpect(jsonPath("$[0].id", is(1)))
                 .andExpect(jsonPath("$[0].whiteId", is(1)))
                 .andExpect(jsonPath("$[0].blackId", is(2)))
-                .andExpect(jsonPath("$[0].winnerId", is(1)))
+                .andExpect(jsonPath("$[0].winner", is("white")))
                 .andExpect(jsonPath("$[0].result", is("MATE")))
                 .andExpect(jsonPath("$[0].start", is("2016-11-30T02:02")))
                 .andExpect(jsonPath("$[0].end", is("2016-11-30T02:32")))
@@ -310,7 +308,7 @@ public class GameControllerTest {
                 .andExpect(jsonPath("$[1].id", is(2)))
                 .andExpect(jsonPath("$[1].whiteId", is(1)))
                 .andExpect(jsonPath("$[1].blackId", is(3)))
-                .andExpect(jsonPath("$[1].winnerId", is(1)))
+                .andExpect(jsonPath("$[1].winner", is("white")))
                 .andExpect(jsonPath("$[1].result", is("DRAW")))
                 .andExpect(jsonPath("$[1].start", is("2016-11-29T12:25")))
                 .andExpect(jsonPath("$[1].end", is("2016-11-29T13:25")))
@@ -318,7 +316,7 @@ public class GameControllerTest {
                 .andExpect(jsonPath("$[2].id", is(3)))
                 .andExpect(jsonPath("$[2].whiteId", is(2)))
                 .andExpect(jsonPath("$[2].blackId", is(3)))
-                .andExpect(jsonPath("$[2].winnerId", is(3)))
+                .andExpect(jsonPath("$[2].winner", is("white")))
                 .andExpect(jsonPath("$[2].result", is("STALEMATE")))
                 .andExpect(jsonPath("$[2].start", is("2016-11-15T09:43")))
                 .andExpect(jsonPath("$[2].end", is("2016-11-15T11:00")));
@@ -352,7 +350,7 @@ public class GameControllerTest {
         List<GameDto> gameDtoList = new ArrayList<>();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
-        gameDtoList.add(new GameDto(1L, 1L, 2L, 1L, "MATE", LocalDateTime.parse("02:02 30-11-2016", formatter), LocalDateTime.parse("02:32 30-11-2016", formatter)));
+        gameDtoList.add(new GameDto(1L, 1L, 2L, "white", "MATE",20D,-20D, LocalDateTime.parse("02:02 30-11-2016", formatter), LocalDateTime.parse("02:32 30-11-2016", formatter)));
 
         when(gameServiceMock.findByResult("MATE")).thenReturn(gameDtoList);
 
@@ -364,7 +362,7 @@ public class GameControllerTest {
                 .andExpect(jsonPath("$[0].id", is(1)))
                 .andExpect(jsonPath("$[0].whiteId", is(1)))
                 .andExpect(jsonPath("$[0].blackId", is(2)))
-                .andExpect(jsonPath("$[0].winnerId", is(1)))
+                .andExpect(jsonPath("$[0].winner", is("white")))
                 .andExpect(jsonPath("$[0].result", is("MATE")))
                 .andExpect(jsonPath("$[0].start", is("2016-11-30T02:02")))
                 .andExpect(jsonPath("$[0].end", is("2016-11-30T02:32")));
@@ -396,14 +394,14 @@ public class GameControllerTest {
         List<GameDto> gameDtoList = new ArrayList<>();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
-        gameDtoList.add(new GameDto(1L, 1L, 2L, 1L, "MATE", LocalDateTime.parse("02:02 30-11-2016", formatter), LocalDateTime.parse("02:32 30-11-2016", formatter)));
-        gameDtoList.add(new GameDto(2L, 1L, 3L, 1L, "DRAW", LocalDateTime.parse("12:25 29-11-2016", formatter), LocalDateTime.parse("13:25 29-11-2016", formatter)));
-        gameDtoList.add(new GameDto(3L, 2L, 3L, 3L, "STALEMATE", LocalDateTime.parse("09:43 15-11-2016", formatter), LocalDateTime.parse("11:00 15-11-2016", formatter)));
+        gameDtoList.add(new GameDto(1L, 1L, 2L, "white", "MATE",20D,-20D, LocalDateTime.parse("02:02 30-11-2016", formatter), LocalDateTime.parse("02:32 30-11-2016", formatter)));
+        gameDtoList.add(new GameDto(2L, 1L, 3L, "white", "DRAW",20D,-20D, LocalDateTime.parse("12:25 29-11-2016", formatter), LocalDateTime.parse("13:25 29-11-2016", formatter)));
+        gameDtoList.add(new GameDto(3L, 2L, 3L, "white", "STALEMATE",20D,-20D, LocalDateTime.parse("09:43 15-11-2016", formatter), LocalDateTime.parse("11:00 15-11-2016", formatter)));
 
 
         when(gameServiceMock.findAllGames()).thenReturn(gameDtoList);
 
-        mockMvc.perform(get("/games/")).andExpect(status().isOk())
+        mockMvc.perform(get("/game/")).andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_MEDIA_TYPE))
 
                 .andExpect(jsonPath("$", hasSize(3)))
@@ -411,7 +409,7 @@ public class GameControllerTest {
                 .andExpect(jsonPath("$[0].id", is(1)))
                 .andExpect(jsonPath("$[0].whiteId", is(1)))
                 .andExpect(jsonPath("$[0].blackId", is(2)))
-                .andExpect(jsonPath("$[0].winnerId", is(1)))
+                .andExpect(jsonPath("$[0].winner", is("white")))
                 .andExpect(jsonPath("$[0].result", is("MATE")))
                 .andExpect(jsonPath("$[0].start", is("2016-11-30T02:02")))
                 .andExpect(jsonPath("$[0].end", is("2016-11-30T02:32")))
@@ -419,7 +417,7 @@ public class GameControllerTest {
                 .andExpect(jsonPath("$[1].id", is(2)))
                 .andExpect(jsonPath("$[1].whiteId", is(1)))
                 .andExpect(jsonPath("$[1].blackId", is(3)))
-                .andExpect(jsonPath("$[1].winnerId", is(1)))
+                .andExpect(jsonPath("$[1].winner", is("white")))
                 .andExpect(jsonPath("$[1].result", is("DRAW")))
                 .andExpect(jsonPath("$[1].start", is("2016-11-29T12:25")))
                 .andExpect(jsonPath("$[1].end", is("2016-11-29T13:25")))
@@ -427,7 +425,7 @@ public class GameControllerTest {
                 .andExpect(jsonPath("$[2].id", is(3)))
                 .andExpect(jsonPath("$[2].whiteId", is(2)))
                 .andExpect(jsonPath("$[2].blackId", is(3)))
-                .andExpect(jsonPath("$[2].winnerId", is(3)))
+                .andExpect(jsonPath("$[2].winner", is("white")))
                 .andExpect(jsonPath("$[2].result", is("STALEMATE")))
                 .andExpect(jsonPath("$[2].start", is("2016-11-15T09:43")))
                 .andExpect(jsonPath("$[2].end", is("2016-11-15T11:00")));
@@ -443,7 +441,7 @@ public class GameControllerTest {
 
         when(gameServiceMock.findAllGames()).thenReturn(gameDtoList);
 
-        mockMvc.perform(get("/games/")).andExpect(status().isNotFound());
+        mockMvc.perform(get("/game")).andExpect(status().isNoContent());
 
         verify(gameServiceMock, times(1)).findAllGames();
 
@@ -475,7 +473,7 @@ public class GameControllerTest {
     public void deleteGame_gamesExist_returnStatusNoContent() throws Exception {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
-        GameDto gameDto = new GameDto(1L, 1L, 2L, 1L, "MATE", LocalDateTime.parse("02:02 30-11-2016", formatter), LocalDateTime.parse("02:32 30-11-2016", formatter));
+        GameDto gameDto = new GameDto(1L, 1L, 2L, "white", "MATE",20D,-20D, LocalDateTime.parse("02:02 30-11-2016", formatter), LocalDateTime.parse("02:32 30-11-2016", formatter));
 
 
         when(gameServiceMock.findById(1L)).thenReturn(gameDto);

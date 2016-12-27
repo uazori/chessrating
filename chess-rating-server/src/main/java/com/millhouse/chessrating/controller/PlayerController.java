@@ -26,7 +26,7 @@ public class PlayerController {
 
     //-------------------Retrieve All Player--------------------------------------------------------
 
-    @RequestMapping(value = "/players/", method = RequestMethod.GET)
+    @RequestMapping(value = "/player", method = RequestMethod.GET)
     public ResponseEntity<List<Player>> listAllUsers() {
 
 
@@ -57,7 +57,7 @@ public class PlayerController {
     }
 
     //-------------------Create a Player--------------------------------------------------------
-    @RequestMapping(value = "/player/", method = RequestMethod.POST)
+    @RequestMapping(value = "/player", method = RequestMethod.POST)
     public ResponseEntity<Player> createUser(@RequestBody Player player, UriComponentsBuilder ucBuilder) {
 
 
@@ -75,7 +75,7 @@ public class PlayerController {
 
     //------------------- Update a Player --------------------------------------------------------
 
-    @RequestMapping(value = "/player/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/player/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Player> updateUser(@PathVariable("id") Long id, @RequestBody Player player) {
 
 

@@ -86,10 +86,12 @@ public class GameDaoImp implements GameDao {
 
     @SuppressWarnings("unchecked")
     public void saveOrUpdate(Game game) {
+        System.out.println(" Game " + game);
         if (game.getId() == null) {
             sessionFactory.getCurrentSession().save(game);
+        }else {
+            sessionFactory.getCurrentSession().saveOrUpdate(game);
         }
-        sessionFactory.getCurrentSession().saveOrUpdate(game);
     }
 
     @Override

@@ -1,10 +1,10 @@
 package com.millhouse.chessrating.configuration;
 
+import javax.servlet.Filter;
+
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-/**
- * Created by Vadim Ovcharuk uazori@gmail.com on 11/17/2016.
- */
+
 public class ChessRatingInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
@@ -19,6 +19,11 @@ public class ChessRatingInitializer extends AbstractAnnotationConfigDispatcherSe
     @Override
     protected String[] getServletMappings() {
         return new String[]{"/"};
+    }
+    @Override
+    protected Filter[] getServletFilters() {
+        Filter [] singleton = { new CORSFilter()};
+        return singleton;
     }
 
 

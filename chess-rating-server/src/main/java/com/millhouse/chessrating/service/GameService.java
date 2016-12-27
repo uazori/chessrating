@@ -9,8 +9,7 @@ import java.util.List;
  * Interface for Game Service
  */
 public interface GameService {
-    GameDto
-    findById(Long id);
+    GameDto findById(Long id);
 
     List<GameDto> findByPlayerName(String name);
 

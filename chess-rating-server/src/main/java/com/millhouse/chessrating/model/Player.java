@@ -19,32 +19,39 @@ public class Player {
     @Column(name = "surname")
     private String surname;
     @Column(name = "rating")
-    private int rating;
+    private double rating;
+    @Column(name = "activity")
+    private boolean activity;
+
 
     public Player() {
     }
 
-    public Player(long id, String name, String surname, int rating) {
+    public Player(long id, String name, String surname, int rating, boolean activity) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.rating = rating;
+        this.activity = activity;
     }
 
-    public Player(String name, String surname, int rating) {
+    public Player(String name, String surname, int rating, boolean activity ) {
         this.name = name;
         this.surname = surname;
         this.rating = rating;
+        this.activity = activity;
     }
+
 
     @Override
     public String toString() {
-        return "Player{"
-                +"id=" + id
-                +", name='" + name + '\''
-                +", surname='" + surname + '\''
-                +", rating=" + rating
-                +'}';
+        return "Player{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", rating=" + rating +
+                ", activity=" + activity +
+                '}';
     }
 
     @Override
@@ -54,7 +61,8 @@ public class Player {
 
         Player player = (Player) o;
 
-        if (rating != player.rating) return false;
+        if (Double.compare(player.rating, rating) != 0) return false;
+        if (activity != player.activity) return false;
         if (!name.equals(player.name)) return false;
         return surname.equals(player.surname);
 
@@ -62,9 +70,13 @@ public class Player {
 
     @Override
     public int hashCode() {
-        int result = name.hashCode();
+        int result;
+        long temp;
+        result = name.hashCode();
         result = 31 * result + surname.hashCode();
-        result = 31 * result + rating;
+        temp = Double.doubleToLongBits(rating);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (activity ? 1 : 0);
         return result;
     }
 
@@ -93,11 +105,19 @@ public class Player {
         this.surname = surname;
     }
 
-    public int getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(double rating) {
         this.rating = rating;
+    }
+
+    public boolean isActivity() {
+        return activity;
+    }
+
+    public void setActivity(boolean activity) {
+        this.activity = activity;
     }
 }

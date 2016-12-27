@@ -93,8 +93,6 @@ public class GameServiceImp implements GameService {
 
         Game game = transformer.transform(white, black, gameDto);
 
-        System.out.println("Game service save Game");
-
         gameDao.saveOrUpdate(game);
 
     }
