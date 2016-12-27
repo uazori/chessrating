@@ -2,6 +2,15 @@
     <div layout="row" layout-align="space-between">
         <h2 class="md-title">Players List</h2>
         <div flex-offset-gt-sm="5" layout="row" layout-align="end center" flex-gt-sm="25">
+
+            <md-button class="md-block md-raised md-primary" ng-click="goToTournament()" ng-show="tournamentEdit">Go to
+                Tournament
+            </md-button>
+
+            <md-button class="md-block md-raised md-primary" ng-click="addToTournament()" ng-show="tournamentEdit"
+                       ng-disabled="gridApi.selection.getSelectedRows().length <= 0">Add Player to Tournament
+            </md-button>
+
             <md-button class="md-block md-raised md-primary" ng-click="edit()"
                        ng-disabled="gridApi.selection.getSelectedRows().length <= 0">Edit Player
             </md-button>
@@ -11,7 +20,28 @@
     <md-divider></md-divider>
     <br>
     <div>
-        <div ui-grid="gridOptions" class="md-whiteframe-2dp grid-height-65 no-filter-input" flex ui-grid-selection ui-grid-auto-resize></div>
+        <div ui-grid="gridOptions" class="md-whiteframe-2dp grid-height-65 no-filter-input" flex ui-grid-selection
+             ui-grid-auto-resize></div>
     </div>
 
+
+    <div ng-show="tournamentEdit" layout="row" layout-align="space-between">
+        <h2 class="md-title">Players in tournament</h2>
+        <div flex-offset-gt-sm="5" layout="row" layout-align="end center" flex-gt-sm="25">
+            <md-button class="md-block md-raised md-primary" ng-click="removeFromTournament()" ng-show="tournamentEdit"
+                       ng-disabled="gridPlayersApi.selection.getSelectedRows().length <= 0">Remove player from tournament
+            </md-button>
+        </div>
+
+
+    </div>
+
+    <md-divider></md-divider>
+    <br>
+    <div ui-grid="gridPlayers" ng-show="tournamentEdit" class="md-whiteframe-2dp grid-height-65 no-filter-input" flex ui-grid-selection
+         ui-grid-auto-resize>
+
+    </div>
 </div>
+
+

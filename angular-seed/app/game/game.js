@@ -1,6 +1,4 @@
-/**
- * Created by Millhouse on 12/5/2016.
- */
+
 'use strict';
 
 angular.module('chessApp')
@@ -30,31 +28,16 @@ angular.module('chessApp')
 
         };
         service.updateGame = function (game) {
+            console.log("game service update");
+            var updatedGame = Restangular.one('game', game.id);
 
-            console.log("sgame service update");
-
-
-
-
-
-
-
-
-           var updatedGame =  Restangular.one('game', game.id);
-
-
-             updatedGame.whiteId = game.whiteId;
-             updatedGame.blackId = game.blackId;
-             updatedGame.winner = game.winner;
-             updatedGame.result = game.result;
-             updatedGame.start = game.start;
-             updatedGame.end = game.end;
-
-            updatedGame.post();
-
-
-
-
+            updatedGame.whiteId = game.whiteId;
+            updatedGame.blackId = game.blackId;
+            updatedGame.winner = game.winner;
+            updatedGame.result = game.result;
+            updatedGame.start = game.start;
+            updatedGame.end = game.end;
+            updatedGame.put();
         };
 
         console.log("gameService");
@@ -62,41 +45,50 @@ angular.module('chessApp')
     }])
 
 
-    .controller('GameCtrl', ['$scope', '$rootScope', '$http', '$q', '$interval', 'gameService', 'playerService', function ($scope, $rootScope, $http, $q, $interval, gameService, playerService) {
+    .controller('GameCtrl', ['$scope', '$rootScope', '$http', '$q', '$interval', 'gameService', 'playerService', 'tournamentService', '$stateParams', function ($scope, $rootScope, $http, $q, $interval, gameService, playerService, tournamentService, $stateParams) {
         console.log("GameCtrl is loaded");
 
+        console.log('Players game');
+        console.log($stateParams.playersInTournament);
 
-        playerService.getPlayers().then(
-            function (response) {
-                $scope.players = response.plain();
+        if ($stateParams.playersInTournament) {
+            $scope.tournamentEdit = true;
 
-                gameService.getGames().then(function (response) {
-                    var games = [];
-                    response.map(function (game) {
+            tournamentService.getTournament($stateParams.playersInTournament.tournamentId).then(function (response) {
 
-                        games.push(
-                            {
-                                id: game.id,
-                                white: getPlayerName(game.whiteId),
-                                black: getPlayerName(game.blackId),
-                                winner: game.winner,
-
-                                result: game.result,
-                                start: game.start,
-                                end: game.end
-
-                            });
+                $scope.tournament = response.plain();
 
 
+                $scope.players = $scope.tournament.players;
 
+                $scope.tournamentGames = _.filter($scope.tournament.gameDtos, function (game) {
 
-                    });
-                    $scope.gridOptions.data =_.sortBy(games,'white');
+                    if ((( game.whiteId == $stateParams.playersInTournament.whiteId ) && ( game.blackId == $stateParams.playersInTournament.blackId )) || (( game.whiteId == $stateParams.playersInTournament.blackId ) && ( game.blackId == $stateParams.playersInTournament.whiteId ))) return game;
 
                 });
 
-            }
-        );
+                var games = [];
+                $scope.tournamentGames.map(function (game) {
+
+                    games.push(
+                        {
+                            id: game.id,
+                            white: getPlayerName(game.whiteId),
+                            black: getPlayerName(game.blackId),
+                            winner: game.winner,
+
+                            result: game.result,
+                            start: game.start,
+                            end: game.end
+
+                        });
+
+
+                });
+                $scope.gridOptions.data = _.sortBy(games, 'white');
+
+            });
+        }
 
 
         function getPlayerName(id) {
@@ -139,10 +131,7 @@ angular.module('chessApp')
                 $scope.gridApi = gridApi;
                 $scope.mySelectedRows = $scope.gridApi.selection.getSelectedRows();
                 $scope.gridApi.selection.on.rowSelectionChanged($scope, function (row) {
-                    var msg = row.entity.id;
-                    console.log("Row Selected! " + msg);
-                    $rootScope.selectedGameId = msg;
-
+                    $rootScope.selectedGameId  = row.entity.id;
                 });
 
             }
@@ -150,7 +139,32 @@ angular.module('chessApp')
 
         $scope.edit = function () {
 
-            $rootScope.$state.go('editgame', {gameId: $scope.selectedGameId});
+            $rootScope.$state.go('editgame', {
+                playersInTournament: {
+                    whiteId: $stateParams.playersInTournament.whiteId,
+                    blackId: $stateParams.playersInTournament.blackId,
+                    tournamentId: $stateParams.playersInTournament.tournamentId,
+                    gameId: $rootScope.selectedGameId
+                }
+            });
+
+        };
+
+        $scope.addGameForPlayers = function () {
+
+            $rootScope.$state.go('addgame', {
+                playersInTournament: {
+                    whiteId: $stateParams.playersInTournament.whiteId,
+                    blackId: $stateParams.playersInTournament.blackId,
+                    tournamentId: $stateParams.playersInTournament.tournamentId
+                }
+            });
+
+        };
+
+        $scope.goToTournament = function () {
+
+            $rootScope.$state.go('tournament', {tournamentId: $stateParams.playersInTournament.tournamentId});
 
         };
 

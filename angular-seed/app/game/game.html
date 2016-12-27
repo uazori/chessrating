@@ -2,10 +2,12 @@
     <div layout="row" layout-align="space-between">
         <h2 class="md-title">Games List</h2>
         <div flex-offset-gt-sm="5" layout="row" layout-align="end center" flex-gt-sm="25">
+            <md-button class="md-block md-raised md-primary" ng-click="goToTournament()" ng-show="tournamentEdit">Go to tournament
+            </md-button>
             <md-button class="md-block md-raised md-primary" ng-click="edit()"
                        ng-disabled="gridApi.selection.getSelectedRows().length <= 0">Edit Game
             </md-button>
-            <md-button class="md-block md-raised md-primary" ng-click="$state.go('addgame')">Add Game</md-button>
+            <md-button class="md-block md-raised md-primary" ng-click=addGameForPlayers() ng-disabled="tournamentGames.length > 1">Add Game</md-button>
         </div>
     </div>
     <md-divider></md-divider>

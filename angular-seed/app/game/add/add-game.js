@@ -2,26 +2,42 @@
 
 angular.module('chessApp')
 
-    .controller('AddEditGameCtrl', ['$scope', '$mdDialog', '$mdToast', '$state', '$rootScope', '$stateParams', 'gameService', 'playerService',
-        function ($scope, $mdDialog, $mdToast, $state, $rootScope, $stateParams, gameService, playerService) {
+    .controller('AddEditGameCtrl', ['$scope', '$mdDialog', '$mdToast', '$state', '$rootScope', '$stateParams', 'gameService', 'playerService', 'tournamentService',
+        function ($scope, $mdDialog, $mdToast, $state, $rootScope, $stateParams, gameService, playerService, tournamentService) {
             console.log("AddEditGameCtrl is loaded");
 
 
             playerService.getPlayers().then(function (response) {
 
-                $scope.players = response;
+                $scope.players = response.plain();
 
-                $scope.whiteChanged()
+
+                if ($stateParams.playersInTournament) {
+                    console.log("in game");
+                    if ($stateParams.playersInTournament.whiteId) {
+
+                        console.log("whiteId");
+
+                        $scope.players = _.filter($scope.players, function (player) {
+                            console.log();
+                            if ((player.id == $stateParams.playersInTournament.whiteId) || (player.id == $stateParams.playersInTournament.blackId)) return player
+                        });
+                        console.log($scope.players);
+                    }
+                }
+
+                $scope.whiteChanged();
             });
 
 
+            $scope.whiteChanged = function () {
 
-            $scope.whiteChanged = function (){
-
-             $scope.blackPlayers = _.filter($scope.players,function (player) {
-                            if (player.id!= $scope.gameModel.whiteId){return player;}
-                        });
-                };
+                $scope.blackPlayers = _.filter($scope.players, function (player) {
+                    if (player.id != $scope.gameModel.whiteId) {
+                        return player;
+                    }
+                });
+            };
 
 
             $scope.result = ['MATE', 'DRAW', 'STALEMATE'];
@@ -43,17 +59,22 @@ angular.module('chessApp')
             $scope.variable = 'all ok';
 
 
-            if ($stateParams.gameId) {
+            /*  console.log($stateParams.playersInGame.blackId);*/
 
-                $scope.gameId = $stateParams.gameId;
-                console.log("Editing game id = " + $scope.gameId);
+            if ($stateParams.playersInTournament) {
 
-                gameService.getGame($stateParams.gameId).then(function (response) {
-                $scope.gameModel = response;
+                if ($stateParams.playersInTournament.gameId) {
 
-                });
+                  /*  $scope.gameId = $stateParams.gameId;
+                    console.log("Editing game id = " + $scope.gameId);*/
+
+                    gameService.getGame($stateParams.playersInTournament.gameId).then(function (response) {
+                        $scope.gameModel = response.plain();
+
+                    });
 
 
+                }
             }
 
 
@@ -85,16 +106,40 @@ angular.module('chessApp')
 
 
                 var game = {};
-                if ($stateParams.gameId) {
+                if ($stateParams.playersInTournament.gameId) {
                     game = prepareGame();
                     gameService.updateGame(game);
+
                 } else {
 
                     game = prepareGame();
-                    gameService.saveGame(game)
+                    gameService.saveGame(game);
+
+                    tournamentService.getTournament($stateParams.playersInTournament.tournamentId).then(function (response) {
+
+                        var tournament = response.plain();
+
+
+                        var games = tournament.gameDtos;
+
+                        games.push(game);
+
+                        tournament.gameDtos = games;
+
+                        console.log(tournament);
+
+                        tournamentService.updateTournament(tournament);
+                    });
+
 
                 }
-                $state.go('games');
+                $state.go('gamesForPlayers', {
+                    playersInTournament: {
+                        whiteId: $stateParams.playersInTournament.whiteId,
+                        blackId: $stateParams.playersInTournament.blackId,
+                        tournamentId: $stateParams.playersInTournament.tournamentId
+                    }
+                });
 
             }
 
@@ -141,7 +186,14 @@ angular.module('chessApp')
             }
 
             $scope.cancel = function (ev) {
-                $scope.gameForm.$dirty ? showConfirm(ev) : $state.go('games');
+                $scope.gameForm.$dirty ? showConfirm(ev) : $state.go('gamesForPlayers',
+                    {
+                        playersInTournament: {
+                            whiteId: $stateParams.playersInTournament.whiteId,
+                            blackId: $stateParams.playersInTournament.blackId,
+                            tournamentId: $stateParams.playersInTournament.tournamentId
+                        }
+                    });
             };
 
             function showConfirm(ev) {
@@ -153,7 +205,13 @@ angular.module('chessApp')
                     .ok('Accept')
                     .cancel('Cancel');
                 $mdDialog.show(confirm).then(function () {
-                    $state.go('games', {updateData:true});
+                    $state.go('gamesForPlayers', {
+                        playersInTournament: {
+                            whiteId: $stateParams.playersInTournament.whiteId,
+                            blackId: $stateParams.playersInTournament.blackId,
+                            tournamentId: $stateParams.playersInTournament.tournamentId
+                        }
+                    });
                 });
             }
 

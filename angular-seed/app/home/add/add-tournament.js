@@ -1,64 +1,73 @@
+/**
+ * Created by Vadim Ovcharuk uazori@mail.ru on 12/22/2016.
+ * controller for adding new tournament
+ */
+
+
 'use strict';
 
 angular.module('chessApp')
 
-    .controller('AddEditPlayerCtrl', ['$scope', '$mdDialog', '$mdToast', '$state', '$rootScope', '$stateParams', 'playerService',
-        function ($scope, $mdDialog, $mdToast, $state, $rootScope, $stateParams, playerService) {
-            console.log("AddEditPlayerCtrl is loaded");
+    .controller('AddEditTournamentCtrl', ['$scope', '$mdDialog', '$mdToast', '$state', '$rootScope', '$stateParams', 'tournamentService',
+        function ($scope, $mdDialog, $mdToast, $state, $rootScope, $stateParams, tournamentService) {
 
-            var playerInTournament = $stateParams.playerInTournament;
+            console.log("AddEditTournamentCtrl is loaded");
 
-            if (playerInTournament.playerId) {
+            if ($stateParams.tournamentId) {
 
-                console.log("Editing player =  " + $stateParams.playerInTournament.playerId);
-                console.log("Tournament =  " + $stateParams.playerInTournament.tournamentId);
+                console.log("Editing Tournament =  " + $stateParams.tournamentId);
 
+                tournamentService.getTournament($stateParams.tournamentId).then(function (response) {
+                    $scope.TournamentModel = response;
 
-                playerService.getPlayer($stateParams.playerInTournament.playerId).then(function (player) {
-                    $scope.playerModel = player;
+                    console.log($scope.TournamentModel);
                 });
 
             } else {
 
-                console.log($stateParams.playerInTournament);
-
-
-                $scope.playerModel = {
+                $scope.TournamentModel = {
                     id: '',
                     name: '',
-                    surname: '',
-                    rating: '',
-                    activity:''
+                    description: '',
+                    system: '',
+                    start: '',
+                    end: ''
+
                 };
 
             }
 
-            function preparePlayer() {
+            function prepareTournament() {
                 return {
 
-                    name: $scope.playerModel.name,
-                    surname: $scope.playerModel.surname,
-                    rating: $scope.playerModel.rating
+                    name: $scope.TournamentModel.name,
+                    description: $scope.TournamentModel.description,
+                    system: $scope.TournamentModel.system,
+                    players: [],
+                    gameDtos: [],
+                    start: $scope.TournamentModel.start,
+                    end: $scope.TournamentModel.end
                 }
             }
 
             function yes() {
                 console.log("yes yes yes");
-                var player = {};
+                var tournament = {};
 
-                if ($stateParams.playerId) {
+                if ($stateParams.tournamentId) {
 
-                    $scope.playerModel.put();
-
+                    $scope.TournamentModel.put();
 
 
                 } else {
 
-                    player = preparePlayer();
-                    playerService.savePlayer(player);
+                    tournament = prepareTournament();
+                    tournamentService.saveTournament(tournament);
+
                 }
-                $rootScope.$state.go('addPlayerToTournament', {tournamentId: $stateParams.playerInTournament.tournamentId});
-               /* $state.go('player',{tournamentId: $scope.tournament.id}$stateParams.playerInTournament.playerId);*/
+
+
+                $state.go('home');
             }
 
             function no() {
@@ -66,6 +75,7 @@ angular.module('chessApp')
             }
 
             $scope.saveConfirm = function (ev) {
+
                 console.log("save confirm");
 
                 var confirm = $mdDialog.confirm()
@@ -73,8 +83,8 @@ angular.module('chessApp')
                     .targetEvent(ev)
                     .ok('Yes Save')
                     .cancel('No');
-                console.log($scope.playerForm.$valid);
-                if ($scope.playerForm.$valid) {
+                console.log($scope.tournamentForm.$valid);
+                if ($scope.tournamentForm.$valid) {
                     $mdDialog.show(confirm).then(function () {
                         yes();
                     }, function () {
@@ -103,7 +113,7 @@ angular.module('chessApp')
             }
 
             $scope.cancel = function (ev) {
-                $scope.playerForm.$dirty ? showConfirm(ev) : $rootScope.$state.go('addPlayerToTournament', {tournamentId: $stateParams.playerInTournament.tournamentId});
+                $scope.tournamentForm.$dirty ? showConfirm(ev) : $state.go('home');
             };
 
             function showConfirm(ev) {
@@ -115,7 +125,7 @@ angular.module('chessApp')
                     .ok('Accept')
                     .cancel('Cancel');
                 $mdDialog.show(confirm).then(function () {
-                    $state.go('player');
+                    state.go('home');
                 });
             }
 

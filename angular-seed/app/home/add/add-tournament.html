@@ -1,0 +1,79 @@
+<div class="jumbotron text-center">
+
+    <div layout="row" layout-align="left">
+       <!-- <h2 class="md-title">{{playerId ? 'Editing a player' : 'Add new player'}}</h2>-->
+    </div>
+    <md-divider></md-divider>
+    <br>
+
+<!--
+
+    <pre>{{playerModel}}</pre>
+-->
+
+    <form name="tournamentForm">
+
+       <!-- <pre>{{$scope.playerForm.$valid}}</pre>-->
+
+        <div layout-gt-xs="row" layout-align="space-between">
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>Tournament Name</label>
+                <input name="nameInput" ng-model="TournamentModel.name" required>
+            </md-input-container>
+
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>Tournament description</label>
+                <input name="descriptionInput" ng-model="TournamentModel.description" required>
+            </md-input-container>
+
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>Tournament system</label>
+                <input name="systemInput" ng-model="TournamentModel.system" required>
+            </md-input-container>
+
+            <div layout="row">
+                <sm-date-time-picker
+
+                        label="game start"
+                        ng-model="TournamentModel.start"
+                        flex="50"
+                        flex-sm="100"
+                        flex-xs="100"
+                        is-required="{{true}}"
+                        format="YYYY-MM-DDTHH:mm"
+                        mode="date-time"
+                        week-start-day="Monday">
+
+
+                </sm-date-time-picker>
+
+            </div>
+
+
+            <div layout="row">
+                <sm-date-time-picker
+                        fname="field"
+                        label="game end"
+                        ng-model="TournamentModel.end"
+                        flex="50"
+                        flex-sm="100"
+                        flex-xs="100"
+                        is-required="{{true}}"
+                        format="YYYY-MM-DDTHH:mm"
+                        mode="date-time"
+                        week-start-day="Monday">
+
+
+                </sm-date-time-picker>
+
+
+            </div>
+
+        </div>
+
+    </form>
+    <section layout="row" layout-sm="column" layout-align="left center" layout-wrap>
+        <md-button ng-disabled="isSaveDisabled()" ng-click="saveConfirm()" class="md-raised md-primary">Save</md-button>
+        <md-button class="md-raised md-warn" ng-click="cancel()">Cancel</md-button>
+    </section>
+</div>
