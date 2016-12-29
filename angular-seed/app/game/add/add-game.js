@@ -13,10 +13,8 @@ angular.module('chessApp')
 
 
                 if ($stateParams.playersInTournament) {
-                    console.log("in game");
-                    if ($stateParams.playersInTournament.whiteId) {
 
-                        console.log("whiteId");
+                    if ($stateParams.playersInTournament.whiteId) {
 
                         $scope.players = _.filter($scope.players, function (player) {
                             console.log();
@@ -65,8 +63,8 @@ angular.module('chessApp')
 
                 if ($stateParams.playersInTournament.gameId) {
 
-                  /*  $scope.gameId = $stateParams.gameId;
-                    console.log("Editing game id = " + $scope.gameId);*/
+                    /*  $scope.gameId = $stateParams.gameId;
+                     console.log("Editing game id = " + $scope.gameId);*/
 
                     gameService.getGame($stateParams.playersInTournament.gameId).then(function (response) {
                         $scope.gameModel = response.plain();
@@ -75,6 +73,8 @@ angular.module('chessApp')
 
 
                 }
+            } else {
+                $state.go('home')
             }
 
 
@@ -108,7 +108,30 @@ angular.module('chessApp')
                 var game = {};
                 if ($stateParams.playersInTournament.gameId) {
                     game = prepareGame();
-                    gameService.updateGame(game);
+                    gameService.getGame(game.id).then(function (response) {
+                        var updatedGame = response;
+
+
+                        updatedGame.whiteId = game.whiteId;
+                        updatedGame.blackId = game.blackId;
+                        updatedGame.winner = game.winner;
+                        updatedGame.result = game.result;
+                        updatedGame.start = game.start;
+                        updatedGame.end = game.end;
+
+                        updatedGame.put().then(function () {
+                            $state.go('gamesForPlayers', {
+                                playersInTournament: {
+                                    whiteId: $stateParams.playersInTournament.whiteId,
+                                    blackId: $stateParams.playersInTournament.blackId,
+                                    tournamentId: $stateParams.playersInTournament.tournamentId
+                                }
+                            });
+                        });
+
+
+                    });
+
 
                 } else {
 
@@ -117,7 +140,7 @@ angular.module('chessApp')
 
                     tournamentService.getTournament($stateParams.playersInTournament.tournamentId).then(function (response) {
 
-                        var tournament = response.plain();
+                        var tournament = response;
 
 
                         var games = tournament.gameDtos;
@@ -126,20 +149,21 @@ angular.module('chessApp')
 
                         tournament.gameDtos = games;
 
-                        console.log(tournament);
+                        tournament.put().then(function (res) {
+                            $state.go('gamesForPlayers', {
+                                playersInTournament: {
+                                    whiteId: $stateParams.playersInTournament.whiteId,
+                                    blackId: $stateParams.playersInTournament.blackId,
+                                    tournamentId: $stateParams.playersInTournament.tournamentId
+                                }
+                            });
+                        });
 
-                        tournamentService.updateTournament(tournament);
                     });
 
 
                 }
-                $state.go('gamesForPlayers', {
-                    playersInTournament: {
-                        whiteId: $stateParams.playersInTournament.whiteId,
-                        blackId: $stateParams.playersInTournament.blackId,
-                        tournamentId: $stateParams.playersInTournament.tournamentId
-                    }
-                });
+
 
             }
 

@@ -1,4 +1,3 @@
-
 'use strict';
 
 angular.module('chessApp')
@@ -37,7 +36,9 @@ angular.module('chessApp')
             updatedGame.result = game.result;
             updatedGame.start = game.start;
             updatedGame.end = game.end;
-            updatedGame.put();
+            updatedGame.put().then(function () {
+                console.log('game save');
+            });
         };
 
         console.log("gameService");
@@ -47,9 +48,6 @@ angular.module('chessApp')
 
     .controller('GameCtrl', ['$scope', '$rootScope', '$http', '$q', '$interval', 'gameService', 'playerService', 'tournamentService', '$stateParams', function ($scope, $rootScope, $http, $q, $interval, gameService, playerService, tournamentService, $stateParams) {
         console.log("GameCtrl is loaded");
-
-        console.log('Players game');
-        console.log($stateParams.playersInTournament);
 
         if ($stateParams.playersInTournament) {
             $scope.tournamentEdit = true;
@@ -66,6 +64,7 @@ angular.module('chessApp')
                     if ((( game.whiteId == $stateParams.playersInTournament.whiteId ) && ( game.blackId == $stateParams.playersInTournament.blackId )) || (( game.whiteId == $stateParams.playersInTournament.blackId ) && ( game.blackId == $stateParams.playersInTournament.whiteId ))) return game;
 
                 });
+
 
                 var games = [];
                 $scope.tournamentGames.map(function (game) {
@@ -88,6 +87,8 @@ angular.module('chessApp')
                 $scope.gridOptions.data = _.sortBy(games, 'white');
 
             });
+        } else {
+            $rootScope.$state.go('home')
         }
 
 
@@ -131,7 +132,7 @@ angular.module('chessApp')
                 $scope.gridApi = gridApi;
                 $scope.mySelectedRows = $scope.gridApi.selection.getSelectedRows();
                 $scope.gridApi.selection.on.rowSelectionChanged($scope, function (row) {
-                    $rootScope.selectedGameId  = row.entity.id;
+                    $rootScope.selectedGameId = row.entity.id;
                 });
 
             }
@@ -149,6 +150,9 @@ angular.module('chessApp')
             });
 
         };
+
+
+
 
         $scope.addGameForPlayers = function () {
 

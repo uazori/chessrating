@@ -31,7 +31,8 @@ angular.module('chessApp')
                     description: '',
                     system: '',
                     start: '',
-                    end: ''
+                    end: '',
+                    tournamentFinished: false
 
                 };
 
@@ -46,12 +47,12 @@ angular.module('chessApp')
                     players: [],
                     gameDtos: [],
                     start: $scope.TournamentModel.start,
-                    end: $scope.TournamentModel.end
+
                 }
             }
 
             function yes() {
-                console.log("yes yes yes");
+
                 var tournament = {};
 
                 if ($stateParams.tournamentId) {
@@ -67,7 +68,7 @@ angular.module('chessApp')
                 }
 
 
-                $state.go('home');
+                $rootScope.$state.go('tournament', {tournamentId: $stateParams.playersInTournament.tournamentId});
             }
 
             function no() {
@@ -113,7 +114,7 @@ angular.module('chessApp')
             }
 
             $scope.cancel = function (ev) {
-                $scope.tournamentForm.$dirty ? showConfirm(ev) : $state.go('home');
+                $scope.tournamentForm.$dirty ? showConfirm(ev) : $rootScope.$state.go('tournament', {tournamentId: $stateParams.playersInTournament.tournamentId});
             };
 
             function showConfirm(ev) {
@@ -125,7 +126,7 @@ angular.module('chessApp')
                     .ok('Accept')
                     .cancel('Cancel');
                 $mdDialog.show(confirm).then(function () {
-                    state.go('home');
+                    $rootScope.$state.go('tournament', {tournamentId: $stateParams.playersInTournament.tournamentId});
                 });
             }
 

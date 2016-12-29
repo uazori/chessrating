@@ -72,11 +72,14 @@ chessApp.config(function ($stateProvider, $urlRouterProvider, RestangularProvide
         .state('addplayer', {
             url: '/players/add',
             templateUrl: 'player/add/add-player.html',
-            controller: 'AddEditPlayerCtrl'
+            controller: 'AddEditPlayerCtrl',
+            params: {
+                playerInTournament: null
+            }
         })
 
         .state('editplayer', {
-            url: '/players',
+            url: '/players/edit',
             templateUrl: 'player/add/add-player.html',
             controller: 'AddEditPlayerCtrl',
             params: {

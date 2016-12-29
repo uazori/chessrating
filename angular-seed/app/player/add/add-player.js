@@ -8,6 +8,9 @@ angular.module('chessApp')
 
             var playerInTournament = $stateParams.playerInTournament;
 
+            if (playerInTournament){
+
+
             if (playerInTournament.playerId) {
 
                 console.log("Editing player =  " + $stateParams.playerInTournament.playerId);
@@ -25,20 +28,22 @@ angular.module('chessApp')
 
                 $scope.playerModel = {
                     id: '',
+                    username:'',
                     name: '',
                     surname: '',
                     rating: '',
                     activity:''
                 };
 
-            }
+            }}else {$state.go('home');}
 
             function preparePlayer() {
                 return {
 
                     name: $scope.playerModel.name,
                     surname: $scope.playerModel.surname,
-                    rating: $scope.playerModel.rating
+                    rating: $scope.playerModel.rating,
+                    username: $scope.playerModel.username
                 }
             }
 
@@ -46,19 +51,24 @@ angular.module('chessApp')
                 console.log("yes yes yes");
                 var player = {};
 
-                if ($stateParams.playerId) {
+                if (playerInTournament.playerId) {
 
-                    $scope.playerModel.put();
+                    $scope.playerModel.put().then(function () {
+                        $rootScope.$state.go('addPlayerToTournament', {tournamentId: $stateParams.playerInTournament.tournamentId});
+
+                    });
 
 
 
                 } else {
 
                     player = preparePlayer();
-                    playerService.savePlayer(player);
+
+                   playerService.savePlayer(player).then(function () {
+                        $rootScope.$state.go('addPlayerToTournament', {tournamentId: $stateParams.playerInTournament.tournamentId});
+                    });
                 }
-                $rootScope.$state.go('addPlayerToTournament', {tournamentId: $stateParams.playerInTournament.tournamentId});
-               /* $state.go('player',{tournamentId: $scope.tournament.id}$stateParams.playerInTournament.playerId);*/
+
             }
 
             function no() {

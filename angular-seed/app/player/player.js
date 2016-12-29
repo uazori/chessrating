@@ -18,7 +18,7 @@ angular.module('chessApp')
 
             var players = Restangular.all('player');
 
-            players.post(player);
+           return players.post(player);
 
         };
 
@@ -31,6 +31,7 @@ angular.module('chessApp')
             updatedPlayer.surname = player.surname;
             updatedPlayer.rating = player.rating;
             updatedPlayer.activity = player.activity;
+            updatedPlayer.username = player.username;
 
             updatedPlayer.put();
 
@@ -85,10 +86,11 @@ angular.module('chessApp')
 
             columnDefs: [
                 {field: 'id', displayName: 'Id'},
+                {field: 'username', displayName: 'Username'},
                 {field: 'name', displayName: 'Name'},
                 {field: 'surname', displayName: 'Surname'},
                 {field: 'rating', displayName: 'Rating'},
-                {field: 'activity', displayName: 'In tournament'}
+
 
 
             ],
@@ -115,11 +117,12 @@ angular.module('chessApp')
             enableHorizontalScrollbar: 0,
 
             columnDefs: [
-                {field: 'id', displayName: 'Id' },
+                {field: 'id', displayName: 'Id'},
+                {field: 'username', displayName: 'Username'},
                 {field: 'name', displayName: 'Name'},
                 {field: 'surname', displayName: 'Surname'},
                 {field: 'rating', displayName: 'Rating'},
-                {field: 'activity', displayName: 'In tournament'}
+
 
 
             ],
@@ -138,18 +141,45 @@ angular.module('chessApp')
         };
 
 
-        $scope.edit = function () {
+        $scope.editPlayer = function () {
 
             console.log("selected Player " + $scope.selectedPlayerId);
 
             /*$rootScope.$state.go('editplayer', {playerId: });*/
 
-          /*
-            console.log('myObj');
-            console.log(myObj);
-*/
-            $rootScope.$state.go('editplayer', {playerInTournament: {playerId: $scope.selectedPlayerId ,tournamentId:$stateParams.tournamentId}});
+            /*
+             console.log('myObj');
+             console.log(myObj);
+             */
+            $rootScope.$state.go('editplayer', {
+                playerInTournament: {
+                    playerId: $scope.selectedPlayerId,
+                    tournamentId: $stateParams.tournamentId
+                }
+            });
 
+
+            console.log("grid API " + $scope.gridApi);
+
+        };
+
+
+        $scope.addPlayer = function () {
+
+            console.log("selected Player " + $scope.selectedPlayerId);
+
+            /*$rootScope.$state.go('editplayer', {playerId: });*/
+
+            /*
+             console.log('myObj');
+             console.log(myObj);
+             */
+            $rootScope.$state.go('addplayer', {
+                playerInTournament: {
+                    playerId: undefined,
+                    tournamentId: $stateParams.tournamentId
+                }
+            });
 
 
             console.log("grid API " + $scope.gridApi);
@@ -173,17 +203,15 @@ angular.module('chessApp')
 
         $scope.removeFromTournament = function () {
 
-            /*   console.log("selected Player " + $scope.selectedPlayerId);*/
-
             playerService.getPlayer($scope.selectedTournamentPlayerId).then(function (player) {
-                /*   console.log(player.plain());*/
 
                 $scope.tournamentPlayers = _.filter($scope.tournamentPlayers, function (tournamentPlayers) {
                     return tournamentPlayers.id != player.id;
                 });
 
-                /*  console.log($scope.tournamentPlayers);*/
-
+                $scope.tournament.gameDtos = _.filter($scope.tournament.gameDtos, function (game) {
+                    return ((game.whiteId != player.id) && (game.blackId != player.id))
+                });
 
                 $scope.gridPlayers.data = $scope.tournamentPlayers;
                 $scope.gridOptions.data = difference($scope.players, $scope.tournamentPlayers);
@@ -194,14 +222,21 @@ angular.module('chessApp')
 
         $scope.goToTournament = function () {
 
+
             $scope.tournament.players = $scope.tournamentPlayers;
 
-            console.log('go to tournament');
-            console.log($scope.tournament);
+            tournamentService.getTournament($scope.tournament.id).then(function (updateTournament) {
 
-            tournamentService.updateTournament($scope.tournament);
+                updateTournament.players = $scope.tournament.players;
+                updateTournament.gameDtos = $scope.tournament.gameDtos;
 
-            $rootScope.$state.go('tournament', {tournamentId: $stateParams.tournamentId});
+
+                updateTournament.put().then(function () {
+                    $rootScope.$state.go('tournament', {tournamentId: $stateParams.tournamentId});
+                });
+
+
+            });
 
 
         };

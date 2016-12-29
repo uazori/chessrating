@@ -5,53 +5,62 @@ angular.module('chessApp')
 
         var service = Restangular.service('tournamentService');
 
+        var currentTournament;
 
-        service.getTournaments = function() {
+        service.getTournaments = function () {
+            console.log('get all tournaments');
             return Restangular.all('tournament').getList();
         };
 
-        service.getTournament = function(tournamentId) {
+        service.getTournament = function (tournamentId) {
+            console.log('get tournament = ' + tournamentId);
             return Restangular.one('tournament', tournamentId).get();
         };
 
-        service.saveTournament = function(tournament) {
+        service.saveTournament = function (tournament) {
 
-            var tournaments =  Restangular.all('tournament');
+            var tournaments = Restangular.all('tournament');
 
-            console.log('save');
+            console.log('save tournament');
 
-            console.log(tournament);
 
             tournaments.post(tournament);
 
         };
 
-        service.updateTournament = function(tournament) {
+        service.updateTournament = function (tournament) {
 
-           Restangular.one('tournament', tournament.id).get().then(function (updateTournament) {
-               
-               console.log('update service');
+            Restangular.one('tournament', tournament.id).get().then(function (updateTournament) {
 
-               console.log(tournament);
 
-               updateTournament.players = tournament.players;
-               updateTournament.gameDtos = tournament.gameDtos;
+                updateTournament.players = tournament.players;
+                updateTournament.gameDtos = tournament.gameDtos;
+                updateTournament.initialRatings = tournament.initialRatings;
+                updateTournament.tournamentFinished = tournament.tournamentFinished;
+                updateTournament.end = tournament.end;
 
-               console.log('update tourn');
+                console.log('update tourn');
 
-               console.log(updateTournament);
 
-               updateTournament.put();
-           });
+                updateTournament.put();
+
+            });
 
 
         };
 
-        console.log("playerService");
+        service.setCurrentTournament = function (tournamentId) {
+            currentTournament = tournamentId;
+        };
+
+        service.getCurrentTournament = function () {
+            return currentTournament;
+        };
+        console.log("tournament Service");
         return service;
     }])
 
-    .controller('TournamentCtrl', ['$scope', '$rootScope', 'playerService', 'gameService', 'tournamentService','$stateParams', function ($scope, $rootScope, playerService, gameService, tournamentService, $stateParams) {
+    .controller('TournamentCtrl', ['$scope', '$rootScope', 'playerService', 'gameService', 'tournamentService', '$stateParams','$mdDialog', '$mdToast', function ($scope, $rootScope, playerService, gameService, tournamentService, $stateParams,$mdDialog,$mdToast) {
         console.log("TournamentCtrl is loaded");
 
         tournamentService.getTournament($stateParams.tournamentId).then(
@@ -61,32 +70,26 @@ angular.module('chessApp')
 
                 $scope.games = $scope.tournament.gameDtos;
 
-                $scope.tournamentTable =createTournamentTable($scope.tournament);
+                $scope.tournamentTable = createTournamentTable($scope.tournament);
 
                 $scope.gridOptions.data = $scope.tournamentTable;
 
                 $scope.gridOptions.columnDefs = generateFields($scope.gridOptions.data);
 
+                var playersCount = $scope.tournament.players.length;
 
-                console.log($scope.tournament.start);
-
-
+                $scope.gamesAmountInTournament = playersCount * playersCount - playersCount;
 
 
                 $scope.tournamentEnd = function () {
 
-                    var gamesCount = $scope.tournamentTable.length;
-                    var allGames = gamesCount*gamesCount - gamesCount;
-
-                    return allGames >= $scope.games.length;
+                    return !($scope.gamesAmountInTournament == $scope.games.length);
 
 
                 };
 
             }
         );
-
-
 
 
         $scope.gridOptions = {
@@ -96,73 +99,73 @@ angular.module('chessApp')
 
         };
 
-        $scope.currentFocused = "";
 
-        $scope.getCurrentFocus = function(){
+        $scope.getCurrentFocus = function () {
             var rowCol = $scope.gridApi.cellNav.getFocusedCell();
-            if(rowCol !== null) {
-                $scope.currentFocused = 'Row Id:' + rowCol.row.entity.id + ' col:' + rowCol.col.colDef.name;
-
-                console.log(rowCol.col.colDef.field);
+            if (rowCol !== null) {
 
                 $scope.white = rowCol.row.entity.id;
-                $scope.blackName = rowCol.col.colDef.name;
+                $scope.blackUserName = rowCol.col.colDef.name;
 
-                $scope.black = _.filter($scope.tournament.players,function (player) {
-                    return player.name == $scope.blackName;
+                $scope.black = _.filter($scope.tournament.players, function (player) {
+                    return player.username == $scope.blackUserName;
                 });
 
-              /*  console.log($scope.black[0]);*/
 
-                $rootScope.$state.go('gamesForPlayers', {playersInTournament:{whiteId: rowCol.row.entity.id , blackId: $scope.black[0].id , tournamentId: $scope.tournament.id} });
+                $rootScope.$state.go('gamesForPlayers', {
+                    playersInTournament: {
+                        whiteId: rowCol.row.entity.id,
+                        blackId: $scope.black[0].id,
+                        tournamentId: $scope.tournament.id
+                    }
+                });
 
 
             }
         };
 
-        $scope.gridOptions.onRegisterApi = function(gridApi){
+        $scope.gridOptions.onRegisterApi = function (gridApi) {
             $scope.gridApi = gridApi;
         };
+        $scope.disableEditGames = function () {
+            var rowCol = $scope.gridApi.cellNav.getFocusedCell();
+            if (rowCol !== null) {
+
+                $scope.white = rowCol.row.entity.id;
+                $scope.blackName = rowCol.col.colDef.name;
+
+                $scope.black = _.filter($scope.tournament.players, function (player) {
+                    return player.name == $scope.blackName;
+                });
+
+                if ($scope.black[0]) {
+                    return false
+                } else {
+                    return true;
+                }
+            }
+        };
+
+        $scope.editTournamentDescription = function () {
+
+
+            $rootScope.$state.go('edittournament', {tournamentId: $scope.tournament.id});
+        };
+
 
         $scope.addPlayers = function () {
 
-          /*  console.log("Row Selected! " +  $scope.tournamentId);
-            $rootScope.tournamentPlayers = $scope.tournament.players;*/
+
             $rootScope.$state.go('addPlayerToTournament', {tournamentId: $scope.tournament.id});
         };
 
 
-
         $scope.saveTournament = function () {
 
-            console.log("Save tournament! " +  $scope.tournament.id);
-
-
-
-            _.forEach($scope.tournamentTable,function (playerScore) {
-
-                    var index = _.findIndex($scope.tournament.players,function (player) {
-                        if (playerScore.id == player.id) return player;
-                    });
-
-                var player = $scope.tournament.players[index];
-
-                console.log(player);
-
-                player.rating = playerScore['New rating'];
-
-                playerService.updatePlayer(player);
-
-                console.log(player);
-            });
 
 
 
         };
-
-
-
-
 
 
         function generateFields(tournamentTable) {
@@ -172,18 +175,18 @@ angular.module('chessApp')
 
             for (var key in playerInfo) {
 
-/*                console.log("key " + key);*/
+                /*                console.log("key " + key);*/
 
-                if (key === "$$hashKey" || key === 'id' || key == 'resultCount') {
+                if (key === "$$hashKey" || key === 'id' || key == 'resultCount' || key === 'newRateDecimal') {
 
                 } else {
-                    columnDefs.push({field: key, displayName: key, enableCellEdit: false })
+                    columnDefs.push({field: key, displayName: key, enableCellEdit: false})
                 }
             }
             return columnDefs
         }
 
-        function statistic(playerId, opponentId,tournament) {
+        function statistic(playerId, opponentId, tournament) {
 
 
             var pointsCount = 0;
@@ -203,8 +206,6 @@ angular.module('chessApp')
 
             });
 
-            /*    console.log("white lengrh");
-             console.log(resultWhite.length);*/
 
             if (resultWhite.length != 0) {
 
@@ -215,8 +216,7 @@ angular.module('chessApp')
 
 
                         pointsCount += 1;
-                        /*console.log("white winner");
-                         console.log(pointsCount);*/
+
 
                     } else {
                         pointsCount += 0;
@@ -228,8 +228,6 @@ angular.module('chessApp')
                 }
             }
 
-            /*   console.log("Black lengrh");
-             console.log(resultBlack.length);*/
 
             if (resultBlack.length != 0) {
 
@@ -238,8 +236,6 @@ angular.module('chessApp')
 
                         pointsCount += 1;
 
-                        /*  console.log("black winner");
-                         console.log(pointsCount);*/
 
                     } else {
                         pointsCount += 0;
@@ -251,9 +247,7 @@ angular.module('chessApp')
                 }
 
             }
-            /*         console.log("pointsCount");
-             console.log(pointsCount);
-             */
+
             var gameStatistic = [];
 
             if (resultBlack.length != 0 || resultWhite.length != 0) {
@@ -263,19 +257,36 @@ angular.module('chessApp')
             }
 
 
-            var player = _.find(tournament.players, function (player) {
+            var player;
+            var opponent;
 
-                return player.id === playerId;
+            if (tournament.tournamentFinished) {
 
-            });
-            var opponent = _.find(tournament.players, function (player) {
+                player = _.find(tournament.initialRatings, function (playerInitRate) {
 
-                return player.id === opponentId;
+                    return playerInitRate.playerId === playerId;
 
-            });
+                });
+                opponent = _.find(tournament.initialRatings, function (playerInitRate) {
 
+                    return playerInitRate.playerId === opponentId;
 
+                });
+
+            } else {
+                player = _.find(tournament.players, function (player) {
+
+                    return player.id === playerId;
+
+                });
+                opponent = _.find(tournament.players, function (player) {
+
+                    return player.id === opponentId;
+
+                });
+            }
             gameStatistic['ratingDifference'] = opponent.rating - player.rating;
+
 
             return gameStatistic;
 
@@ -287,13 +298,27 @@ angular.module('chessApp')
             var tournamentTable = [];
 
 
-
             _(tournament.players).forEach(function (player) {
 
                 var playerScore = {};
                 playerScore['id'] = player.id;
-                playerScore['Name'] = player.name;
-                playerScore['Rating'] = player.rating;
+                playerScore['Username'] = player.username;
+
+                if (tournament.tournamentFinished) {
+
+
+                    var rateIndex = _.findIndex(tournament.initialRatings, function (rate) {
+                        return rate.playerId == player.id;
+                    });
+
+
+                    playerScore['Rating'] = tournament.initialRatings[rateIndex].rating;
+
+
+                } else {
+                    playerScore['Rating'] = player.rating;
+                }
+
 
                 var resultCount = 0;
                 var ratingDifferenceCount = 0;
@@ -304,7 +329,7 @@ angular.module('chessApp')
                     }
                     else {
 
-                        var gameStatistic = statistic(player.id, opponentPlayer.id,tournament);
+                        var gameStatistic = statistic(player.id, opponentPlayer.id, tournament);
 
 
                         playerScore[opponentPlayer.name] = gameStatistic.result;
@@ -329,12 +354,16 @@ angular.module('chessApp')
                     K = 20;
                 }
 
+                var rateUp = K / 2 * ( resultCount - (maxScore - resultCount) + ratingDifferenceCount / 400);
 
-                playerScore['RateUp'] = K / 2 * ( resultCount - (maxScore - resultCount) + ratingDifferenceCount / 400);
+                playerScore['RateUp'] = _.round(rateUp);
 
-                playerScore['New rating'] = player.rating + playerScore.RateUp;
 
-            /*    console.log(playerScore);*/
+                playerScore['New rating'] = _.round(playerScore.Rating + rateUp);
+
+                playerScore['newRateDecimal'] = playerScore.Rating + rateUp;
+
+                /*    console.log(playerScore); */
 
                 tournamentTable.push(playerScore);
 
@@ -354,6 +383,113 @@ angular.module('chessApp')
 
             return tournamentTable;
         }
+
+
+        function yes() {
+            console.log("yes");
+
+            console.log("Save tournament! " + $scope.tournament.id);
+
+            var initialRatings = [];
+            _.forEach($scope.tournament.players, function (player) {
+
+                initialRatings.push({
+                    id: null,
+                    playerId: player.id,
+                    rating: player.rating
+                });
+
+            });
+
+
+            _.forEach($scope.tournamentTable, function (playerScore) {
+
+                var index = _.findIndex($scope.tournament.players, function (player) {
+                    if (playerScore.id == player.id) return player;
+                });
+
+
+                var player = $scope.tournament.players[index];
+
+                /*   console.log(player);*/
+
+                player.rating = playerScore['newRateDecimal'];
+
+                playerService.updatePlayer(player);
+
+                console.log(player);
+            });
+
+
+            $scope.tournament['initialRatings'] = initialRatings;
+            $scope.tournament.tournamentFinished = true;
+
+
+            function pad(number) {
+                if (number < 10) {
+                    return '0' + number;
+                }
+                return number;
+            }
+
+            var date = new Date();
+
+
+            $scope.tournament.end = date.getFullYear() +
+            '-' + pad(date.getMonth() + 1) +
+            '-' + pad(date.getDate()) +
+            'T' + pad(date.getHours()) +
+            ':' + pad(date.getMinutes());
+
+
+            console.log($scope.tournament);
+
+            tournamentService.updateTournament($scope.tournament);
+
+        }
+
+        function no() {
+            console.log("no");
+        }
+
+        $scope.saveConfirm = function (ev) {
+            console.log("save confirm");
+
+            var confirm = $mdDialog.confirm()
+                .title('Player rating will be updated, after saving tournament will be read only')
+                .targetEvent(ev)
+                .ok('Yes Save')
+                .cancel('No');
+
+
+                $mdDialog.show(confirm).then(function () {
+                    yes();
+                }, function () {
+                    no();
+                });
+
+        };
+
+        function validateForm() {
+            var last = {
+                bottom: false,
+                top: true,
+                left: false,
+                right: true
+            };
+
+
+            $mdToast.show(
+                $mdToast.simple()
+                    .textContent('Please fill the required fields!')
+                    .position(last)
+                    .hideDelay(3000)
+            );
+        }
+
+
+
+
 
 
     }]);

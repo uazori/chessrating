@@ -4,7 +4,7 @@
 
     <div layout="row" layout-align="space-between">
         <h2 class="md-title">Tournaments List</h2>
-        <div flex-offset-gt-sm="5" layout="row" layout-align="start center" flex-gt-sm="25">
+        <div flex-offset-gt-sm="5" layout="row" layout-align="space-around center" flex-gt-sm="50">
             <md-button class="md-block md-raised md-primary" ng-click="edit()"
                        ng-disabled="gridApi.selection.getSelectedRows().length <= 0">Edit Tournament
             </md-button>
@@ -15,11 +15,10 @@
     <md-divider></md-divider>
     <br>
     <div>
+
         <div ui-grid="gridOptions" class="md-whiteframe-2dp grid-height-65 no-filter-input" flex ui-grid-selection
-             ui-grid-auto-resize></div>
-        <md-button class="md-block md-raised md-primary" ng-click="editTournamentDescription()"
-        > Edit Tournament description
-        </md-button>
+              ui-grid-auto-resize></div>
+
     </div>
 
 

@@ -14,17 +14,18 @@ angular.module('chessApp')
 
 
                 _.forEach(tournaments, function (tournament) {
-
+                    var playersCount = tournament.players.length;
+                    var gamesAmountInTournament = playersCount*playersCount - playersCount
                     tournament.players = tournament.players.length;
-                    tournament.gameDtos = tournament.gameDtos.length;
+                    tournament.gameDtos = tournament.gameDtos.length + " / " + gamesAmountInTournament;
                 });
 
 
-                $scope.gridOptions.data = tournaments;
+                $scope.gridOptions.data = _.sortBy(_.sortBy(tournaments,'start').reverse(),'tournamentFinished');
+
                 $scope.gridOptions.columnDefs = generateFields(tournaments);
-                console.log("all tournaments");
 
-
+                tournamentService.setCurrentTournament(undefined);
             }
         );
 
@@ -60,7 +61,7 @@ angular.module('chessApp')
 
             for (var key in tournamentInfo) {
 
-                if (key === "$$hashKey" || key === 'id') {
+                if (key === "$$hashKey" || key === 'id' || key === 'initialRatings') {
 
                 } else if (key === "gameDtos") {
 
@@ -76,19 +77,16 @@ angular.module('chessApp')
 
         $scope.edit = function () {
 
+            tournamentService.setCurrentTournament($scope.selectedId);
 
             console.log("Row Selected! " + $scope.selectedId);
 
             $rootScope.$state.go('tournament', {tournamentId: $scope.selectedId});
 
+
         };
 
 
-        $scope.editTournamentDescription = function () {
 
-            /*  console.log("Row Selected! " +  $scope.tournamentId);
-             $rootScope.tournamentPlayers = $scope.tournament.players;*/
-            $rootScope.$state.go('edittournament', {tournamentId: $scope.selectedId});
-        };
 
     }]);
