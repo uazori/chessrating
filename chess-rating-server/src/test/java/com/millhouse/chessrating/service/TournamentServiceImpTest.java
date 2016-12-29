@@ -58,11 +58,11 @@ public class TournamentServiceImpTest extends TestCase {
         Set<Player> players = new HashSet<>();
         Set<Game> games = new HashSet<>();
 
-        Player player1 = new Player(1, "FirstTestName", "FirstTestSurname", 1,true);
-        Player player2 = new Player(2, "SecondTestName", "SecondTestSurname", 2,true);
-        Player player3 = new Player(3, "ThirdTestName", "ThirdTestSurname", 3,true);
-        Player player4 = new Player(4, "FourthTestName", "FourthTestSurname", 4,true);
-        Player player5 = new Player(5, "FifthName", "FifthSurname", 5,true);
+        Player player1 = new Player(1, "FirstTestName", "FirstTestSurname","Not_one", 1,true);
+        Player player2 = new Player(2, "SecondTestName", "SecondTestSurname","Not_one", 2,true);
+        Player player3 = new Player(3, "ThirdTestName", "ThirdTestSurname","Not_one", 3,true);
+        Player player4 = new Player(4, "FourthTestName", "FourthTestSurname","Not_one", 4,true);
+        Player player5 = new Player(5, "FifthName", "FifthSurname","Not_one", 5,true);
 
         players.add(player1);
         players.add(player2);

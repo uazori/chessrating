@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.millhouse.chessrating.dto.utils.LocalDateTimeDeserializer;
 import com.millhouse.chessrating.dto.utils.LocalDateTimeSerializer;
+import com.millhouse.chessrating.model.InitialRating;
 import com.millhouse.chessrating.model.Player;
 
 import java.time.LocalDateTime;
@@ -16,8 +17,9 @@ public class TournamentDto {
     private String name;
     private String description;
     private String system;
-    private List<Player> players;
+       private List<Player> players;
     private List<GameDto> gameDtos;
+    private List<InitialRating> initialRatings;
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
@@ -26,6 +28,8 @@ public class TournamentDto {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime end;
+
+    private boolean tournamentFinished;
 
     @Override
     public String toString() {
@@ -36,8 +40,10 @@ public class TournamentDto {
                 ", system='" + system + '\'' +
                 ", players=" + players +
                 ", gameDtos=" + gameDtos +
+                ", initialRatings=" + initialRatings +
                 ", start=" + start +
                 ", end=" + end +
+                ", tournamentFinished=" + tournamentFinished +
                 '}';
     }
 
@@ -104,5 +110,25 @@ public class TournamentDto {
 
     public void setEnd(LocalDateTime end) {
         this.end = end;
+    }
+
+    public boolean getTournamentFinished() {
+        return tournamentFinished;
+    }
+
+    public void setTournamentFinished(boolean tournamentFinished) {
+        this.tournamentFinished = tournamentFinished;
+    }
+
+    public List<InitialRating> getInitialRatings() {
+        return initialRatings;
+    }
+
+    public void setInitialRatings(List<InitialRating> initialRatings) {
+        this.initialRatings = initialRatings;
+    }
+
+    public boolean isTournamentFinished() {
+        return tournamentFinished;
     }
 }

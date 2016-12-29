@@ -6,6 +6,7 @@ import com.millhouse.chessrating.dto.TournamentDto;
 import com.millhouse.chessrating.dto.transformer.GameTransformer;
 import com.millhouse.chessrating.dto.transformer.TournamentTransformer;
 import com.millhouse.chessrating.model.Game;
+import com.millhouse.chessrating.model.InitialRating;
 import com.millhouse.chessrating.model.Player;
 import com.millhouse.chessrating.model.Tournament;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,6 @@ public class TournamentServiceImp implements TournamentService {
 
     @Override
     public void saveOrUpdate(TournamentDto tournamentDto) {
-        System.out.println("Service save " + tournamentDto);
 
         TournamentTransformer tournamentTransformer = new TournamentTransformer();
 
@@ -58,6 +58,17 @@ public class TournamentServiceImp implements TournamentService {
         List<Player> players = playerDao.getAllPlayers();
 
         Tournament tournament = tournamentTransformer.transform(tournamentDto,players);
+
+
+        Set<InitialRating> initialRatings = tournament.getInitialRatings();
+
+        initialRatings.forEach(rating -> rating.setTournament(tournament));
+
+        tournament.setInitialRatings(initialRatings);
+
+        System.out.println("initial ratings");
+
+        System.out.println(initialRatings);
 
         tournamentDao.saveOrUpdate(tournament);
     }

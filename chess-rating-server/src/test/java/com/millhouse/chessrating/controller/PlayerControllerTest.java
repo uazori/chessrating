@@ -80,9 +80,9 @@ public class PlayerControllerTest extends TestCase {
 
         List<Player> players = new ArrayList<>();
 
-        players.add(new Player(1L, "Test1", "Test1Surname", 1,true));
-        players.add(new Player(2L, "Test2", "Test2Surname", 2,true));
-        players.add(new Player(3L, "Test3", "Test3Surname", 3,true));
+        players.add(new Player(1L, "Test1", "Test1Surname","TestName", 1,true));
+        players.add(new Player(2L, "Test2", "Test2Surname","TestName", 2,true));
+        players.add(new Player(3L, "Test3", "Test3Surname","TestName", 3,true));
 
         when(playerServiceMock.findAllPlayers()).thenReturn(players);
 
@@ -114,7 +114,7 @@ public class PlayerControllerTest extends TestCase {
     @Test
     public void testGetPlayer_PlayerFound_ShouldReturnFoundPlayer() throws Exception {
 
-        Player testPlayer = new Player(23, "TestPlayer", "TestPlayerSurname", 5,true);
+        Player testPlayer = new Player(23, "TestPlayer", "TestPlayerSurname","TestName", 5,true);
 
         when(playerServiceMock.findById(anyLong())).thenReturn(testPlayer);
 
@@ -145,7 +145,7 @@ public class PlayerControllerTest extends TestCase {
     }
     @Test
     public void testCreatePlayer_PlayerAdded_ShouldReturnCreatedPlayer() throws Exception {
-        Player testPlayer = new Player("TestName", "TestSurname", 4,true);
+        Player testPlayer = new Player("TestName", "TestSurname","TestName", 4,true);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
@@ -168,7 +168,7 @@ public class PlayerControllerTest extends TestCase {
     @Test
     public void testCreatePlayer_PlayerAlreadyExist_ShouldReturnStatusConflict() throws Exception {
 
-        Player testPlayer = new Player(1,"TestName", "TestSurname", 3,true);
+        Player testPlayer = new Player(1,"TestName", "TestSurname","TestName", 3,true);
 
        /* when(playerServiceMock.isPlayerExist(testPlayer)).thenReturn(true);*/
 
@@ -190,7 +190,7 @@ public class PlayerControllerTest extends TestCase {
 
     @Test
     public void testUpdatePlayer_PlayerUpdated_ShouldReturnUpdatedPlayer() throws Exception {
-        Player testPlayer = new Player(1,"TestName", "TestSurname", 3,true);
+        Player testPlayer = new Player(1,"TestName", "TestSurname","TestName", 3,true);
 
 /*        when(playerServiceMock.findById(anyLong())).thenReturn(testPlayer);*/
 
@@ -219,7 +219,7 @@ public class PlayerControllerTest extends TestCase {
 
     @Test
     public void testUpdatePlayer_PlayerNotFound_ShouldReturnStatusNotFound() throws Exception {
-        Player testPlayer = new Player("TestName", "TestSurname", 3,true);
+        Player testPlayer = new Player("TestName", "TestSurname","TestName", 3,true);
 
         doNothing().when(playerServiceMock).saveOrUpdatePlayer(testPlayer);
 

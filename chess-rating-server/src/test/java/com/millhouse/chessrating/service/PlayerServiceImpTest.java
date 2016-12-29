@@ -53,11 +53,11 @@ public class PlayerServiceImpTest extends TestCase {
     private List<Player> getTestPlayersList() {
 
         List<Player> players = new ArrayList<>();
-        players.add(new Player("FirstTestName", "FirstTestSurname", 1,true));
-        players.add(new Player("SecondTestName", "SecondTestSurname", 2,true));
-        players.add(new Player("ThirdTestName", "ThirdTestSurname", 3,true));
-        players.add(new Player("FourthTestName", "FourthTestSurname", 4,true));
-        players.add(new Player("FifthName", "FifthSurname", 5,true));
+        players.add(new Player("FirstTestName", "FirstTestSurname","Not_one", 1,true));
+        players.add(new Player("SecondTestName", "SecondTestSurname","Not_one", 2,true));
+        players.add(new Player("ThirdTestName", "ThirdTestSurname","Not_one", 3,true));
+        players.add(new Player("FourthTestName", "FourthTestSurname","Not_one", 4,true));
+        players.add(new Player("FifthName", "FifthSurname","Not_one", 5,true));
 
         return players;
     }
@@ -80,7 +80,7 @@ public class PlayerServiceImpTest extends TestCase {
     public void testFindByName() throws Exception {
         //Expected Player
 
-        Player expectedPlayer = new Player(1, "Bill", "Bobson", 5,true);
+        Player expectedPlayer = new Player(1, "Bill", "Bobson","Not_one", 5,true);
         when(playerDao.getByName(anyString())).thenReturn(expectedPlayer);
         assertEquals(expectedPlayer, playerService.findByName(anyString()));
     }

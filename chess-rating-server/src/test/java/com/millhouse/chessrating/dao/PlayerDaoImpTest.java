@@ -102,8 +102,8 @@ public class PlayerDaoImpTest {
     public void testSaveOrUpdatePlayer_add_duplicate_Player_return() throws Exception {
 
 
-        Player player1 = new Player("Djonny", "CheessMaster", 5,true);
-        Player player2 = new Player("Djonny", "CheessMaster", 4,true);
+        Player player1 = new Player("Djonny", "CheessMaster","Not_one", 5,true);
+        Player player2 = new Player("Djonny", "CheessMaster","Not_one", 4,true);
 
 
             playerDao.saveOrUpdate(player1);
@@ -148,11 +148,11 @@ public class PlayerDaoImpTest {
 
         List<Player> playerList = new ArrayList<>();
 
-        playerList.add(new Player("FirstTestName", "FirstTestSurname", 1,true));
-        playerList.add(new Player("SecondTestName", "SecondTestSurname", 2,true));
-        playerList.add(new Player("ThirdTestName", "ThirdTestSurname", 3,true));
-        playerList.add(new Player("FourthTestName", "FourthTestSurname", 4,true));
-        playerList.add(new Player("FifthName", "FifthSurname", 5,true));
+        playerList.add(new Player("FirstTestName", "FirstTestSurname","Not_one", 1,true));
+        playerList.add(new Player("SecondTestName", "SecondTestSurname","Not_one", 2,true));
+        playerList.add(new Player("ThirdTestName", "ThirdTestSurname","Not_one", 3,true));
+        playerList.add(new Player("FourthTestName", "FourthTestSurname","Not_one", 4,true));
+        playerList.add(new Player("FifthName", "FifthSurname","Not_one", 5,true));
 
         return playerList;
     }

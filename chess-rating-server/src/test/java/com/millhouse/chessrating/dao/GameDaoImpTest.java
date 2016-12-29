@@ -38,8 +38,8 @@ public class GameDaoImpTest extends TestCase {
 
     @Test
     public void testGetById_Game_Exist_Return_Game() throws Exception {
-        Player white = new Player("one", "oneSurname", 3,true);
-        Player black = new Player("two", "twoSurname", 2,true);
+        Player white = new Player("one", "oneSurname","one", 3,true);
+        Player black = new Player("two", "twoSurname","two", 2,true);
 
         Game game = new Game(white, black, "white", Result.MATE, LocalDateTime.now(), LocalDateTime.now());
         Game game1 = new Game(black, white, "white", Result.STALEMATE, LocalDateTime.of(2016, 11, 28, 12, 30), LocalDateTime.now());
@@ -58,8 +58,8 @@ public class GameDaoImpTest extends TestCase {
 
     @Test
     public void testGetById_Game_NO_Exist_Return_Null() throws Exception {
-        Player white = new Player("Not_one", "oneSurname", 3,true);
-        Player black = new Player("Not_two", "twoSurname", 2,true);
+        Player white = new Player("Not_one", "oneSurname","Not_one", 3,true);
+        Player black = new Player("Not_two", "twoSurname","Not_one", 2,true);
 
         Game game = new Game(white, black, "white", Result.MATE, LocalDateTime.now(), LocalDateTime.now());
         Game game1 = new Game(black, white, "white", Result.STALEMATE, LocalDateTime.of(2016, 11, 28, 12, 30), LocalDateTime.now());
@@ -77,8 +77,8 @@ public class GameDaoImpTest extends TestCase {
 
     @Test
     public void testGetByPlayerName_Game_exist_return_Games() throws Exception {
-        Player white = new Player("one", "oneSurname", 3,true);
-        Player black = new Player("two", "twoSurname", 2,true);
+        Player white = new Player("one", "oneSurname","Not_one", 3,true);
+        Player black = new Player("two", "twoSurname","Not_one", 2,true);
 
         Game game = new Game(white, black, "white", Result.MATE, LocalDateTime.now(), LocalDateTime.now());
         Game game1 = new Game(black, white, "white", Result.STALEMATE, LocalDateTime.of(2016, 11, 28, 12, 30), LocalDateTime.now());
@@ -98,8 +98,8 @@ public class GameDaoImpTest extends TestCase {
 
     @Test
     public void testGetByPlayerName_Games_not_exist_return_Null() throws Exception {
-        Player white = new Player("one", "oneSurname", 3,true);
-        Player black = new Player("two", "twoSurname", 2,true);
+        Player white = new Player("one", "oneSurname","Not_one", 3,true);
+        Player black = new Player("two", "twoSurname","Not_one", 2,true);
 
         Game game = new Game(white, black, "white", Result.MATE, LocalDateTime.now(), LocalDateTime.now());
         Game game1 = new Game(black, white, "white", Result.STALEMATE, LocalDateTime.of(2016, 11, 28, 12, 30), LocalDateTime.now());
@@ -118,8 +118,8 @@ public class GameDaoImpTest extends TestCase {
 
     @Test
     public void testGetByPlayerId() throws Exception {
-        Player white = new Player("onePlayerId", "oneSurname", 3,true);
-        Player black = new Player("twoPlayerId", "twoSurname", 2,true);
+        Player white = new Player("onePlayerId", "oneSurname","Not_one", 3,true);
+        Player black = new Player("twoPlayerId", "twoSurname","Not_one", 2,true);
 
         Game game = new Game(white, black, "white", Result.STALEMATE, LocalDateTime.now(), LocalDateTime.now());
         Game game1 = new Game(black, white, "white", Result.DRAW, LocalDateTime.of(2016, 11, 28, 12, 30), LocalDateTime.now());
@@ -142,9 +142,9 @@ public class GameDaoImpTest extends TestCase {
     @Test
     public void testSaveOrUpdate() throws Exception {
 
-        Player white = new Player("one", "oneSurname", 3,true);
-        Player black = new Player("two", "twoSurname", 2,true);
-        Player white2 = new Player("three", "3Surname", 1,true);
+        Player white = new Player("one", "oneSurname","Not_one", 3,true);
+        Player black = new Player("two", "twoSurname","Not_one", 2,true);
+        Player white2 = new Player("three", "3Surname","Not_one", 1,true);
 
         List<Player> playerExist = playerDao.getAllPlayers();
 
@@ -172,8 +172,8 @@ public class GameDaoImpTest extends TestCase {
     @Test
     public void testDeleteGameById_Game_exist_return_1() throws Exception {
 
-        Player white = new Player("oneID", "oneSurnameID", 3,true);
-        Player black = new Player("twoID", "twoSurnameID", 2,true);
+        Player white = new Player("oneID", "oneSurnameID","Not_one", 3,true);
+        Player black = new Player("twoID", "twoSurnameID","Not_one", 2,true);
 
         Game game = new Game(white, black, "white", Result.MATE, LocalDateTime.now(), LocalDateTime.now());
         Game game1 = new Game(black, white, "white", Result.STALEMATE, LocalDateTime.now(), LocalDateTime.now());
@@ -191,8 +191,8 @@ public class GameDaoImpTest extends TestCase {
     @Test
     public void testDeleteGameById_Game_not_exist_return_0() throws Exception {
 
-        Player white = new Player("NoOneID", "oneSurnameID", 3,true);
-        Player black = new Player("NoTwoID", "twoSurnameID", 2,true);
+        Player white = new Player("NoOneID", "oneSurnameID","Not_one", 3,true);
+        Player black = new Player("NoTwoID", "twoSurnameID","Not_one", 2,true);
 
         Game game = new Game(white, black, "white", Result.MATE, LocalDateTime.now(), LocalDateTime.now());
         Game game1 = new Game(black, white, "white", Result.STALEMATE, LocalDateTime.now(), LocalDateTime.now());
@@ -211,8 +211,8 @@ public class GameDaoImpTest extends TestCase {
     @Test
     public void testGetAllGames_Games_Exist_return_Games() throws Exception {
 
-        Player white = new Player("one", "oneSurname", 3,true);
-        Player black = new Player("two", "twoSurname", 2,true);
+        Player white = new Player("one", "oneSurname","Not_one", 3,true);
+        Player black = new Player("two", "twoSurname","Not_one", 2,true);
 
         Game game = new Game(white, black, "white", Result.MATE, LocalDateTime.now(), LocalDateTime.now());
         Game game1 = new Game(black, white, "white", Result.STALEMATE, LocalDateTime.now(), LocalDateTime.now());
@@ -234,8 +234,8 @@ public class GameDaoImpTest extends TestCase {
     @Test
     public void testCalculateScore() throws Exception{
 
-        Player white = new Player("one", "oneSurname", 1000,true);
-        Player black = new Player("two", "twoSurname", 1000,true);
+        Player white = new Player("one", "oneSurname","Not_one", 1000,true);
+        Player black = new Player("two", "twoSurname","Not_one", 1000,true);
 
         Game game = new Game(white, black, "white", Result.DRAW, LocalDateTime.now(), LocalDateTime.now());
         Game game1 = new Game(black, white, "white", Result.MATE, LocalDateTime.now(), LocalDateTime.now());

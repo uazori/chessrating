@@ -28,6 +28,7 @@ public class TournamentTransformer {
 
         tournamentDto.setStart(tournament.getStart());
         tournamentDto.setEnd(tournament.getEnd());
+        tournamentDto.setTournamentFinished(tournament.getTournamentFinished());
 
         Set<Game> games = tournament.getGames();
         Set<Player> players = tournament.getPlayers();
@@ -38,6 +39,8 @@ public class TournamentTransformer {
 
             tournamentDto.setGameDtos(games.stream().map(transformer::transform).collect(Collectors.toList()));
             tournamentDto.setPlayers(new ArrayList<>(players));
+            tournamentDto.setInitialRatings(new ArrayList<>(tournament.getInitialRatings()));
+
         } else {
 
             tournamentDto.setGameDtos(new ArrayList<>(games.size()));
@@ -58,9 +61,11 @@ public class TournamentTransformer {
         tournament.setDescription(tournamentDto.getDescription());
         tournament.setSystem(tournamentDto.getSystem());
         tournament.setPlayers(new HashSet<>(tournamentDto.getPlayers()));
+        tournament.setInitialRatings(new HashSet<>(tournamentDto.getInitialRatings()));
 
         tournament.setStart(tournamentDto.getStart());
         tournament.setEnd(tournamentDto.getEnd());
+        tournament.setTournamentFinished(tournamentDto.getTournamentFinished());
 
         List<GameDto> gameDtos = tournamentDto.getGameDtos();
 

@@ -3,7 +3,9 @@ package com.millhouse.chessrating.model;
 import javax.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Entity
@@ -25,15 +27,21 @@ public class Tournament {
     private LocalDateTime start;
     @Column(name = "tournament_end")
     private LocalDateTime end;
+    @Column(name = "tournament_finished")
+    private boolean tournamentFinished;
+
+
+    @OneToMany(cascade=CascadeType.ALL, mappedBy = "tournament")
+    private Set<InitialRating> initialRatings;
+
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Player> players;
-    @ManyToMany(fetch = FetchType.EAGER ,cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Game> games;
 
     @Override
-    public String
-    toString() {
+    public String toString() {
         return "Tournament{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
@@ -41,11 +49,11 @@ public class Tournament {
                 ", system='" + system + '\'' +
                 ", start=" + start +
                 ", end=" + end +
+                ", tournamentFinished=" + tournamentFinished +
                 ", players=" + players +
                 ", games=" + games +
                 '}';
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -138,5 +146,21 @@ public class Tournament {
 
     public void setEnd(LocalDateTime end) {
         this.end = end;
+    }
+
+    public boolean getTournamentFinished() {
+        return tournamentFinished;
+    }
+
+    public void setTournamentFinished(boolean tournamentFinished) {
+        this.tournamentFinished = tournamentFinished;
+    }
+
+    public Set<InitialRating> getInitialRatings() {
+        return initialRatings;
+    }
+
+    public void setInitialRatings(Set<InitialRating> initialRatings) {
+        this.initialRatings = initialRatings;
     }
 }

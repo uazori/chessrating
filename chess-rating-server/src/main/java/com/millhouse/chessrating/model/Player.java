@@ -18,6 +18,8 @@ public class Player {
     private String name;
     @Column(name = "surname")
     private String surname;
+    @Column(name = "username")
+    private String username;
     @Column(name = "rating")
     private double rating;
     @Column(name = "activity")
@@ -27,17 +29,19 @@ public class Player {
     public Player() {
     }
 
-    public Player(long id, String name, String surname, int rating, boolean activity) {
+    public Player(long id, String name, String surname,String username, int rating, boolean activity) {
         this.id = id;
         this.name = name;
         this.surname = surname;
+        this.username = username;
         this.rating = rating;
         this.activity = activity;
     }
 
-    public Player(String name, String surname, int rating, boolean activity ) {
+    public Player(String name, String surname,String username, int rating, boolean activity ) {
         this.name = name;
         this.surname = surname;
+        this.username = username;
         this.rating = rating;
         this.activity = activity;
     }
@@ -49,6 +53,7 @@ public class Player {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
+                ", username='" + username + '\'' +
                 ", rating=" + rating +
                 ", activity=" + activity +
                 '}';
@@ -63,8 +68,9 @@ public class Player {
 
         if (Double.compare(player.rating, rating) != 0) return false;
         if (activity != player.activity) return false;
-        if (!name.equals(player.name)) return false;
-        return surname.equals(player.surname);
+        if (name != null ? !name.equals(player.name) : player.name != null) return false;
+        if (surname != null ? !surname.equals(player.surname) : player.surname != null) return false;
+        return username != null ? username.equals(player.username) : player.username == null;
 
     }
 
@@ -72,8 +78,9 @@ public class Player {
     public int hashCode() {
         int result;
         long temp;
-        result = name.hashCode();
-        result = 31 * result + surname.hashCode();
+        result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (surname != null ? surname.hashCode() : 0);
+        result = 31 * result + (username != null ? username.hashCode() : 0);
         temp = Double.doubleToLongBits(rating);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + (activity ? 1 : 0);
@@ -119,5 +126,13 @@ public class Player {
 
     public void setActivity(boolean activity) {
         this.activity = activity;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

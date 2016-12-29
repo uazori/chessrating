@@ -1,5 +1,6 @@
 package com.millhouse.chessrating.dao;
 
+import com.millhouse.chessrating.model.InitialRating;
 import com.millhouse.chessrating.model.Tournament;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -8,8 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
 import java.util.List;
-
-
+import java.util.Set;
 
 
 @Service("tournamentDao")
@@ -40,6 +40,7 @@ public class TournamentDaoImp implements TournamentDao {
     public void saveOrUpdate(Tournament tournament) {
 
         System.out.println("Dao save = " + tournament);
+
 
         if (tournament.getId()==null){sessionFactory.getCurrentSession().save(tournament);}
         else {sessionFactory.getCurrentSession().saveOrUpdate(tournament);}

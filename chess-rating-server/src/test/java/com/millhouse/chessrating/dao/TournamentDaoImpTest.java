@@ -2,6 +2,7 @@ package com.millhouse.chessrating.dao;
 
 import com.millhouse.chessrating.configuration.HibernateConfiguration;
 import com.millhouse.chessrating.model.Game;
+import com.millhouse.chessrating.model.InitialRating;
 import com.millhouse.chessrating.model.Player;
 import com.millhouse.chessrating.model.Tournament;
 import org.junit.Test;
@@ -34,9 +35,11 @@ public class TournamentDaoImpTest {
     private PlayerDao playerDao;
     @Autowired
     private TournamentDao tournamentDao;
+    @Autowired
+    private InitialRatingDao initialRatingDao;
 
     @Test
-    /*@Rollback(false)*/
+    @Rollback(false)
     public void saveOrUpdate() throws Exception {
 
         List<Game> games = gameDao.getAllGames();
@@ -45,19 +48,46 @@ public class TournamentDaoImpTest {
         Set<Player> playerSet = new HashSet<>(players);
         Set<Game> gameSet = new HashSet<>(games);
 
-
-        Tournament tournament = new Tournament();
-        tournament.setName("last in 2016");
-        tournament.setDescription("Christmas tournament ");
+        Tournament tournament = tournamentDao.getById(3L);
+       /*
         tournament.setPlayers(playerSet);
-        tournament.setGames(gameSet);
+        tournament.setGames(gameSet);*/
+
+        System.out.println("before save Tournament = " + tournament);
+
+        /*tournamentDao.saveOrUpdate(tournament);*/
 
         System.out.println("Tournament = " + tournament);
 
+        InitialRating rate = new InitialRating(tournament,123L,1800d);
+        InitialRating rate1 = new InitialRating(tournament,124L,1500d);
+        InitialRating rate2 = new InitialRating(tournament,125L,1200d);
+        Set<InitialRating> initialRatings = new HashSet<>();
+        initialRatings.add(rate);
+        initialRatings.add(rate1);
+        initialRatings.add(rate2);
+
+
+        initialRatingDao.saveOrUpdate(rate);
+
+        tournament.setInitialRatings(initialRatings);
         tournamentDao.saveOrUpdate(tournament);
 
+       /*
 
-       List<Tournament> fetchedTournament = tournamentDao.getAllTournaments();
+        players.forEach(player ->initialRatings.add(new InitialRating(tournament,player.getId(),player.getRating()) ));
+
+        for (InitialRating rate: initialRatings) {
+
+
+            initialRatingDao.saveOrUpdate(rate);
+
+        }
+
+        tournament.setInitialRatings(initialRatings);
+*/
+
+       Tournament fetchedTournament = tournamentDao.getById(3L);
 
 
         System.out.println(fetchedTournament);

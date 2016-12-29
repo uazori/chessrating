@@ -70,6 +70,7 @@ public class TournamentController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         }
+
         tournamentService.saveOrUpdate(tournamentDto);
 
         return new ResponseEntity<>(tournamentDto, HttpStatus.OK);
